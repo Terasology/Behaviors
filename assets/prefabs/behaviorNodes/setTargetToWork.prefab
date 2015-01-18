@@ -1,0 +1,12 @@
+{
+    "BehaviorNode" : {
+        "action"      : "set_target_work_node",
+        "name"      : "set_target_work_node",
+        "displayName"      : "Set target to work",
+        "category"  : "work",
+        "shape"     : "rect",
+        "color"     : [0.7, 0.7, 0.7],
+        "description": "Set MinionMoveComponent's target to the work's target.\nSUCCESS: if valid work target position found.\nFAILURE: otherwise",
+        "textColor" : [  0,   0,   0]
+    }
+}

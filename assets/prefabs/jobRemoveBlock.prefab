@@ -1,0 +1,18 @@
+{
+    "parent" : "engine:iconItem",
+    "Item" : {
+        "name" : "Remove block",
+        "icon" : "engine:items.removeBlockJob",
+		"usage" : "ON_BLOCK"
+    },
+  	"PlaySoundAction" : {
+    	sounds = "engine:click"
+  	},
+    "Work" : {
+        workType = "Pathfinding:removeBlock"
+    },
+    "BlockSelection" : {
+        "shouldRender" : true
+    },
+    "OnItemActivateSelection" : {}
+}

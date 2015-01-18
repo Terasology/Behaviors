@@ -1,0 +1,12 @@
+{
+     "BehaviorNode" : {
+         "action"      : "move_to",
+         "name"      : "move_to",
+         "displayName"      : "Move To",
+         "category"  : "moving",
+         "shape"     : "rect",
+        "description": "Properties: distance\nMoves the actor to the target defined by MinionMoveComponent.\nSUCCESS: when distance between actor and target is below distance.\nFAILURE: when there is no target.",
+         "color"     : [0.7, 0.7, 0.7],
+         "textColor" : [  0,   0,   0]
+     }
+ }

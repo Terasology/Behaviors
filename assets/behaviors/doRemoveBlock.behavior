@@ -1,0 +1,49 @@
+{
+  "model": {
+    "nodeType": "engine:SelectorNode",
+    "nodeId": 0,
+    "node": {
+      "children": [
+        {
+          "nodeType": "engine:SequenceNode",
+          "nodeId": 1,
+          "node": {
+            "children": [
+              {
+                "nodeType": "engine:TimerNode",
+                "nodeId": 2,
+                "node": {
+                  "time": 1.0,
+                  "child": {
+                    "nodeType": "pathfinding:FindWorkNode",
+                    "nodeId": 3,
+                    "node": {
+                      "filter": "Pathfinding:removeBlock"
+                    }
+                  }
+                }
+              },
+              {
+                "nodeType": "engine:LookupNode",
+                "nodeId": 4,
+                "node": {
+                  "tree": "pathfinding:movetowork"
+                }
+              },
+              {
+                "nodeType": "pathfinding:FinishWorkNode",
+                "nodeId": 5,
+                "node": {}
+              }
+            ]
+          }
+        },
+        {
+          "nodeType": "pathfinding:FinishWorkNode",
+          "nodeId": 6,
+          "node": {}
+        }
+      ]
+    }
+  }
+}

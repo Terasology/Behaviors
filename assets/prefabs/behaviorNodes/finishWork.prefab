@@ -1,0 +1,12 @@
+{
+    "BehaviorNode" : {
+        "action"      : "finish_work",
+        "name"      : "finish_work",
+        "displayName"      : "Finish Work",
+        "category"  : "work",
+        "shape"     : "rect",
+        "color"     : [0.7, 0.7, 0.7],
+        "description": "Decorator\nDoes the actual work, once the actor is in range. The child node is started.\nSUCCESS: when work is done (depends on work type).\nFAILURE: if no work is assigned or target is not reachable.",
+        "textColor" : [  0,   0,   0]
+    }
+}

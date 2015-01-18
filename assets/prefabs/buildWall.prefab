@@ -1,0 +1,15 @@
+{
+    "parent" : "engine:iconItem",
+    "Item" : {
+        "name" : "Build wall",
+        "icon" : "scissors",
+		"usage" : "ON_BLOCK"
+    },
+  	"PlaySoundAction" : {
+    	sounds = "engine:click"
+  	},
+  	"BuildWall" : {
+  	    blockType = "engine:dirt"
+  	},
+    "BlockSelection" : {}
+}

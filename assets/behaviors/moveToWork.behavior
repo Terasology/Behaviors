@@ -1,0 +1,55 @@
+{
+  "model": {
+    "nodeType": "engine:SequenceNode",
+    "nodeId": 0,
+    "node": {
+      "children": [
+        {
+          "nodeType": "Pathfinding:SetTargetToWorkNode",
+          "nodeId": 1,
+          "node": {}
+        },
+        {
+          "nodeType": "Pathfinding:FindPathToNode",
+          "nodeId": 2,
+          "node": {}
+        },
+        {
+          "nodeType": "engine:SetAnimationNode",
+          "nodeId": 3,
+          "node": {
+            "play": "engine:Walk.animationPool",
+            "loop": "engine:Walk.animationPool"
+          }
+        },
+        {
+          "nodeType": "engine:WrapperNode",
+          "nodeId": 4,
+          "node": {
+            "child": {
+              "nodeType": "Pathfinding:MoveAlongPathNode",
+              "nodeId": 5,
+              "node": {
+                "child": {
+                  "nodeType": "Pathfinding:MoveToNode",
+                  "nodeId": 6,
+                  "node": {
+                    "distance": 0.1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "nodeType": "engine:SetAnimationNode",
+          "nodeId": 7,
+          "node": {
+            "play": "engine:Stand.animationPool",
+            "loop": "engine:Stand.animationPool"
+          }
+        }
+      ]
+    }
+  }
+}

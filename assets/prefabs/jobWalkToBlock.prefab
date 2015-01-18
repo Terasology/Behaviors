@@ -1,0 +1,18 @@
+{
+    "parent" : "engine:iconItem",
+    "Item" : {
+        "name" : "Walk to block",
+        "icon" : "engine:items.walkToJob",
+		"usage" : "ON_BLOCK"
+    },
+  	"PlaySoundAction" : {
+    	sounds = "engine:click"
+  	},
+    "Work" : {
+        workType = "Pathfinding:walkToBlock"
+    },
+    "BlockSelection" : {
+        "shouldRender" : true
+    },
+    "OnItemActivateSelection" : {}
+}

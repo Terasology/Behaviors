@@ -1,0 +1,12 @@
+{
+    "BehaviorNode" : {
+        "action"      : "set_target_local_player",
+        "name"      : "set_target_local_player",
+        "displayName"      : "Set Target To Local Player",
+        "category"  : "moving",
+        "shape"     : "rect",
+        "color"     : [0.7, 0.7, 0.7],
+        "description": "Set MinionMoveComponent.target to the block below local player.\nAlways returns SUCCESS.",
+        "textColor" : [  0,   0,   0]
+    }
+}
