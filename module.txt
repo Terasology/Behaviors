@@ -1,0 +1,12 @@
+{
+    "id" : "Behaviors",
+    "version" : "0.1.0",
+    "author" : "synopia",
+    "displayName" : "Behaviors",
+    "description" : "",
+    "dependencies" : [{
+        "id" : "Pathfinding",
+        "minVersion" : "0.1.0"
+        }],
+    "isServerSideOnly" : true
+}
