@@ -1,34 +1,12 @@
 {
-  "model": {
-    "nodeType": "engine:SequenceNode",
-    "nodeId": 0,
-    "node": {
-        "children": [
-          {
-            "nodeType": "pathfinding:SetTargetToNearbyBlockNode",
-            "nodeId": 1,
-            "node": {}
-          },
-          {
-            "nodeType": "pathfinding:FindPathToNode",
-            "nodeId": 2,
-            "node": {}
-          },
-            {
-              "nodeType": "pathfinding:MoveAlongPathNode",
-              "nodeId": 3,
-              "node": {
-                "child": {
-                  "nodeType": "pathfinding:MoveToNode",
-                  "nodeId": 4,
-                  "node": {
-                    "distance": 0.1
-                  }
-                }
-              }
-            }
-      ]
+  sequence : [
+    set_target_nearby_block,
+    find_path,
+    {
+      move_along_path : {
+        child: move_to
+      }
     }
-  }
+  ]
 }
 

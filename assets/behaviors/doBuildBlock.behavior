@@ -3,10 +3,10 @@
     {
       sequence : [
         {
-          timer : { time: 1, child : find_work_node }
+          timer : { time: 1, child : find_work }
         },
         {
-          lookup : { tree : "pathfinding:move_to_work" }
+          lookup : { uri : "behavior:Behaviors:moveToWork" }
         },
         {
           finish_work : { child : jump }

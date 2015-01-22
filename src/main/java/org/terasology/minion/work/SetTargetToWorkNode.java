@@ -33,7 +33,7 @@ import java.util.List;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("set_target_work_node")
+@ActionName("set_target_work")
 public class SetTargetToWorkNode extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {

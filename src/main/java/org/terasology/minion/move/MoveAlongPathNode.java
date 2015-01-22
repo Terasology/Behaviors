@@ -36,7 +36,7 @@ import org.terasology.registry.In;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("move_along_path")
+@ActionName(value = "move_along_path", isDecorator = true)
 public class MoveAlongPathNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(MoveAlongPathNode.class);
 

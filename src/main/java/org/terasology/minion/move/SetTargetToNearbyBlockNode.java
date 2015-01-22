@@ -31,7 +31,7 @@ import java.util.Random;
 @ActionName("set_target_nearby_block")
 public class SetTargetToNearbyBlockNode extends BaseAction {
     private static final int RANDOM_BLOCK_ITERATIONS = 10;
-    private Random random = new Random();
+    private transient Random random = new Random();
 
     @In
     private PathfinderSystem pathfinderSystem;

@@ -1,49 +1,21 @@
 {
-  "model": {
-    "nodeType": "engine:SelectorNode",
-    "nodeId": 0,
-    "node": {
-      "children": [
+  selector : [
+    {
+      sequence : [
         {
-          "nodeType": "engine:SequenceNode",
-          "nodeId": 1,
-          "node": {
-            "children": [
-              {
-                "nodeType": "engine:TimerNode",
-                "nodeId": 2,
-                "node": {
-                  "time": 1.0,
-                  "child": {
-                    "nodeType": "pathfinding:FindWorkNode",
-                    "nodeId": 3,
-                    "node": {
-                      "filter": "Pathfinding:walkToBlock"
-                    }
-                  }
-                }
-              },
-              {
-                "nodeType": "engine:LookupNode",
-                "nodeId": 4,
-                "node": {
-                  "tree": "pathfinding:movetowork"
-                }
-              },
-              {
-                "nodeType": "pathfinding:FinishWorkNode",
-                "nodeId": 5,
-                "node": {}
-              }
-            ]
+          timer : {
+            time : 1,
+            child : find_work
           }
         },
         {
-          "nodeType": "pathfinding:FinishWorkNode",
-          "nodeId": 6,
-          "node": {}
-        }
+          lookup: {
+            uri: "behavior:Behaviors:moveToWork"
+          }
+        },
+        finish_work
       ]
-    }
-  }
+    },
+    finish_work
+  ]
 }
