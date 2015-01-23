@@ -10,7 +10,7 @@
         },
         {
           lookup: {
-            uri: "behavior:Behaviors:moveToWork"
+            tree: "behavior:Behaviors:moveToWork"
           }
         },
         finish_work

@@ -9,7 +9,7 @@
           }
         },
         {
-          lookup: { uri: "behavior:Behaviors:doRandomMove" }
+          lookup: { tree: "behavior:Behaviors:doRandomMove" }
         },
         {
           animation : {

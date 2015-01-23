@@ -10,13 +10,13 @@
         {
           selector : [
             {
-              lookup : { uri : "behavior:Behaviors:doWalkTo" }
+              lookup : { tree : "behavior:Behaviors:doWalkTo" }
             },
             {
-              lookup : { uri : "behavior:Behaviors:doBuildBlock" }
+              lookup : { tree : "behavior:Behaviors:doBuildBlock" }
             },
             {
-              lookup : { uri : "behavior:Behaviors:doRemoveBlock" }
+              lookup : { tree : "behavior:Behaviors:doRemoveBlock" }
             }
           ]
         }
