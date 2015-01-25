@@ -1,12 +1,7 @@
 {
   sequence : [
     set_target_nearby_block,
-    find_path,
-    {
-      move_along_path : {
-        child: move_to
-      }
-    }
+    move_to
   ]
 }
 

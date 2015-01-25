@@ -46,17 +46,47 @@ public class MoveToNode extends BaseAction {
     public BehaviorState modify(Actor actor, BehaviorState result) {
         BehaviorState state = BehaviorState.FAILURE;
         MinionMoveComponent moveComponent = actor.component(MinionMoveComponent.class);
-        if (moveComponent != null && moveComponent.target != null) {
-            if (moveComponent.horizontalCollision) {
-                moveComponent.horizontalCollision = false;
-                moveComponent.jumpCooldown = 0.3f;
-            }
-            moveComponent.jumpCooldown -= actor.getDelta();
-            moveComponent.jumpMode = moveComponent.jumpCooldown > 0;
-            actor.save(moveComponent);
-            state = setMovement(actor, moveComponent);
+        LocationComponent locationComponent = actor.location();
+        if (moveComponent.target == null) {
+            return BehaviorState.FAILURE;
         }
+        if (moveComponent.type == MinionMoveComponent.Type.DIRECT) {
+            boolean reachedTarget = processDirect(actor, moveComponent, locationComponent);
+            state = reachedTarget ? BehaviorState.SUCCESS : BehaviorState.RUNNING;
+        }
+//        if (moveComponent != null && moveComponent.target != null) {
+//            if (moveComponent.horizontalCollision) {
+//                moveComponent.horizontalCollision = false;
+//                moveComponent.jumpCooldown = 0.3f;
+//            }
+//            moveComponent.jumpCooldown -= actor.getDelta();
+//            moveComponent.jumpMode = moveComponent.jumpCooldown > 0;
+//            actor.save(moveComponent);
+//            state = setMovement(actor, moveComponent);
+//        }
         return state;
+    }
+
+    private boolean processDirect(Actor actor, MinionMoveComponent moveComponent, LocationComponent locationComponent) {
+        boolean reachedTarget = false;
+        Vector3f worldPos = new Vector3f(locationComponent.getWorldPosition());
+        Vector3f targetDirection = new Vector3f();
+        targetDirection.sub(moveComponent.target, worldPos);
+        Vector3f drive = new Vector3f();
+        float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
+
+        if (targetDirection.x * targetDirection.x + targetDirection.z * targetDirection.z <= distance * distance) {
+            drive.set(0, 0, 0);
+            reachedTarget = true;
+        } else {
+            targetDirection.normalize();
+            drive.set(targetDirection);
+        }
+        float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
+        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
+        actor.minion().send(wantedInput);
+
+        return reachedTarget;
     }
 
     private BehaviorState setMovement(Actor actor, MinionMoveComponent moveComponent) {

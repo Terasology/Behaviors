@@ -15,6 +15,7 @@
  */
 package org.terasology.minion.move;
 
+import com.google.gson.annotations.SerializedName;
 import org.terasology.entitySystem.Component;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.navgraph.WalkableBlock;
@@ -24,13 +25,24 @@ import org.terasology.pathfinding.model.Path;
  * @author synopia
  */
 public class MinionMoveComponent implements Component {
-    public transient Vector3f target;
-    public transient WalkableBlock currentBlock;
-    public transient Path path;
-    public transient boolean horizontalCollision;
+    public enum Type {
+        @SerializedName("direct")
+        DIRECT,
+        @SerializedName("path")
+        PATH
+    }
 
+    public Type type = Type.DIRECT;
+    public Vector3f target;
+    public boolean targetReached;
+    public boolean breaking;
+
+    public Path path;
+    public int currentIndex;
+
+    public transient WalkableBlock currentBlock;
+    public transient boolean horizontalCollision;
     public transient boolean jumpMode;
     public transient float jumpCooldown;
-    public transient int currentIndex;
 
 }

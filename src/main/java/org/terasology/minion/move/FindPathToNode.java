@@ -27,7 +27,6 @@ import org.terasology.pathfinding.model.Path;
 import org.terasology.registry.In;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Requests a path to a target defined using the <b>MinionMoveComponent.target</b>.<br/>
@@ -60,7 +59,8 @@ public class FindPathToNode extends BaseAction {
         }
         pathfinderSystem.requestPath(
                 actor.minion(), currentBlock.getBlockPosition(),
-                Arrays.asList(workTarget.getBlockPosition()), new PathfinderSystem.PathReadyCallback() {
+                Arrays.asList(workTarget.getBlockPosition()));
+                /*, new PathfinderSystem.PathReadyCallback() {
                     @Override
                     public void pathReady(int pathId, List<Path> path, WalkableBlock target, List<WalkableBlock> start) {
 
@@ -71,7 +71,7 @@ public class FindPathToNode extends BaseAction {
                         }
                         actor.save(moveComponent);
                     }
-                });
+                });*/
     }
 
     @Override
