@@ -15,7 +15,7 @@
  */
 package org.terasology.minion.trees;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.terasology.HeadlessEnvironment;
 import org.terasology.asset.AssetManager;
@@ -37,8 +37,8 @@ import org.terasology.rendering.logic.SkeletalMeshComponent;
  * Created by synopia on 22/01/15.
  */
 public class TestTrees {
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() {
         new HeadlessEnvironment(new Name("Behaviors"));
     }
 
