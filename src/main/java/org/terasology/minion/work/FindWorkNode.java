@@ -22,7 +22,7 @@ import org.terasology.logic.behavior.ActionName;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.math.Vector3i;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.properties.OneOf;

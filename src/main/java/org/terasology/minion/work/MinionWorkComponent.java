@@ -17,7 +17,7 @@ package org.terasology.minion.work;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.math.Vector3i;
+import org.terasology.math.geom.Vector3i;
 
 /**
  * Work's minion component. Indicates, the minion is currently executing a work.
