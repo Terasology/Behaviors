@@ -18,7 +18,7 @@ package org.terasology.minion.work;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.math.Vector3i;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.navgraph.WalkableBlock;

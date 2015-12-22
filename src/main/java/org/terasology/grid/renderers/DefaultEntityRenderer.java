@@ -22,7 +22,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.grid.EntityRenderer;
 import org.terasology.logic.characters.CharacterComponent;
-import org.terasology.math.Rect2i;
+import org.terasology.math.geom.Rect2i;
 import org.terasology.math.TeraMath;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.registry.Share;

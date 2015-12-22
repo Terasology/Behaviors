@@ -15,8 +15,8 @@
  */
 package org.terasology.grid;
 
-import org.terasology.math.Rect2i;
-import org.terasology.math.Vector3i;
+import org.terasology.math.geom.Rect2i;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.rendering.nui.Canvas;
 
 /**
