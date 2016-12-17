@@ -3,7 +3,7 @@
     "version" : "0.1.0",
     "author" : "synopia",
     "displayName" : "Behaviors",
-    "description" : "",
+    "description" : "Stores an assortment of behaviors that can be applied to creatures",
     "dependencies" : [{
         "id" : "Pathfinding",
         "minVersion" : "0.1.0"
