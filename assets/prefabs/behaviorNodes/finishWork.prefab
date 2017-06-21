@@ -5,8 +5,8 @@
         "displayName"      : "Finish Work",
         "category"  : "work",
         "shape"     : "rect",
-        "color"     : [0.7, 0.7, 0.7],
+        "color"     : [0.7, 0.7, 0.7, 255],
         "description": "Decorator\nDoes the actual work, once the actor is in range. The child node is started.\nSUCCESS: when work is done (depends on work type).\nFAILURE: if no work is assigned or target is not reachable.",
-        "textColor" : [  0,   0,   0]
+        "textColor" : [  0,   0,   0, 255]
     }
 }

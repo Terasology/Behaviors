@@ -6,7 +6,7 @@
         "category"  : "work",
         "shape"     : "rect",
         "description": "Properties: filter\nSearches for open work of specific type (filter). If work is found, the actor is assigned.\nSUCCESS: When work is found and assigned.",
-        "color"     : [0.7, 0.7, 0.7],
-        "textColor" : [  0,   0,   0]
+        "color"     : [0.7, 0.7, 0.7, 255],
+        "textColor" : [  0,   0,   0, 255]
     }
 }
