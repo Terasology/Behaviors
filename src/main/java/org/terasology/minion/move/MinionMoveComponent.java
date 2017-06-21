@@ -46,3 +46,4 @@ public class MinionMoveComponent implements Component {
     public transient float jumpCooldown;
 
 }
+

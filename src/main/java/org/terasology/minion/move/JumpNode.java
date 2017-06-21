@@ -34,12 +34,12 @@ import org.terasology.math.geom.Vector3f;
 public class JumpNode extends BaseAction {
     @Override
     public void construct(Actor actor) {
-        actor.minion().send(new CharacterMoveInputEvent(0, 0, 0, new Vector3f(), false, true));
+        actor.getEntity().send(new CharacterMoveInputEvent(0, 0, 0, new Vector3f(), false, false, true, (long) (actor.getDelta() * 1000)));
     }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        return actor.component(CharacterMovementComponent.class).grounded ? BehaviorState.SUCCESS : BehaviorState.RUNNING;
+        return actor.getComponent(CharacterMovementComponent.class).grounded ? BehaviorState.SUCCESS : BehaviorState.RUNNING;
     }
 
 }

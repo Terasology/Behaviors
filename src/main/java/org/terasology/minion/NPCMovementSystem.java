@@ -100,7 +100,7 @@ public class NPCMovementSystem extends BaseComponentSystem implements UpdateSubs
                 drive.scale(1.0f / (float) Math.sqrt(remainingDistanceSquared));
                 boolean jumpRequested = jumpRecommended;
                 float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
-                 inputEvent = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false,
+                 inputEvent = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, false,
                         jumpRequested, (long) (delta * 1000));
             }
         }
@@ -109,9 +109,9 @@ public class NPCMovementSystem extends BaseComponentSystem implements UpdateSubs
         if (inputEvent == null) {
             Vector3f drive = new Vector3f(0.0f, 0.0f, 0.0f);
             NPCMovementComponent npcMovementComponent = entity.getComponent(NPCMovementComponent.class);
-            float yaw = npcMovementComponent.yaw;;
+            float yaw = npcMovementComponent.yaw;
             boolean jumpRequested = false;
-            inputEvent = new CharacterMoveInputEvent(0, 0, yaw, drive, false,
+            inputEvent = new CharacterMoveInputEvent(0, 0, yaw, drive, false, false,
                     jumpRequested, (long) (delta * 1000));
         }
 

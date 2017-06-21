@@ -51,7 +51,7 @@ public class FindWorkNode extends BaseAction {
 
     @Override
     public void construct(final Actor actor) {
-        final MinionWorkComponent actorWork = actor.component(MinionWorkComponent.class);
+        final MinionWorkComponent actorWork = actor.getComponent(MinionWorkComponent.class);
         if (actorWork.currentWork != null) {
             WorkTargetComponent currentJob = actorWork.currentWork.getComponent(WorkTargetComponent.class);
             if (currentJob != null) {
@@ -62,15 +62,12 @@ public class FindWorkNode extends BaseAction {
         }
         actorWork.filter = filter != null ? workFactory.getWork(filter) : null;
         if (actorWork.filter != null) {
-            workBoard.getWork(actor.minion(), actorWork.filter, new WorkBoard.WorkBoardCallback() {
-                @Override
-                public boolean workReady(Cluster cluster, Vector3i position, EntityRef work) {
-                    actorWork.workSearchDone = true;
-                    actorWork.currentWork = work;
-                    actorWork.target = position;
-                    actor.save(actorWork);
-                    return true;
-                }
+            workBoard.getWork(actor.getEntity(), actorWork.filter, (WorkBoard.WorkBoardCallback) (cluster, position, work) -> {
+                actorWork.workSearchDone = true;
+                actorWork.currentWork = work;
+                actorWork.target = position;
+                actor.save(actorWork);
+                return true;
             });
         } else {
             actorWork.workSearchDone = true;
@@ -80,7 +77,7 @@ public class FindWorkNode extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        final MinionWorkComponent actorWork = actor.component(MinionWorkComponent.class);
+        final MinionWorkComponent actorWork = actor.getComponent(MinionWorkComponent.class);
         if (!actorWork.workSearchDone) {
             return BehaviorState.RUNNING;
         }
@@ -88,7 +85,7 @@ public class FindWorkNode extends BaseAction {
             WorkTargetComponent workTargetComponent = actorWork.currentWork.getComponent(WorkTargetComponent.class);
             if (workTargetComponent != null && workTargetComponent.getWork() != null) {
                 logger.info("Found new work for " + toString() + " " + workTargetComponent.getUri() + " at " + actorWork.currentWork);
-                workTargetComponent.assignedMinion = actor.minion();
+                workTargetComponent.assignedMinion = actor.getEntity();
                 actorWork.currentWork.saveComponent(workTargetComponent);
                 return BehaviorState.SUCCESS;
             }

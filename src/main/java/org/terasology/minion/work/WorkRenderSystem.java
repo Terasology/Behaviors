@@ -15,7 +15,7 @@
  */
 package org.terasology.minion.work;
 
-import org.terasology.asset.Assets;
+
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -27,6 +27,7 @@ import org.terasology.math.geom.Vector3i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.rendering.world.selection.BlockSelectionRenderer;
+import org.terasology.utilities.Assets;
 import org.terasology.world.block.BlockComponent;
 
 /**
@@ -40,7 +41,7 @@ public class WorkRenderSystem extends BaseComponentSystem implements RenderSyste
 
     @Override
     public void initialise() {
-        selectionRenderer = new BlockSelectionRenderer(Assets.getTexture("engine:selection"));
+        selectionRenderer = new BlockSelectionRenderer(Assets.getTexture("engine:selection").orElse(null));
     }
 
     @Override

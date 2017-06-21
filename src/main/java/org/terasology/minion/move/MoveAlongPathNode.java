@@ -45,7 +45,7 @@ public class MoveAlongPathNode extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
-        MinionMoveComponent moveComponent = actor.component(MinionMoveComponent.class);
+        MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         if (moveComponent != null && moveComponent.path != null && moveComponent.path != Path.INVALID) {
             pathRenderSystem.addPath(moveComponent.path);
             moveComponent.currentIndex = 0;
@@ -58,7 +58,7 @@ public class MoveAlongPathNode extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        MinionMoveComponent moveComponent = actor.component(MinionMoveComponent.class);
+        MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         if (result != BehaviorState.SUCCESS) {
             return result;
         }
@@ -73,7 +73,7 @@ public class MoveAlongPathNode extends BaseAction {
             return BehaviorState.RUNNING;
         } else {
             pathRenderSystem.removePath(moveComponent.path);
-            LocationComponent locationComponent = actor.location();
+            LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
             logger.info("Finished moving along path pos = " + locationComponent.getWorldPosition() + " block = " + moveComponent.currentBlock);
             return BehaviorState.SUCCESS;
         }

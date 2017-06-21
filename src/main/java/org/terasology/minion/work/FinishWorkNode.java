@@ -37,7 +37,7 @@ public class FinishWorkNode extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
-        MinionWorkComponent actorWork = actor.component(MinionWorkComponent.class);
+        MinionWorkComponent actorWork = actor.getComponent(MinionWorkComponent.class);
         EntityRef currentWork = actorWork.currentWork;
         if (currentWork == null) {
             return;
@@ -47,7 +47,7 @@ public class FinishWorkNode extends BaseAction {
             return;
         }
         Work work = jobTargetComponent.getWork();
-        if (!work.canMinionWork(currentWork, actor.minion())) {
+        if (!work.canMinionWork(currentWork, actor.getEntity())) {
             logger.info("Not in range, work aborted " + currentWork);
             jobTargetComponent.assignedMinion = null;
             currentWork.saveComponent(jobTargetComponent);
@@ -58,12 +58,12 @@ public class FinishWorkNode extends BaseAction {
         actorWork.cooldown = work.cooldownTime();
         actor.save(actorWork);
         logger.info("Reached work " + currentWork);
-        work.letMinionWork(currentWork, actor.minion());
+        work.letMinionWork(currentWork, actor.getEntity());
     }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        MinionWorkComponent actorWork = actor.component(MinionWorkComponent.class);
+        MinionWorkComponent actorWork = actor.getComponent(MinionWorkComponent.class);
         if (actorWork.currentWork != null) {
             actorWork.cooldown -= actor.getDelta();
             actor.save(actorWork);
