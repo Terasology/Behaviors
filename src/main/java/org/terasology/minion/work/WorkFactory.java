@@ -32,9 +32,6 @@ import org.terasology.rendering.nui.itemRendering.StringTextRenderer;
 import org.terasology.rendering.nui.properties.OneOfProviderFactory;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.internal.BlockManagerImpl;
-import org.terasology.world.block.tiles.NullWorldAtlas;
-import org.terasology.world.block.tiles.WorldAtlasImpl;
 
 import java.util.List;
 import java.util.Map;
@@ -52,7 +49,7 @@ public class WorkFactory extends BaseComponentSystem {
     private OneOfProviderFactory providerFactory;
 
     @In
-    private BlockManagerImpl blockManager;
+    private BlockManager blockManager;
 
     private Map<SimpleUri, Work> workRegistry = Maps.newHashMap();
     private List<Work> works = Lists.newArrayList();

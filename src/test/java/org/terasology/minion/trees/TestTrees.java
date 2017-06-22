@@ -18,9 +18,9 @@ package org.terasology.minion.trees;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.terasology.HeadlessEnvironment;
-import org.terasology.asset.AssetManager;
-import org.terasology.asset.AssetType;
-import org.terasology.asset.AssetUri;
+import org.terasology.assets.AssetType;
+import org.terasology.assets.ResourceUrn;
+import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.behavior.DefaultBehaviorTreeRunner;
@@ -107,7 +107,7 @@ public class TestTrees {
 
     private BehaviorTreeRunner load(String name) {
         EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(new LocationComponent(), new SkeletalMeshComponent());
-        BehaviorTree asset = CoreRegistry.get(AssetManager.class).loadAsset(new AssetUri(AssetType.BEHAVIOR, "Behaviors", name), BehaviorTree.class);
+        BehaviorTree asset = CoreRegistry.get(AssetManager.class).getAsset(new ResourceUrn("Behaviors", name), BehaviorTree.class).get();
         System.out.println(CoreRegistry.get(BehaviorTreeBuilder.class).toJson(asset.getRoot()));
         Actor actor = new Actor(entityRef);
         actor.setDelta(0.5f);

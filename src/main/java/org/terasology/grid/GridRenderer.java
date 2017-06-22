@@ -42,6 +42,10 @@ import org.terasology.rendering.nui.BaseInteractionListener;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.Color;
 import org.terasology.rendering.nui.InteractionListener;
+import org.terasology.rendering.nui.events.NUIMouseClickEvent;
+import org.terasology.rendering.nui.events.NUIMouseDragEvent;
+import org.terasology.rendering.nui.events.NUIMouseReleaseEvent;
+import org.terasology.rendering.nui.events.NUIMouseWheelEvent;
 import org.terasology.rendering.nui.layouts.ZoomableLayout;
 
 /**
@@ -60,19 +64,19 @@ public class GridRenderer extends ZoomableLayout {
     private Vector2i endDrag;
     private InteractionListener listener = new BaseInteractionListener() {
         @Override
-        public boolean onMouseClick(MouseInput button, Vector2i pos) {
-            startDrag = pos;
-            endDrag = pos;
+        public boolean onMouseClick(NUIMouseClickEvent event) {
+            startDrag = event.getRelativeMousePosition();
+            endDrag = event.getRelativeMousePosition();
             return true;
         }
 
         @Override
-        public void onMouseDrag(Vector2i pos) {
-            endDrag = pos;
+        public void onMouseDrag(NUIMouseDragEvent event) {
+            endDrag = event.getRelativeMousePosition();
         }
 
         @Override
-        public void onMouseRelease(MouseInput button, Vector2i pos) {
+        public void onMouseRelease(NUIMouseReleaseEvent event) {
             Work work = CoreRegistry.get(WorkFactory.class).getWork("pathfinding:walkToBlock");
             WorkComponent workComponent = new WorkComponent();
             workComponent.uri = work.getUri();
@@ -83,16 +87,17 @@ public class GridRenderer extends ZoomableLayout {
             Vector3i startInt = new Vector3i((int) start.x, y, (int) start.y);
             Vector3i endInt = new Vector3i((int) end.x, y, (int) end.y);
             Region3i rect = Region3i.createFromMinMax(startInt, endInt);
-            ApplyBlockSelectionEvent event = new ApplyBlockSelectionEvent(entityRef, rect);
-            entityRef.send(event);
+            ApplyBlockSelectionEvent selectionEvent = new ApplyBlockSelectionEvent(entityRef, rect);
+            entityRef.send(selectionEvent);
             startDrag = null;
             endDrag = null;
         }
 
         @Override
-        public boolean onMouseWheel(int wheelTurns, Vector2i pos) {
-            if (!Keyboard.isKeyDown(Keyboard.Key.LEFT_SHIFT.getId())) {
-                yDiff += wheelTurns > 0 ? -1 : +1;
+        public boolean onMouseWheel(NUIMouseWheelEvent event) {
+
+            if (!event.getKeyboard().isKeyDown(Keyboard.Key.LEFT_SHIFT.getId())) {
+                yDiff += event.getWheelTurns() > 0 ? -1 : +1;
             }
             return false;
         }

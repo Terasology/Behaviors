@@ -40,8 +40,10 @@ public class DefaultEntityRenderer extends BaseComponentSystem implements Entity
     @Override
     public void renderBlock(Canvas canvas, EntityRef entity, Rect2i screenRegion) {
         CharacterComponent characterComponent = entity.getComponent(CharacterComponent.class);
-        float yaw = TeraMath.PI / 2 - characterComponent.yaw / 180.f * TeraMath.PI;
 
+        // float yaw = TeraMath.PI / 2 - characterComponent.yaw / 180.f * TeraMath.PI;
+
+        float yaw = 0.5f; // I'm going to hell, TODO resolve yaw
         int w = screenRegion.maxX() - screenRegion.minX();
         int h = screenRegion.maxY() - screenRegion.minY();
         int x0 = screenRegion.minX() + w / 2 + (int) (Math.cos(yaw) * w);

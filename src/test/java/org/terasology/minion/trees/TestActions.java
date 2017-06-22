@@ -17,9 +17,9 @@ package org.terasology.minion.trees;
 
 import org.junit.Test;
 import org.terasology.HeadlessEnvironment;
-import org.terasology.asset.AssetManager;
-import org.terasology.asset.AssetType;
-import org.terasology.asset.AssetUri;
+import org.terasology.assets.AssetType;
+import org.terasology.assets.ResourceUrn;
+import org.terasology.assets.management.AssetManager;
 import org.terasology.logic.behavior.BehaviorSystem;
 import org.terasology.logic.behavior.asset.BehaviorTree;
 import org.terasology.logic.behavior.core.BehaviorTreeBuilder;
@@ -47,7 +47,7 @@ public class TestActions {
 
         BehaviorTreeBuilder builder = new BehaviorTreeBuilder();
         BehaviorEditor editor = new BehaviorEditor();
-        editor.setTree(CoreRegistry.get(AssetManager.class).loadAsset(new AssetUri(AssetType.BEHAVIOR, "Behaviors", "worker"), BehaviorTree.class));
+        editor.setTree(CoreRegistry.get(AssetManager.class).getAsset(new ResourceUrn("Behaviors", "worker"), BehaviorTree.class).get());
         editor.createNode(nodeFactory.getNodeComponent(builder.fromJson("move_to")));
     }
 }
