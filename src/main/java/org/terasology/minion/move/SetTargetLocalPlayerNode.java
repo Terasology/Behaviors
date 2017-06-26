@@ -44,7 +44,7 @@ public class SetTargetLocalPlayerNode extends BaseAction {
         Vector3f position = localPlayer.getPosition();
         WalkableBlock block = pathfinderSystem.getBlock(position);
         if (block != null) {
-            MinionMoveComponent moveComponent = actor.component(MinionMoveComponent.class);
+            MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             moveComponent.target = block.getBlockPosition().toVector3f();
             actor.save(moveComponent);
         }

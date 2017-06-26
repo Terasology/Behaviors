@@ -31,12 +31,12 @@ import org.terasology.minion.work.WorkTargetComponent;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.registry.In;
-import org.terasology.utilities.Assets;
+
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.internal.BlockManagerImpl;
+
+
 
 import java.util.List;
 

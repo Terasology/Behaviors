@@ -45,8 +45,8 @@ public class MoveToNode extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
         BehaviorState state = BehaviorState.FAILURE;
-        MinionMoveComponent moveComponent = actor.component(MinionMoveComponent.class);
-        LocationComponent locationComponent = actor.location();
+        MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
+        LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
         if (moveComponent.target == null) {
             return BehaviorState.FAILURE;
         }
@@ -54,16 +54,16 @@ public class MoveToNode extends BaseAction {
             boolean reachedTarget = processDirect(actor, moveComponent, locationComponent);
             state = reachedTarget ? BehaviorState.SUCCESS : BehaviorState.RUNNING;
         }
-//        if (moveComponent != null && moveComponent.target != null) {
-//            if (moveComponent.horizontalCollision) {
-//                moveComponent.horizontalCollision = false;
-//                moveComponent.jumpCooldown = 0.3f;
-//            }
-//            moveComponent.jumpCooldown -= actor.getDelta();
-//            moveComponent.jumpMode = moveComponent.jumpCooldown > 0;
-//            actor.save(moveComponent);
-//            state = setMovement(actor, moveComponent);
-//        }
+        if (moveComponent != null && moveComponent.target != null) {
+            if (moveComponent.horizontalCollision) {
+                moveComponent.horizontalCollision = false;
+                moveComponent.jumpCooldown = 0.3f;
+            }
+            moveComponent.jumpCooldown -= actor.getDelta();
+            moveComponent.jumpMode = moveComponent.jumpCooldown > 0;
+            actor.save(moveComponent);
+            state = setMovement(actor, moveComponent);
+        }
         return state;
     }
 
@@ -84,14 +84,14 @@ public class MoveToNode extends BaseAction {
         }
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
         CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
-        actor.minion().send(wantedInput);
+        actor.getEntity().send(wantedInput);
 
         return reachedTarget;
     }
 
     private BehaviorState setMovement(Actor actor, MinionMoveComponent moveComponent) {
         BehaviorState result;
-        LocationComponent location = actor.location();
+        LocationComponent location = actor.getComponent(LocationComponent.class);
         Vector3f worldPos = new Vector3f(location.getWorldPosition());
         Vector3f targetDirection = new Vector3f();
         targetDirection.sub(moveComponent.target, worldPos);
@@ -111,11 +111,11 @@ public class MoveToNode extends BaseAction {
 
         CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
 
-        CharacterMovementComponent characterMovement = actor.minion().getComponent(CharacterMovementComponent.class);
+        CharacterMovementComponent characterMovement = actor.getEntity().getComponent(CharacterMovementComponent.class);
 
         CharacterMoveInputEvent adjustedInput = calculateMovementInput(location, characterMovement, wantedInput, moveComponent.target);
 
-        actor.minion().send(wantedInput);
+        actor.getEntity().send(wantedInput);
 
         return result;
     }
@@ -150,7 +150,7 @@ public class MoveToNode extends BaseAction {
         // Does not account for anything the physics engine might be doing
 
         CharacterMoveInputEvent newInput = new CharacterMoveInputEvent(input.getSequenceNumber(),
-                input.getPitch(), input.getYaw(), desiredVelocity, input.isRunning(), input.isJumpRequested());
+                input.getPitch(), input.getYaw(), desiredVelocity,input.isCrouching(), input.isRunning(), input.isJumpRequested(), (long) delta);
 
         return newInput;
     }

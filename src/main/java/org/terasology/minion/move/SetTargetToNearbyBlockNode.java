@@ -16,6 +16,8 @@
 package org.terasology.minion.move;
 
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.logic.behavior.ActionName;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
@@ -31,8 +33,8 @@ import java.util.Random;
 @ActionName("set_target_nearby_block")
 public class SetTargetToNearbyBlockNode extends BaseAction {
     private static final int RANDOM_BLOCK_ITERATIONS = 10;
+    private static final Logger logger = LoggerFactory.getLogger(SetTargetToNearbyBlockNode.class);
     private transient Random random = new Random();
-
     @In
     private PathfinderSystem pathfinderSystem;
 
@@ -63,6 +65,8 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
                 currentBlock = existingNeighbors.get(random.nextInt(existingNeighbors.size()));
             }
         }
+
+        logger.info(String.format("Looking for a block: my block is %s, found destination %s", startBlock.getBlockPosition(), currentBlock.getBlockPosition()));
         return currentBlock;
     }
 

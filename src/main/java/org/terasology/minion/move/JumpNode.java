@@ -15,10 +15,15 @@
  */
 package org.terasology.minion.move;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.entitySystem.event.Event;
 import org.terasology.logic.behavior.ActionName;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
+import org.terasology.logic.behavior.core.BehaviorEvent;
 import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.logic.characters.AliveCharacterComponent;
 import org.terasology.logic.characters.CharacterMoveInputEvent;
 import org.terasology.logic.characters.CharacterMovementComponent;
 import org.terasology.math.geom.Vector3f;
@@ -32,13 +37,27 @@ import org.terasology.math.geom.Vector3f;
  */
 @ActionName("jump")
 public class JumpNode extends BaseAction {
+
     @Override
     public void construct(Actor actor) {
-        actor.getEntity().send(new CharacterMoveInputEvent(0, 0, 0, new Vector3f(), false, false, true, (long) (actor.getDelta() * 1000)));
+
+
+        long delta = (long) (actor.getDelta() * 1000);
+        Event event = new CharacterMoveInputEvent(0, 0, 0, new Vector3f(), false, false, true, delta);
+        actor.getEntity().send(event);
+
     }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
+
+
+        // TODO early implementation, this'll be changed to something more sane
+        BehaviorEvent event = actor.getEvents().get("interrupt");
+        if (event != null) {
+            return BehaviorState.FAILURE;
+        }
+
         return actor.getComponent(CharacterMovementComponent.class).grounded ? BehaviorState.SUCCESS : BehaviorState.RUNNING;
     }
 
