@@ -23,17 +23,12 @@ import org.terasology.grid.renderers.DefaultBlockRenderer;
 import org.terasology.grid.renderers.WalkableBlockRenderer;
 import org.terasology.grid.renderers.WorkRenderer;
 import org.terasology.input.Keyboard;
-import org.terasology.input.MouseInput;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.selection.ApplyBlockSelectionEvent;
-import org.terasology.math.geom.Rect2i;
 import org.terasology.math.Region3i;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.math.geom.Vector2f;
-import org.terasology.math.geom.Vector3f;
+import org.terasology.math.geom.*;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkComponent;
 import org.terasology.minion.work.WorkFactory;
@@ -49,7 +44,7 @@ import org.terasology.rendering.nui.events.NUIMouseWheelEvent;
 import org.terasology.rendering.nui.layouts.ZoomableLayout;
 
 /**
- * Created by synopia on 11.02.14.
+ *
  */
 public class GridRenderer extends ZoomableLayout {
     private static final Logger logger = LoggerFactory.getLogger(GridRenderer.class);

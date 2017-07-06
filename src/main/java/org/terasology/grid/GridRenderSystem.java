@@ -25,7 +25,7 @@ import org.terasology.registry.In;
 import org.terasology.rendering.nui.NUIManager;
 
 /**
- * Created by synopia on 10.02.14.
+ *
  */
 @RegisterSystem
 public class GridRenderSystem extends BaseComponentSystem {

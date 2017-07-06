@@ -34,7 +34,7 @@ import org.terasology.registry.In;
 import java.util.Set;
 
 /**
- * Created by synopia on 02.02.14.
+ *
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class MinionMoveSystem extends BaseComponentSystem {

@@ -23,14 +23,13 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.grid.EntityRenderer;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.math.TeraMath;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.registry.Share;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.Color;
 
 /**
- * Created by synopia on 12.02.14.
+ *
  */
 @RegisterSystem
 @Share(value = EntityRenderer.class)

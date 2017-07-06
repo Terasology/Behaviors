@@ -19,7 +19,7 @@ import org.terasology.engine.SimpleUri;
 import org.terasology.entitySystem.Component;
 
 /**
- * @author synopia
+ *
  */
 public class WorkComponent implements Component {
     public String workType;

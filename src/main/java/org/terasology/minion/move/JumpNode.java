@@ -19,7 +19,6 @@ import org.terasology.entitySystem.event.Event;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorEvent;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.characters.CharacterMoveInputEvent;
 import org.terasology.logic.characters.CharacterMovementComponent;

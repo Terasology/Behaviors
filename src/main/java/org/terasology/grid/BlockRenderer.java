@@ -20,7 +20,7 @@ import org.terasology.math.geom.Vector3i;
 import org.terasology.rendering.nui.Canvas;
 
 /**
- * Created by synopia on 12.02.14.
+ *
  */
 public interface BlockRenderer {
     void renderBlock(Canvas canvas, Vector3i blockPos, Rect2i screenRegion);

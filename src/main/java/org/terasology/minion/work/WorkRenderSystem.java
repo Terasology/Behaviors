@@ -31,7 +31,7 @@ import org.terasology.utilities.Assets;
 import org.terasology.world.block.BlockComponent;
 
 /**
- * @author synopia
+ *
  */
 @RegisterSystem(RegisterMode.CLIENT)
 public class WorkRenderSystem extends BaseComponentSystem implements RenderSystem {

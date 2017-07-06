@@ -35,10 +35,10 @@ import org.terasology.rendering.nui.properties.OneOf;
  */
 @BehaviorAction(name = "find_work")
 public class FindWorkNode extends BaseAction {
+    private static final Logger logger = LoggerFactory.getLogger(FindWorkNode.class);
+
     @OneOf.Provider(name = "work")
     private String filter;
-
-    private static final Logger logger = LoggerFactory.getLogger(FindWorkNode.class);
 
     @In
     private WorkBoard workBoard;

@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by synopia on 08.02.14.
+ *
  */
 public class WorkType {
     private final Work work;

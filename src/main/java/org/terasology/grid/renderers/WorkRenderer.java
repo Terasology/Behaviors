@@ -29,7 +29,7 @@ import org.terasology.rendering.nui.Color;
 import org.terasology.world.BlockEntityRegistry;
 
 /**
- * Created by synopia on 12.02.14.
+ *
  */
 @RegisterSystem
 @Share(value = WorkRenderer.class)
