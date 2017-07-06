@@ -17,13 +17,10 @@ package org.terasology.minion.work;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.behavior.ActionName;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.properties.OneOf;
 
@@ -36,7 +33,7 @@ import org.terasology.rendering.nui.properties.OneOf;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("find_work")
+@BehaviorAction(name = "find_work")
 public class FindWorkNode extends BaseAction {
     @OneOf.Provider(name = "work")
     private String filter;

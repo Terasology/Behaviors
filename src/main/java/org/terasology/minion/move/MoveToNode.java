@@ -15,7 +15,9 @@
  */
 package org.terasology.minion.move;
 
-import org.terasology.logic.behavior.ActionName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
@@ -36,23 +38,31 @@ import org.terasology.rendering.nui.properties.Range;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("move_to")
+@BehaviorAction(name = "move_to")
 public class MoveToNode extends BaseAction {
+    private static Logger logger = LoggerFactory.getLogger(MoveToNode.class);
     @Range(min = 0, max = 10)
-    private float distance;
+    private float distance = 0.1f;
 
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
         BehaviorState state = BehaviorState.FAILURE;
+
+
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
         if (moveComponent.target == null) {
             return BehaviorState.FAILURE;
         }
         if (moveComponent.type == MinionMoveComponent.Type.DIRECT) {
+
             boolean reachedTarget = processDirect(actor, moveComponent, locationComponent);
+
             state = reachedTarget ? BehaviorState.SUCCESS : BehaviorState.RUNNING;
+            if (reachedTarget) {
+                actor.blackboard.put("targetLocked", false);
+            }
         }
         if (moveComponent != null && moveComponent.target != null) {
             if (moveComponent.horizontalCollision) {
@@ -64,15 +74,20 @@ public class MoveToNode extends BaseAction {
             actor.save(moveComponent);
             state = setMovement(actor, moveComponent);
         }
+
+
         return state;
     }
 
     private boolean processDirect(Actor actor, MinionMoveComponent moveComponent, LocationComponent locationComponent) {
+
         boolean reachedTarget = false;
         Vector3f worldPos = new Vector3f(locationComponent.getWorldPosition());
         Vector3f targetDirection = new Vector3f();
         targetDirection.sub(moveComponent.target, worldPos);
         Vector3f drive = new Vector3f();
+
+        // TODO review - is the yaw here being calculated properly?
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
 
         if (targetDirection.x * targetDirection.x + targetDirection.z * targetDirection.z <= distance * distance) {
@@ -83,13 +98,17 @@ public class MoveToNode extends BaseAction {
             drive.set(targetDirection);
         }
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
-        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
+
+
+        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
 
         return reachedTarget;
     }
 
     private BehaviorState setMovement(Actor actor, MinionMoveComponent moveComponent) {
+
+
         BehaviorState result;
         LocationComponent location = actor.getComponent(LocationComponent.class);
         Vector3f worldPos = new Vector3f(location.getWorldPosition());
@@ -109,7 +128,7 @@ public class MoveToNode extends BaseAction {
 
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
 
-        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
+        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
 
         CharacterMovementComponent characterMovement = actor.getEntity().getComponent(CharacterMovementComponent.class);
 
@@ -150,7 +169,7 @@ public class MoveToNode extends BaseAction {
         // Does not account for anything the physics engine might be doing
 
         CharacterMoveInputEvent newInput = new CharacterMoveInputEvent(input.getSequenceNumber(),
-                input.getPitch(), input.getYaw(), desiredVelocity,input.isCrouching(), input.isRunning(), input.isJumpRequested(), (long) delta);
+                input.getPitch(), input.getYaw(), desiredVelocity, input.isCrouching(), input.isRunning(), input.isJumpRequested(), (long) delta);
 
         return newInput;
     }

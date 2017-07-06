@@ -1,0 +1,13 @@
+{
+  sequence: [
+
+    {
+      log : {
+        message : "Hey!"
+      }
+    },
+    running
+
+
+  ]
+}

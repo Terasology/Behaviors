@@ -16,7 +16,7 @@
 package org.terasology.minion.work;
 
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.behavior.ActionName;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
@@ -33,7 +33,7 @@ import java.util.List;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("set_target_work")
+@BehaviorAction(name = "set_target_work")
 public class SetTargetToWorkNode extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {

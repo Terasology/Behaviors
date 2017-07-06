@@ -18,7 +18,7 @@ package org.terasology.minion.work;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.behavior.ActionName;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
@@ -31,7 +31,7 @@ import org.terasology.logic.behavior.core.BehaviorState;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("finish_work")
+@BehaviorAction(name = "finish_work")
 public class FinishWorkNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(FinishWorkNode.class);
 

@@ -18,7 +18,7 @@ package org.terasology.minion.move;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.logic.behavior.ActionName;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Random;
 
 
-@ActionName("set_target_nearby_block")
+@BehaviorAction(name = "set_target_nearby_block")
 public class SetTargetToNearbyBlockNode extends BaseAction {
     private static final int RANDOM_BLOCK_ITERATIONS = 10;
     private static final Logger logger = LoggerFactory.getLogger(SetTargetToNearbyBlockNode.class);
@@ -41,7 +41,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
-        if (moveComponent.currentBlock != null) {
+        if (moveComponent.currentBlock != null && (boolean) (actor.blackboard.get("targetLocked"))) {
             WalkableBlock target = findRandomNearbyBlock(moveComponent.currentBlock);
             moveComponent.target = target.getBlockPosition().toVector3f();
             actor.save(moveComponent);

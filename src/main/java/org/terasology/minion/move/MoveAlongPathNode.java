@@ -17,7 +17,7 @@ package org.terasology.minion.move;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.logic.behavior.ActionName;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
@@ -36,7 +36,7 @@ import org.terasology.registry.In;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName(value = "move_along_path", isDecorator = true)
+@BehaviorAction(name = "move_along_path", isDecorator = true)
 public class MoveAlongPathNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(MoveAlongPathNode.class);
 

@@ -15,7 +15,7 @@
  */
 package org.terasology.minion.move;
 
-import org.terasology.logic.behavior.ActionName;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
@@ -36,7 +36,7 @@ import java.util.Arrays;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("find_path")
+@BehaviorAction(name = "find_path")
 public class FindPathToNode extends BaseAction {
     @In
     private NavGraphSystem navGraphSystem;
