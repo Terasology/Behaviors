@@ -41,7 +41,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
-        if (moveComponent.currentBlock != null && (boolean) (actor.blackboard.get("targetLocked"))) {
+        if (moveComponent.currentBlock != null) {
             WalkableBlock target = findRandomNearbyBlock(moveComponent.currentBlock);
             moveComponent.target = target.getBlockPosition().toVector3f();
             actor.save(moveComponent);
