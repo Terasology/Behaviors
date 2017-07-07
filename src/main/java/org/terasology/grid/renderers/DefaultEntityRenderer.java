@@ -23,14 +23,13 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.grid.EntityRenderer;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.math.TeraMath;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.registry.Share;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.Color;
 
 /**
- * Created by synopia on 12.02.14.
+ *
  */
 @RegisterSystem
 @Share(value = EntityRenderer.class)
@@ -40,8 +39,10 @@ public class DefaultEntityRenderer extends BaseComponentSystem implements Entity
     @Override
     public void renderBlock(Canvas canvas, EntityRef entity, Rect2i screenRegion) {
         CharacterComponent characterComponent = entity.getComponent(CharacterComponent.class);
-        float yaw = TeraMath.PI / 2 - characterComponent.yaw / 180.f * TeraMath.PI;
 
+        // float yaw = TeraMath.PI / 2 - characterComponent.yaw / 180.f * TeraMath.PI;
+
+        float yaw = 0.5f; // I'm going to hell, TODO resolve yaw
         int w = screenRegion.maxX() - screenRegion.minX();
         int h = screenRegion.maxY() - screenRegion.minY();
         int x0 = screenRegion.minX() + w / 2 + (int) (Math.cos(yaw) * w);

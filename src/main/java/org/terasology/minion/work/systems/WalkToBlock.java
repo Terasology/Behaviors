@@ -35,7 +35,7 @@ import org.terasology.world.block.BlockComponent;
 import java.util.List;
 
 /**
- * @author synopia
+ *
  */
 @RegisterSystem
 public class WalkToBlock extends BaseComponentSystem implements Work, ComponentSystem {
@@ -116,3 +116,5 @@ public class WalkToBlock extends BaseComponentSystem implements Work, ComponentS
         return "Walk To Block";
     }
 }
+
+

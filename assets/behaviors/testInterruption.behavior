@@ -1,0 +1,25 @@
+{
+  dynamic: [
+    {
+      sequence: [
+        {
+          condition: {
+            componentPresent: "org.terasology.logic.behavior.TestComponent"
+          }
+        },
+        {
+          log: {
+            message: "Hey!"
+          }
+        },
+        {
+          timer: {
+            time: 10
+          }
+        }
+
+      ]
+    },
+    running
+  ]
+}

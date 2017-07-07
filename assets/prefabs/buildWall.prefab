@@ -6,10 +6,10 @@
 		"usage" : "ON_BLOCK"
     },
   	"PlaySoundAction" : {
-    	sounds = "engine:click"
+    	"sounds" : "engine:click"
   	},
   	"BuildWall" : {
-  	    blockType = "engine:dirt"
+  	    "blockType" : "engine:dirt"
   	},
     "BlockSelection" : {}
 }

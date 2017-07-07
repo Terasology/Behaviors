@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 MovingBlocks
+ * Copyright 2017 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.grid;
+package org.terasology.minion.components;
 
-import org.lwjgl.input.Keyboard;
-import org.terasology.input.BindButtonEvent;
-import org.terasology.input.DefaultBinding;
-import org.terasology.input.InputType;
-import org.terasology.input.RegisterBindButton;
+import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
 
 /**
- *
+ * This component is used by the FleeOnHit and FleeInProximity module to allow an
+ * NPC to exhibit the Flee behavior
  */
-@RegisterBindButton(id = "grid_renderer", description = "Toggle grid renderer")
-@DefaultBinding(type = InputType.KEY, id = Keyboard.KEY_F6)
-public class GridRendererButton extends BindButtonEvent {
+public class FleeComponent implements Component {
+    /* Minimum distance from instigator after which the NPC will stop 'flee'ing */
+    public float minDistance = 10f;
+    /* Entity to run away from */
+    public EntityRef instigator;
 }

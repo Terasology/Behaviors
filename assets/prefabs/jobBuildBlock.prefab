@@ -6,10 +6,10 @@
 		"usage" : "ON_BLOCK"
     },
   	"PlaySoundAction" : {
-    	sounds = "engine:click"
+    	"sounds" : "engine:click"
   	},
     "Work" : {
-        workType = "Pathfinding:buildBlock"
+        "workType" : "Pathfinding:buildBlock"
     },
     "BlockSelection" : {
         "shouldRender" : true

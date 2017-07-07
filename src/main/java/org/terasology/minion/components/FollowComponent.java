@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 MovingBlocks
+ * Copyright 2016 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.grid;
+package org.terasology.minion.components;
 
-import org.lwjgl.input.Keyboard;
-import org.terasology.input.BindButtonEvent;
-import org.terasology.input.DefaultBinding;
-import org.terasology.input.InputType;
-import org.terasology.input.RegisterBindButton;
+import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
 
 /**
- *
+ * Entities with this component want to follow another entity. Used to make gooey follow the player around if
+ * the player wishes so.
  */
-@RegisterBindButton(id = "grid_renderer", description = "Toggle grid renderer")
-@DefaultBinding(type = InputType.KEY, id = Keyboard.KEY_F6)
-public class GridRendererButton extends BindButtonEvent {
+public class FollowComponent implements Component {
+    public EntityRef entityToFollow = EntityRef.NULL;
 }

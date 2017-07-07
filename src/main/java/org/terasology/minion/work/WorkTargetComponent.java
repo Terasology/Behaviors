@@ -26,8 +26,6 @@ import java.util.List;
 
 /**
  * Work's block component. Using this component, jobs can be assigned to individual blocks
- *
- * @author synopia
  */
 @ForceBlockActive
 public class WorkTargetComponent implements Component, Work {

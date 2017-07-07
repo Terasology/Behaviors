@@ -15,7 +15,7 @@
  */
 package org.terasology.minion.move;
 
-import org.terasology.logic.behavior.ActionName;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
@@ -36,7 +36,7 @@ import java.util.Arrays;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("find_path")
+@BehaviorAction(name = "find_path")
 public class FindPathToNode extends BaseAction {
     @In
     private NavGraphSystem navGraphSystem;
@@ -45,7 +45,7 @@ public class FindPathToNode extends BaseAction {
 
     @Override
     public void construct(final Actor actor) {
-        final MinionMoveComponent moveComponent = actor.component(MinionMoveComponent.class);
+        final MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         Vector3f targetLocation = moveComponent.target;
         WalkableBlock currentBlock = moveComponent.currentBlock;
         if (currentBlock == null || targetLocation == null) {
@@ -58,7 +58,7 @@ public class FindPathToNode extends BaseAction {
             return;
         }
         pathfinderSystem.requestPath(
-                actor.minion(), currentBlock.getBlockPosition(),
+                actor.getEntity(), currentBlock.getBlockPosition(),
                 Arrays.asList(workTarget.getBlockPosition()));
                 /*, new PathfinderSystem.PathReadyCallback() {
                     @Override
@@ -76,10 +76,11 @@ public class FindPathToNode extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        final MinionMoveComponent moveComponent = actor.component(MinionMoveComponent.class);
+        final MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         if (moveComponent.path == null) {
             return BehaviorState.RUNNING;
         }
         return moveComponent.path == Path.INVALID ? BehaviorState.FAILURE : BehaviorState.SUCCESS;
     }
 }
+

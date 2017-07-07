@@ -6,10 +6,10 @@
 		"usage" : "ON_BLOCK"
     },
   	"PlaySoundAction" : {
-    	sounds = "engine:click"
+    	"sounds" : "engine:click"
   	},
     "Work" : {
-        workType = "Pathfinding:removeBlock"
+        "workType" : "Pathfinding:removeBlock"
     },
     "BlockSelection" : {
         "shouldRender" : true

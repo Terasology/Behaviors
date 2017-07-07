@@ -22,7 +22,7 @@ import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.model.Path;
 
 /**
- * @author synopia
+ *
  */
 public class MinionMoveComponent implements Component {
     public enum Type {
@@ -46,3 +46,4 @@ public class MinionMoveComponent implements Component {
     public transient float jumpCooldown;
 
 }
+

@@ -5,8 +5,8 @@
         "displayName"      : "Move Along Path",
         "category"  : "path",
         "shape"     : "rect",
-        "color"     : [0.7, 0.7, 0.7],
         "description": "Decorator\nCall child node, as long as the actor has not reached the end of the path. Sets MinionMoveComponent.target to next step in path.\nSUCCESS: when actor has reached end of path.\nFAILURE: if no path was found previously.",
-        "textColor" : [  0,   0,   0]
+        "color"     : [0.7, 0.7, 0.7, 255],
+        "textColor" : [  0,   0,   0, 255]
     }
 }
