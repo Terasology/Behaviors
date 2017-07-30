@@ -38,6 +38,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
     @In
     private PathfinderSystem pathfinderSystem;
 
+
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
@@ -66,7 +67,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
             }
         }
 
-        logger.info(String.format("Looking for a block: my block is %s, found destination %s", startBlock.getBlockPosition(), currentBlock.getBlockPosition()));
+        logger.debug(String.format("Looking for a block: my block is %s, found destination %s", startBlock.getBlockPosition(), currentBlock.getBlockPosition()));
         return currentBlock;
     }
 
