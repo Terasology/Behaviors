@@ -218,12 +218,9 @@ public class ClusterDebugger extends JFrame {
                         MinionMoveComponent moveComponent = new MinionMoveComponent();
                         moveComponent.currentBlock = lastBlock;
                         entity.addComponent(moveComponent);
-                        workBoard.getWork(entity, walkToBlock, new WorkBoard.WorkBoardCallback() {
-                            @Override
-                            public boolean workReady(Cluster cluster, Vector3i position, EntityRef work) {
-                                nearest = position;
-                                return true;
-                            }
+                        workBoard.getWork(entity, walkToBlock, (cluster, position, work) -> {
+                            nearest = position;
+                            return true;
                         });
 
                     }
