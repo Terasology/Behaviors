@@ -55,7 +55,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     private Block blockType;
 
     public BuildBlock() {
-        uri = new SimpleUri("Pathfinding:buildBlock");
+        uri = new SimpleUri("Behaviors:buildBlock");
     }
 
     @Override

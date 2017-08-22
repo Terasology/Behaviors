@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 MovingBlocks
+ * Copyright 2017 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.minion.components;
+package org.terasology.behaviors.components;
 
 import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
@@ -22,7 +22,7 @@ import org.terasology.rendering.assets.animation.MeshAnimation;
 import java.util.List;
 
 /**
- * The component gets currently only used as container for the melee attack animation.
+ * The components gets currently only used as container for the melee attack animation.
  */
 public class MeleeAttackComponent implements Component {
     /**

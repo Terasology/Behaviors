@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 MovingBlocks
+ * Copyright 2017 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.minion.components;
+package org.terasology.behaviors.components;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 
 /**
- * Entities with this component want to follow another entity. Used to make gooey follow the player around if
+ * Entities with this components want to follow another entity. Used to make gooey follow the player around if
  * the player wishes so.
  */
 public class FollowComponent implements Component {
