@@ -15,12 +15,14 @@
  */
 package org.terasology.minion.work;
 
+import com.google.gson.annotations.Expose;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.properties.OneOf;
 
@@ -38,28 +40,38 @@ public class FindWorkNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(FindWorkNode.class);
 
     @OneOf.Provider(name = "work")
-    private String filter;
+    private String filter = "Behaviors:removeBlock";
 
     @In
-    private WorkBoard workBoard;
-    @In
-    private WorkFactory workFactory;
+    private transient WorkBoard workBoard;
 
+    @In
+    private transient WorkFactory workFactory;
+
+    @Override
+    public void setup() {
+        workBoard = CoreRegistry.get(WorkBoard.class);
+        workFactory = CoreRegistry.get(WorkFactory.class);
+    }
 
     @Override
     public void construct(final Actor actor) {
+
+
         final MinionWorkComponent actorWork = actor.getComponent(MinionWorkComponent.class);
+//        logger.info("FINDWORK CONSTRUCT");
         if (actorWork.currentWork != null) {
             WorkTargetComponent currentJob = actorWork.currentWork.getComponent(WorkTargetComponent.class);
             if (currentJob != null) {
                 logger.info("Removing current work from actor " + currentJob.getUri() + " at " + actorWork.currentWork);
                 currentJob.assignedMinion = null;
+
                 actorWork.currentWork.saveComponent(currentJob);
             }
         }
         actorWork.filter = filter != null ? workFactory.getWork(filter) : null;
         if (actorWork.filter != null) {
-            workBoard.getWork(actor.getEntity(), actorWork.filter, (WorkBoard.WorkBoardCallback) (cluster, position, work) -> {
+            workBoard.getWork(actor.getEntity(), actorWork.filter, (cluster, position, work) -> {
                 actorWork.workSearchDone = true;
                 actorWork.currentWork = work;
                 actorWork.target = position;
@@ -74,6 +86,16 @@ public class FindWorkNode extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
+        if(workFactory == null){
+            setup();
+        }
+
+
+        if (!constructed){
+
+            construct(actor);
+            constructed = true;
+        }
         final MinionWorkComponent actorWork = actor.getComponent(MinionWorkComponent.class);
         if (!actorWork.workSearchDone) {
             return BehaviorState.RUNNING;

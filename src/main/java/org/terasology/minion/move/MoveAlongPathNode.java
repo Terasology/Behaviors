@@ -41,7 +41,7 @@ public class MoveAlongPathNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(MoveAlongPathNode.class);
 
     @In
-    private PathRenderSystem pathRenderSystem;
+    private transient PathRenderSystem pathRenderSystem;
 
     @Override
     public void construct(Actor actor) {

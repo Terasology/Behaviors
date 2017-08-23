@@ -114,6 +114,7 @@ public class WorkType {
     }
 
     public void removeRequestable(EntityRef workEntity) {
+        if(!workEntity.exists()){return;}
         requestableWork.remove(workEntity);
         for (WalkableBlock block : work.getTargetPositions(workEntity)) {
             cluster.remove(block.getBlockPosition());

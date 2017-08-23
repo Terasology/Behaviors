@@ -9,7 +9,7 @@
     	"sounds" : "engine:click"
   	},
     "Work" : {
-        "workType" : "Pathfinding:buildBlock"
+        "workType" : "Behaviors:buildBlock"
     },
     "BlockSelection" : {
         "shouldRender" : true
