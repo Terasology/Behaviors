@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 MovingBlocks
+ * Copyright 2017 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.minion.components;
+package org.terasology.behaviors.components;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.math.geom.Vector3f;
 
 /**
- * Non player characters should have this component even if they don't move, so that movement input gets simulated fo
+ * Non player characters should have this components even if they don't move, so that movement input gets simulated fo
  * them. Otherwise the game will try to predict the character movmeent based on the last movement which leads to strange
  * behavior.
  */

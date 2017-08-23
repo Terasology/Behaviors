@@ -13,7 +13,7 @@
           }
         },
         {
-          timer: {
+          sleep: {
             time: 10
           }
         }
