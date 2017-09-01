@@ -9,7 +9,7 @@
     	"sounds" : "engine:click"
   	},
     "Work" : {
-        "workType" : "Pathfinding:removeBlock"
+        "workType" : "Behaviors:removeBlock"
     },
     "BlockSelection" : {
         "shouldRender" : true

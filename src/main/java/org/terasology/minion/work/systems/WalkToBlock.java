@@ -47,7 +47,7 @@ public class WalkToBlock extends BaseComponentSystem implements Work, ComponentS
     private WorkFactory workFactory;
 
     public WalkToBlock() {
-        uri = new SimpleUri("Pathfinding:walkToBlock");
+        uri = new SimpleUri("Behaviors:walkToBlock");
     }
 
     @Override

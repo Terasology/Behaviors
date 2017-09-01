@@ -1,0 +1,18 @@
+{
+  selector : [
+    {
+      sequence : [
+        {
+          timeout : { time: 1, child : find_work }
+        },
+        {
+          lookup : { tree : "Behaviors:moveToWork" }
+        },
+        {
+          finish_work : { child : jump }
+        }
+      ]
+    },
+    finish_work
+  ]
+}

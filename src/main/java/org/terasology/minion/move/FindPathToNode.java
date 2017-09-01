@@ -15,6 +15,7 @@
  */
 package org.terasology.minion.move;
 
+import com.google.gson.annotations.Expose;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
@@ -24,6 +25,7 @@ import org.terasology.navgraph.NavGraphSystem;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.pathfinding.model.Path;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 
 import java.util.Arrays;
@@ -38,13 +40,22 @@ import java.util.Arrays;
  */
 @BehaviorAction(name = "find_path")
 public class FindPathToNode extends BaseAction {
+
     @In
-    private NavGraphSystem navGraphSystem;
+    private transient NavGraphSystem navGraphSystem;
+
     @In
-    private PathfinderSystem pathfinderSystem;
+    private transient PathfinderSystem pathfinderSystem;
+
+    @Override
+    public void setup() {
+        navGraphSystem = CoreRegistry.get(NavGraphSystem.class);
+        pathfinderSystem = CoreRegistry.get(PathfinderSystem.class);
+    }
 
     @Override
     public void construct(final Actor actor) {
+        if(pathfinderSystem==null){setup();}
         final MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         Vector3f targetLocation = moveComponent.target;
         WalkableBlock currentBlock = moveComponent.currentBlock;
@@ -57,7 +68,7 @@ public class FindPathToNode extends BaseAction {
             moveComponent.path = Path.INVALID;
             return;
         }
-        pathfinderSystem.requestPath(
+         pathfinderSystem.requestPath(
                 actor.getEntity(), currentBlock.getBlockPosition(),
                 Arrays.asList(workTarget.getBlockPosition()));
                 /*, new PathfinderSystem.PathReadyCallback() {

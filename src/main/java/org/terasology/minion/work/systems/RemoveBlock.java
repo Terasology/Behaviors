@@ -61,7 +61,7 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
 
 
     public RemoveBlock() {
-        uri = new SimpleUri("Pathfinding:removeBlock");
+        uri = new SimpleUri("Behaviors:removeBlock");
     }
 
     @Override
