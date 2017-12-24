@@ -52,6 +52,10 @@ public class FollowPlayerWithinRangeAction extends BaseAction {
         float maxDistanceSquared = (float) Math.pow(maxDistance, 2);
         Iterable<EntityRef> clients = entityManager.getEntitiesWith(ClientComponent.class);
         List<EntityRef> charactersWithinRange = Lists.newArrayList();
+
+        EntityRef closestCharacter = EntityRef.NULL;
+        float minDistanceFromCharacter = 0.0f;
+
         for (EntityRef client : clients) {
             ClientComponent clientComponent = client.getComponent(ClientComponent.class);
             EntityRef character = clientComponent.character;
@@ -64,6 +68,16 @@ public class FollowPlayerWithinRangeAction extends BaseAction {
                 continue;
             }
             if (locationComponent.getWorldPosition().distanceSquared(actorPosition) <= maxDistanceSquared) {
+                if (charactersWithinRange.size() == 0) {
+                    closestCharacter = character;
+                    minDistanceFromCharacter = locationComponent.getWorldPosition().distanceSquared(actorPosition);
+                } else {
+                    if (locationComponent.getWorldPosition().distanceSquared(actorPosition) < minDistanceFromCharacter) {
+                        closestCharacter = character;
+                        minDistanceFromCharacter = locationComponent.getWorldPosition().distanceSquared(actorPosition);
+                    }
+                }
+
                 charactersWithinRange.add(character);
             }
         }
@@ -76,9 +90,8 @@ public class FollowPlayerWithinRangeAction extends BaseAction {
         if (followWish == null) {
             return BehaviorState.FAILURE;
         }
-        // TODO select closest character
-        EntityRef someCharacterWithinRange = charactersWithinRange.get(0);
-        followWish.entityToFollow = someCharacterWithinRange;
+
+        followWish.entityToFollow = closestCharacter;
         actor.save(followWish);
         return BehaviorState.SUCCESS;
     }

@@ -29,4 +29,6 @@ public class FindNearbyPlayersComponent implements Component {
     public float searchRadius = 10f;
     /* List of player entities nearby */
     public List<EntityRef> charactersWithinRange;
+    /* The player entity closest to the actor */
+    public EntityRef closestCharacter;
 }
