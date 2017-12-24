@@ -30,7 +30,7 @@ public class FollowCharacterAction extends BaseAction {
     public void construct(Actor actor) {
         FollowComponent followComponent = new FollowComponent();
         FindNearbyPlayersComponent component = actor.getComponent(FindNearbyPlayersComponent.class);
-        followComponent.entityToFollow = component.charactersWithinRange.get(0);
+        followComponent.entityToFollow = component.closestCharacter;
         actor.save(followComponent);
 
     }
