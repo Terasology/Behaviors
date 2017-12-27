@@ -2,7 +2,7 @@
   selector : [
     {
       sequence : [
-      {log: {message: "first part"}},
+      {log: {message: "WalkTo "}},
         {
           timeout : {
             time : 1,

@@ -1,8 +1,10 @@
 {
     "parent" : "engine:iconItem",
+  "DisplayName": {
+    "name": "Remove Block"
+  },
     "Item" : {
-        "name" : "Remove block",
-        "icon" : "engine:items.removeBlockJob",
+        "icon" : "engine:items#removeBlockJob",
 		"usage" : "ON_BLOCK"
     },
   	"PlaySoundAction" : {

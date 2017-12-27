@@ -1,15 +1,17 @@
 {
-    "parent" : "engine:iconItem",
-    "Item" : {
-        "name" : "Build wall",
-        "icon" : "scissors",
-		"usage" : "ON_BLOCK"
-    },
-  	"PlaySoundAction" : {
-    	"sounds" : "engine:click"
-  	},
-  	"BuildWall" : {
-  	    "blockType" : "engine:dirt"
-  	},
-    "BlockSelection" : {}
+  "parent": "engine:iconItem",
+  "DisplayName": {
+    "name": "Build Wall"
+  },
+  "Item": {
+    "icon": "scissors",
+    "usage": "ON_BLOCK"
+  },
+  "PlaySoundAction": {
+    "sounds": "engine:click"
+  },
+  "BuildWall": {
+    "blockType": "engine:dirt"
+  },
+  "BlockSelection": {}
 }
