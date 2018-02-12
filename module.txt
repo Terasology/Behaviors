@@ -4,9 +4,8 @@
     "author" : "synopia, dkambersky",
     "displayName" : "Behaviors",
     "description" : "A set of behavior traits which could be applied to creatures and NPCs",
-    "dependencies" : [{
-        "id" : "Pathfinding",
-        "minVersion" : "0.3.0-SNAPSHOT"
-        }],
+    "dependencies" : [
+        {"id" : "Pathfinding", "minVersion" : "0.3.0"}
+    ],
     "isServerSideOnly" : true
 }
