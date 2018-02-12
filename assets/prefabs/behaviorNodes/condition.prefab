@@ -1,0 +1,22 @@
+{
+  "BehaviorNode": {
+    "action": "condition",
+    "name": "condition",
+    "displayName": "Condition",
+    "category": "logic",
+    "shape": "rect",
+    "description": "Properties: distance\nMoves the actor to the target defined by MinionMoveComponent.\nSUCCESS: when distance between actor and target is below distance.\nFAILURE: when there is no target.",
+    "color": [
+      0.7,
+      0.7,
+      0.7,
+      255
+    ],
+    "textColor": [
+      0,
+      0,
+      0,
+      255
+    ]
+  }
+}

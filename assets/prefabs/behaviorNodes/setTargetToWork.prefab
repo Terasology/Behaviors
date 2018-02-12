@@ -5,8 +5,8 @@
         "displayName"      : "Set target to work",
         "category"  : "work",
         "shape"     : "rect",
-        "color"     : [0.7, 0.7, 0.7],
+        "color"     : [0.7, 0.7, 0.7, 255],
         "description": "Set MinionMoveComponent's target to the work's target.\nSUCCESS: if valid work target position found.\nFAILURE: otherwise",
-        "textColor" : [  0,   0,   0]
+        "textColor" : [  0,   0,   0, 255]
     }
 }

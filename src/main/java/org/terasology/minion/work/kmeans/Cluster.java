@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * Created by synopia on 07.02.14.
+ *
  */
 public class Cluster {
     private Map<Vector3i, Distance> distances = Maps.newHashMap();

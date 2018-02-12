@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by synopia on 08.02.14.
+ *
  */
 public class WorkType {
     private final Work work;
@@ -43,7 +43,7 @@ public class WorkType {
             public float distance(Vector3i element, Vector3i target) {
                 EntityRef workEntity = mapping.get(element);
                 if (workEntity != null && requestableWork.contains(workEntity)) {
-                    return element.distance(target);
+                    return (float) element.distance(target);
                 }
                 return Float.MAX_VALUE;
             }
@@ -114,6 +114,7 @@ public class WorkType {
     }
 
     public void removeRequestable(EntityRef workEntity) {
+        if(!workEntity.exists()){return;}
         requestableWork.remove(workEntity);
         for (WalkableBlock block : work.getTargetPositions(workEntity)) {
             cluster.remove(block.getBlockPosition());

@@ -18,7 +18,7 @@ package org.terasology.minion.work;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.behavior.ActionName;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
@@ -31,13 +31,13 @@ import org.terasology.logic.behavior.core.BehaviorState;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("finish_work")
+@BehaviorAction(name = "finish_work")
 public class FinishWorkNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(FinishWorkNode.class);
 
     @Override
     public void construct(Actor actor) {
-        MinionWorkComponent actorWork = actor.component(MinionWorkComponent.class);
+        MinionWorkComponent actorWork = actor.getComponent(MinionWorkComponent.class);
         EntityRef currentWork = actorWork.currentWork;
         if (currentWork == null) {
             return;
@@ -47,7 +47,7 @@ public class FinishWorkNode extends BaseAction {
             return;
         }
         Work work = jobTargetComponent.getWork();
-        if (!work.canMinionWork(currentWork, actor.minion())) {
+        if (!work.canMinionWork(currentWork, actor.getEntity())) {
             logger.info("Not in range, work aborted " + currentWork);
             jobTargetComponent.assignedMinion = null;
             currentWork.saveComponent(jobTargetComponent);
@@ -58,12 +58,12 @@ public class FinishWorkNode extends BaseAction {
         actorWork.cooldown = work.cooldownTime();
         actor.save(actorWork);
         logger.info("Reached work " + currentWork);
-        work.letMinionWork(currentWork, actor.minion());
+        work.letMinionWork(currentWork, actor.getEntity());
     }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        MinionWorkComponent actorWork = actor.component(MinionWorkComponent.class);
+        MinionWorkComponent actorWork = actor.getComponent(MinionWorkComponent.class);
         if (actorWork.currentWork != null) {
             actorWork.cooldown -= actor.getDelta();
             actor.save(actorWork);

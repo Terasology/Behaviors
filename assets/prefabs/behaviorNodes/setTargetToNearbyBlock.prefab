@@ -5,8 +5,8 @@
         "displayName"      : "Set target to a random nearby block",
         "category"  : "moving",
         "shape"     : "rect",
-        "color"     : [0.7, 0.7, 0.7],
         "description": "Set MinionMoveComponent's target to a nearby block.\nReturns always SUCCESS",
-        "textColor" : [  0,   0,   0]
+        "color"     : [0.7, 0.7, 0.7, 255],
+        "textColor" : [  0,   0,   0, 255]
     }
 }

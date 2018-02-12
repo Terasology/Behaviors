@@ -28,24 +28,36 @@ import org.terasology.registry.Share;
 import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.itemRendering.StringTextRenderer;
 import org.terasology.rendering.nui.properties.OneOfProviderFactory;
+import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockManager;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * @author synopia
+ *
  */
 @RegisterSystem
 @Share(value = WorkFactory.class)
 public class WorkFactory extends BaseComponentSystem {
     private static final Logger logger = LoggerFactory.getLogger(WorkFactory.class);
 
+
     @In
     private OneOfProviderFactory providerFactory;
 
+    @In
+    private BlockManager blockManager;
+
     private Map<SimpleUri, Work> workRegistry = Maps.newHashMap();
     private List<Work> works = Lists.newArrayList();
+    // TODO REAL IDLE
     private SimpleUri idle = new SimpleUri("Pathfinding:idle");
+
+    /* Kept to pass to RemoveBlock nodes if needed - so they don't
+     * have to fetch their own Air block from somewhere
+     */
+    private Block air;
 
     public void register(Work work) {
         workRegistry.put(work.getUri(), work);
@@ -72,24 +84,32 @@ public class WorkFactory extends BaseComponentSystem {
     public void initialise() {
         logger.info("Initialize WorkFactory");
         providerFactory.register("work", new ReadOnlyBinding<List<String>>() {
-                    @Override
-                    public List<String> get() {
-                        List<String> result = Lists.newArrayList();
-                        for (Work work : works) {
-                            result.add(work.getUri().toString());
-                        }
-                        return result;
-                    }
-                }, new StringTextRenderer<String>() {
-                    @Override
-                    public String getString(String value) {
-                        return value.substring(value.indexOf(':') + 1);
-                    }
+            @Override
+            public List<String> get() {
+                List<String> result = Lists.newArrayList();
+                for (Work work : works) {
+                    result.add(work.getUri().toString());
                 }
-        );
+                return result;
+            }
+        }, new StringTextRenderer<String>() {
+            @Override
+            public String getString(String value) {
+                return value.substring(value.indexOf(':') + 1);
+            }
+        });
+
+
     }
 
     @Override
     public void shutdown() {
+    }
+
+    public Block getAir() {
+        if (air == null) {
+            air = blockManager.getBlock(BlockManager.AIR_ID);
+        }
+        return air;
     }
 }

@@ -1,15 +1,17 @@
 {
     "parent" : "engine:iconItem",
+  "DisplayName": {
+    "name": "Remove Block"
+  },
     "Item" : {
-        "name" : "Remove block",
-        "icon" : "engine:items.removeBlockJob",
+        "icon" : "engine:items#removeBlockJob",
 		"usage" : "ON_BLOCK"
     },
   	"PlaySoundAction" : {
-    	sounds = "engine:click"
+    	"sounds" : "engine:click"
   	},
     "Work" : {
-        workType = "Pathfinding:removeBlock"
+        "workType" : "Behaviors:removeBlock"
     },
     "BlockSelection" : {
         "shouldRender" : true

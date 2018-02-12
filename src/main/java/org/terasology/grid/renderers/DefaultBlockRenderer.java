@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 MovingBlocks
+ * Copyright 2017 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.terasology.grid.renderers;
 
-import org.terasology.asset.Assets;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.grid.BlockRenderer;
@@ -28,14 +27,14 @@ import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.Color;
 import org.terasology.rendering.nui.ScaleMode;
+import org.terasology.utilities.Assets;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockPart;
-import org.terasology.world.block.loader.WorldAtlas;
+import org.terasology.world.block.tiles.WorldAtlas;
 
-/**
- * Created by synopia on 12.02.14.
- */
+
+
 @RegisterSystem
 @Share(value = DefaultBlockRenderer.class)
 public class DefaultBlockRenderer extends BaseComponentSystem implements BlockRenderer {
@@ -49,7 +48,7 @@ public class DefaultBlockRenderer extends BaseComponentSystem implements BlockRe
 
     @Override
     public void initialise() {
-        terrainTex = Assets.getTexture("engine:terrain");
+        terrainTex = Assets.getTexture("engine:terrain").get();
         relativeTileSize = 0.0625f;
     }
 
@@ -68,7 +67,7 @@ public class DefaultBlockRenderer extends BaseComponentSystem implements BlockRe
                         textureAtlasPos.x, textureAtlasPos.y, relativeTileSize, relativeTileSize);
                 break;
             } else {
-                // process todo alpha blocks
+                // TODO alpha blocks
             }
             blockPos.y--;
             depth++;
@@ -80,3 +79,4 @@ public class DefaultBlockRenderer extends BaseComponentSystem implements BlockRe
 
     }
 }
+

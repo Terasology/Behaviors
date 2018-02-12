@@ -29,7 +29,7 @@ import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 
 /**
- * @author synopia
+ *
  */
 @RegisterSystem
 public class SampleSystem extends BaseComponentSystem {

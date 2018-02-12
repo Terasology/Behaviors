@@ -36,7 +36,7 @@ import org.terasology.world.block.BlockManager;
 import java.util.List;
 
 /**
- * @author synopia
+ *
  */
 @RegisterSystem
 public class BuildBlock extends BaseComponentSystem implements Work, ComponentSystem {
@@ -55,7 +55,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     private Block blockType;
 
     public BuildBlock() {
-        uri = new SimpleUri("Pathfinding:buildBlock");
+        uri = new SimpleUri("Behaviors:buildBlock");
     }
 
     @Override
@@ -135,3 +135,4 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
         return "Build Block";
     }
 }
+

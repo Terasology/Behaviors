@@ -22,7 +22,6 @@ import org.terasology.math.geom.Vector3i;
 /**
  * Work's minion component. Indicates, the minion is currently executing a work.
  *
- * @author synopia
  */
 
 public class MinionWorkComponent implements Component {

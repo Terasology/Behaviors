@@ -15,7 +15,7 @@
  */
 package org.terasology.minion.move;
 
-import org.terasology.logic.behavior.ActionName;
+import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
@@ -32,7 +32,7 @@ import org.terasology.registry.In;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@ActionName("set_target_local_player")
+@BehaviorAction(name = "set_target_local_player")
 public class SetTargetLocalPlayerNode extends BaseAction {
     @In
     private LocalPlayer localPlayer;
@@ -44,7 +44,7 @@ public class SetTargetLocalPlayerNode extends BaseAction {
         Vector3f position = localPlayer.getPosition();
         WalkableBlock block = pathfinderSystem.getBlock(position);
         if (block != null) {
-            MinionMoveComponent moveComponent = actor.component(MinionMoveComponent.class);
+            MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             moveComponent.target = block.getBlockPosition().toVector3f();
             actor.save(moveComponent);
         }

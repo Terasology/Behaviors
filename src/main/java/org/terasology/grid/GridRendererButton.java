@@ -22,7 +22,7 @@ import org.terasology.input.InputType;
 import org.terasology.input.RegisterBindButton;
 
 /**
- * Created by synopia on 10.02.14.
+ *
  */
 @RegisterBindButton(id = "grid_renderer", description = "Toggle grid renderer")
 @DefaultBinding(type = InputType.KEY, id = Keyboard.KEY_F6)

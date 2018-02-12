@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 MovingBlocks
+ * Copyright 2018 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.terasology.minion.work;
 
-import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -27,11 +26,9 @@ import org.terasology.math.geom.Vector3i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.rendering.world.selection.BlockSelectionRenderer;
+import org.terasology.utilities.Assets;
 import org.terasology.world.block.BlockComponent;
 
-/**
- * @author synopia
- */
 @RegisterSystem(RegisterMode.CLIENT)
 public class WorkRenderSystem extends BaseComponentSystem implements RenderSystem {
     @In
@@ -40,7 +37,7 @@ public class WorkRenderSystem extends BaseComponentSystem implements RenderSyste
 
     @Override
     public void initialise() {
-        selectionRenderer = new BlockSelectionRenderer(Assets.getTexture("engine:selection"));
+        selectionRenderer = new BlockSelectionRenderer(Assets.getTexture("engine:selection").orElse(null));
     }
 
     @Override
@@ -68,11 +65,6 @@ public class WorkRenderSystem extends BaseComponentSystem implements RenderSyste
 
     @Override
     public void renderOpaque() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void renderFirstPerson() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

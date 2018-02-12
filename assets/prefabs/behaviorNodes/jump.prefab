@@ -5,8 +5,8 @@
         "displayName"      : "Jump",
         "category"  : "moving",
         "shape"     : "rect",
-        "color"     : [0.7, 0.7, 0.7],
+        "color"     : [0.7, 0.7, 0.7, 255],
         "description": "Trigger a single jump into the air.\nSUCCESS: when the actor is grounded after the jump again.",
-        "textColor" : [  0,   0,   0]
+        "textColor" : [  0,   0,   0, 255]
     }
 }

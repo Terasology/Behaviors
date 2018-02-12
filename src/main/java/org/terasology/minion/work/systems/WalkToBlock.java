@@ -35,7 +35,7 @@ import org.terasology.world.block.BlockComponent;
 import java.util.List;
 
 /**
- * @author synopia
+ *
  */
 @RegisterSystem
 public class WalkToBlock extends BaseComponentSystem implements Work, ComponentSystem {
@@ -47,7 +47,7 @@ public class WalkToBlock extends BaseComponentSystem implements Work, ComponentS
     private WorkFactory workFactory;
 
     public WalkToBlock() {
-        uri = new SimpleUri("Pathfinding:walkToBlock");
+        uri = new SimpleUri("Behaviors:walkToBlock");
     }
 
     @Override
@@ -116,3 +116,5 @@ public class WalkToBlock extends BaseComponentSystem implements Work, ComponentS
         return "Walk To Block";
     }
 }
+
+

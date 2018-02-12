@@ -18,7 +18,7 @@ package org.terasology.minion;
 import org.terasology.entitySystem.Component;
 
 /**
- * @author synopia
+ *
  */
 public class BuildWallComponent implements Component {
     public String blockType;

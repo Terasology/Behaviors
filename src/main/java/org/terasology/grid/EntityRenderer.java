@@ -20,7 +20,7 @@ import org.terasology.math.geom.Rect2i;
 import org.terasology.rendering.nui.Canvas;
 
 /**
- * Created by synopia on 12.02.14.
+ *
  */
 public interface EntityRenderer {
     void renderBlock(Canvas canvas, EntityRef entity, Rect2i screenRegion);

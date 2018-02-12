@@ -22,8 +22,8 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkFactory;
 import org.terasology.minion.work.WorkTargetComponent;
@@ -33,12 +33,11 @@ import org.terasology.registry.In;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockManager;
 
 import java.util.List;
 
 /**
- * @author synopia
+ *
  */
 @RegisterSystem
 public class RemoveBlock extends BaseComponentSystem implements Work, ComponentSystem {
@@ -58,13 +57,17 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
 
     private final SimpleUri uri;
 
+
+
+
     public RemoveBlock() {
-        uri = new SimpleUri("Pathfinding:removeBlock");
+        uri = new SimpleUri("Behaviors:removeBlock");
     }
 
     @Override
     public void initialise() {
         workFactory.register(this);
+
     }
 
     @Override
@@ -105,7 +108,7 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
     @Override
     public void letMinionWork(EntityRef block, EntityRef minion) {
         block.removeComponent(WorkTargetComponent.class);
-        worldProvider.setBlock(block.getComponent(BlockComponent.class).getPosition(), BlockManager.getAir());
+        worldProvider.setBlock(block.getComponent(BlockComponent.class).getPosition(), workFactory.getAir());
     }
 
     @Override
@@ -130,3 +133,6 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
         return "Remove Block";
     }
 }
+
+
+

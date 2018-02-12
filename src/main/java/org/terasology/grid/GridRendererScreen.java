@@ -18,7 +18,7 @@ package org.terasology.grid;
 import org.terasology.rendering.nui.CoreScreenLayer;
 
 /**
- * Created by synopia on 10.02.14.
+ *
  */
 public class GridRendererScreen extends CoreScreenLayer {
     @Override

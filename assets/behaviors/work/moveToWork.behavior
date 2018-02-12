@@ -1,20 +1,17 @@
 {
   sequence : [
+  {log: {message: "moveto 1"}},
     set_target_work,
-    find_path,
     {
       animation : {
         play: "engine:Walk.animationPool",
         loop: "engine:Walk.animationPool"
       }
     },
+    {log: {message: "moveto 2"}},
     {
-      move_along_path : {
-        child : {
-          move_to : {
-            distance : 0.1
-          }
-        }
+      move_to : {
+        distance : 0.6
       }
     },
     {

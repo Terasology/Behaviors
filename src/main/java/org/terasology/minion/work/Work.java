@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * Defines a work on a block.
  *
- * @author synopia
  */
 public interface Work {
     /**

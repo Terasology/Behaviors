@@ -3,13 +3,16 @@
     child : {
       sequence : [
         {
+          set_speed : { speedMultiplier: 0.3 }
+        },
+        {
           animation : {
             play: "engine:Walk.animationPool",
             loop: "engine:Walk.animationPool"
           }
         },
         {
-          lookup: { tree: "behavior:Behaviors:doRandomMove" }
+          lookup: { tree: "Behaviors:doRandomMove" }
         },
         {
           animation : {
@@ -18,7 +21,7 @@
           }
         },
         {
-          timer : {
+          sleep : {
             time : 3
           }
         }

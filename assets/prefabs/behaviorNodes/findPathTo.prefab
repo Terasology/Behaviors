@@ -6,7 +6,7 @@
         "category"  : "path",
         "shape"     : "rect",
         "description": "Requests a path to a target defined using the MinionMoveComponent.target.\nSUCCESS / FAILURE: when paths is found or not found (invalid).\nRUNNING: as long as path is searched.",
-        "color"     : [0.7, 0.7, 0.7],
-        "textColor" : [  0,   0,   0]
+        "color"     : [0.7, 0.7, 0.7, 255],
+        "textColor" : [  0,   0,   0, 255]
     }
 }

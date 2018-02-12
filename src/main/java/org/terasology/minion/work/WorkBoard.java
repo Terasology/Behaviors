@@ -46,7 +46,7 @@ import org.terasology.world.BlockEntityRegistry;
 import java.util.Map;
 
 /**
- * @author synopia
+ *
  */
 @RegisterSystem
 @Share(value = WorkBoard.class)
