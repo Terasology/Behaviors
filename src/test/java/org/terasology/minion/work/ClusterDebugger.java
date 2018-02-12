@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 MovingBlocks
+ * Copyright 2018 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,9 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @author synopia
- */
 public class ClusterDebugger extends JFrame {
     private WorldProvidingHeadlessEnvironment env;
     private final int mapWidth;
@@ -80,7 +77,7 @@ public class ClusterDebugger extends JFrame {
                 register(new PathfinderTestGenerator(true, true));
             }
         });
-        env.registerBlock("Core:Dirt", new Block(), false);
+        //env.registerBlock("Core:Dirt", new Block(), false); TODO: Update to match recent changes in WorldProvidingHeadlessEnvironment
 
         entityManager = CoreRegistry.get(EntityManager.class);
         mapWidth = 160;
