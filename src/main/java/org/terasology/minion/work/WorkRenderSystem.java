@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 MovingBlocks
+ * Copyright 2018 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.terasology.minion.work;
 
-
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -30,9 +29,6 @@ import org.terasology.rendering.world.selection.BlockSelectionRenderer;
 import org.terasology.utilities.Assets;
 import org.terasology.world.block.BlockComponent;
 
-/**
- *
- */
 @RegisterSystem(RegisterMode.CLIENT)
 public class WorkRenderSystem extends BaseComponentSystem implements RenderSystem {
     @In
@@ -69,11 +65,6 @@ public class WorkRenderSystem extends BaseComponentSystem implements RenderSyste
 
     @Override
     public void renderOpaque() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void renderFirstPerson() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
