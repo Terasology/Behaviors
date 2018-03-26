@@ -28,7 +28,7 @@ public class FleeFromCharacterAction extends BaseAction {
     public void construct(Actor actor) {
         FleeComponent fleeComponent = new FleeComponent();
         FindNearbyPlayersComponent component = actor.getComponent(FindNearbyPlayersComponent.class);
-        fleeComponent.instigator = component.charactersWithinRange.get(0);
+        fleeComponent.instigator = component.closestCharacter;
         actor.save(fleeComponent);
 
     }
