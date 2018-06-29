@@ -31,7 +31,7 @@ import java.util.Random;
 /**
  * Plays a animation from a animation set and sets the animation pool to pick animation to play from.
  * <p/>
- * The node stays forever in status RUNNING.
+ * The node returns SUCCESS after the animation is played completely.
  */
 @API
 @BehaviorAction(name = "animation")
