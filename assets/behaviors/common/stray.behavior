@@ -1,6 +1,5 @@
 {
-  loop : {
-    child : {
+
       sequence : [
         {
           set_speed : { speedMultiplier: 0.3 }
@@ -27,5 +26,3 @@
         }
       ]
     }
-  }
-}
