@@ -32,39 +32,40 @@ import java.util.Random;
 
 @BehaviorAction(name = "set_target_nearby_block")
 public class SetTargetToNearbyBlockNode extends BaseAction {
-    private static final int RANDOM_BLOCK_ITERATIONS = 10;
     private static final Logger logger = LoggerFactory.getLogger(SetTargetToNearbyBlockNode.class);
     private transient Random random = new Random();
     @In
     private PathfinderSystem pathfinderSystem;
 
+    private int moveProbability = 100;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
-        if (moveComponent.currentBlock != null) {
-            WalkableBlock target = findRandomNearbyBlock(moveComponent.currentBlock);
-            moveComponent.target = target.getBlockPosition().toVector3f();
-            actor.save(moveComponent);
-        } else {
-            return BehaviorState.FAILURE;
+        if (random.nextInt(100) > (99 - moveProbability)) {
+            MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
+            if (moveComponent.currentBlock != null) {
+                WalkableBlock target = findRandomNearbyBlock(moveComponent.currentBlock);
+                moveComponent.target = target.getBlockPosition().toVector3f();
+                actor.save(moveComponent);
+            } else {
+                return BehaviorState.FAILURE;
+            }
         }
         return BehaviorState.SUCCESS;
     }
 
     private WalkableBlock findRandomNearbyBlock(WalkableBlock startBlock) {
         WalkableBlock currentBlock = startBlock;
-        for (int i = 0; i < RANDOM_BLOCK_ITERATIONS; i++) {
-            WalkableBlock[] neighbors = currentBlock.neighbors;
-            List<WalkableBlock> existingNeighbors = Lists.newArrayList();
-            for (WalkableBlock neighbor : neighbors) {
-                if (neighbor != null) {
-                    existingNeighbors.add(neighbor);
-                }
+
+        WalkableBlock[] neighbors = currentBlock.neighbors;
+        List<WalkableBlock> existingNeighbors = Lists.newArrayList();
+        for (WalkableBlock neighbor : neighbors) {
+            if (neighbor != null) {
+                existingNeighbors.add(neighbor);
             }
-            if (existingNeighbors.size() > 0) {
-                currentBlock = existingNeighbors.get(random.nextInt(existingNeighbors.size()));
-            }
+        }
+        if (existingNeighbors.size() > 0) {
+            currentBlock = existingNeighbors.get(random.nextInt(existingNeighbors.size()));
         }
 
         logger.debug(String.format("Looking for a block: my block is %s, found destination %s", startBlock.getBlockPosition(), currentBlock.getBlockPosition()));
