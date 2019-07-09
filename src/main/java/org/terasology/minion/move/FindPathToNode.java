@@ -15,7 +15,9 @@
  */
 package org.terasology.minion.move;
 
-import com.google.gson.annotations.Expose;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.SettableFuture;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
@@ -29,6 +31,7 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Requests a path to a target defined using the <b>MinionMoveComponent.target</b>.<br/>
@@ -68,21 +71,26 @@ public class FindPathToNode extends BaseAction {
             moveComponent.path = Path.INVALID;
             return;
         }
-         pathfinderSystem.requestPath(
+        SettableFuture<List<Path>> pathFuture = pathfinderSystem.requestPath(
                 actor.getEntity(), currentBlock.getBlockPosition(),
                 Arrays.asList(workTarget.getBlockPosition()));
-                /*, new PathfinderSystem.PathReadyCallback() {
-                    @Override
-                    public void pathReady(int pathId, List<Path> path, WalkableBlock target, List<WalkableBlock> start) {
 
-                        if (path == null) {
+        Futures.addCallback(pathFuture, new FutureCallback<List<Path>>() {
+                    @Override
+                    public void onSuccess(List<Path> paths) {
+                        if (paths == null) {
                             moveComponent.path = Path.INVALID;
-                        } else if (path.size() > 0) {
-                            moveComponent.path = path.get(0);
+                        } else if (paths.size() > 0) {
+                            moveComponent.path = paths.get(0);
                         }
                         actor.save(moveComponent);
                     }
-                });*/
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        moveComponent.path = Path.INVALID;
+                    }
+        });
     }
 
     @Override
