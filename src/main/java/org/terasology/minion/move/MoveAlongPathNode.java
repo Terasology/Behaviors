@@ -26,6 +26,7 @@ import org.terasology.math.geom.Vector3f;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathRenderSystem;
 import org.terasology.pathfinding.model.Path;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 
 /**
@@ -45,6 +46,9 @@ public class MoveAlongPathNode extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
+        // TODO: Temporary fix for injection malfunction in actions, ideally remove this in the future.
+        pathRenderSystem = CoreRegistry.get(PathRenderSystem.class);
+
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         if (moveComponent != null && moveComponent.path != null && moveComponent.path != Path.INVALID) {
             pathRenderSystem.addPath(moveComponent.path);
