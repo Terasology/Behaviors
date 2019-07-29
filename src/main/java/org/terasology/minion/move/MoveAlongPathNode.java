@@ -41,7 +41,7 @@ import org.terasology.registry.In;
 public class MoveAlongPathNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(MoveAlongPathNode.class);
 
-    @In
+    // @In
     private transient PathRenderSystem pathRenderSystem;
 
     @Override

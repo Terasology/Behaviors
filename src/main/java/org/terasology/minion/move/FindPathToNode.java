@@ -17,6 +17,7 @@ package org.terasology.minion.move;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
@@ -90,7 +91,7 @@ public class FindPathToNode extends BaseAction {
                     public void onFailure(Throwable t) {
                         moveComponent.path = Path.INVALID;
                     }
-        });
+        }, MoreExecutors.directExecutor());
     }
 
     @Override
