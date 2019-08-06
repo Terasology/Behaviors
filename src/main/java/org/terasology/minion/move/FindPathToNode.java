@@ -62,6 +62,8 @@ public class FindPathToNode extends BaseAction {
         if(pathfinderSystem==null){setup();}
         final MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         Vector3f targetLocation = moveComponent.target;
+        moveComponent.path = null;
+        actor.save(moveComponent);
         WalkableBlock currentBlock = moveComponent.currentBlock;
         if (currentBlock == null || targetLocation == null) {
             moveComponent.path = Path.INVALID;
@@ -91,7 +93,7 @@ public class FindPathToNode extends BaseAction {
                     public void onFailure(Throwable t) {
                         moveComponent.path = Path.INVALID;
                     }
-        }, MoreExecutors.directExecutor());
+        });
     }
 
     @Override
