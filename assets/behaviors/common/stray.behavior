@@ -20,9 +20,12 @@
           }
         },
         {
+          set_speed : { speedMultiplier: 0 }
+        },
+        {
           sleep : {
             time : 3
           }
         }
       ]
-    }
+}
