@@ -23,8 +23,9 @@ import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.model.Path;
 
 /**
- * Essential setup for a character to travel along a determined path. This is exported from {@link MoveAlongPathNode#construct(Actor)}, which allows for characters to
- * interrupt travelling along a path. This is essential for characters following a moving object.
+ * Essential setup for a character to travel along a determined path. This is exported from
+ * {@link MoveAlongPathNode#construct(Actor)}, which allows for characters to interrupt travelling along a path.
+ * This is essential for characters following a moving object.
  */
 @BehaviorAction(name = "setup_continuous_pathfinding")
 public class SetupContinuousMoveNode extends BaseAction {

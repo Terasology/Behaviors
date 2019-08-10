@@ -29,8 +29,9 @@ import org.terasology.pathfinding.model.Path;
 import org.terasology.registry.CoreRegistry;
 
 /**
- * Call child node, as long as the actor has not reached the end of the path. Sets <b>MinionMoveComponent.target</b> to next step in path.<br/> Old construct() from
- * original {@link MoveAlongPathNode} moved to {@link SetupContinuousMoveNode} to allow for path travelling to be interrupted. This enables a character to follow
+ * Call child node, as long as the actor has not reached the end of the path. Sets <b>MinionMoveComponent.target</b> to
+ * next step in path.<br/> Old construct() from original {@link MoveAlongPathNode} moved to
+ * {@link SetupContinuousMoveNode} to allow for path travelling to be interrupted. This enables a character to follow
  * a moving target.
  * <br/>
  * <b>SUCCESS</b>: when actor has reached end of path.<br/>

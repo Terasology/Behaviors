@@ -15,7 +15,6 @@
             loop: {
                 child: {
                     sequence: [
-                        set_target_to_followed_entity,
                         find_path,
                         {
                             move_along_path: {
