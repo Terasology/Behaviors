@@ -80,17 +80,18 @@ public class MoveToAction extends BaseAction {
         targetDirection.sub(moveComponent.target, worldPos);
         Vector3f drive = new Vector3f();
 
-        // TODO review - is the yaw here being calculated properly?
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
+        float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
 
-        if (targetDirection.x * targetDirection.x + targetDirection.z * targetDirection.z <= distance * distance) {
+
+        if((targetDirection.x < distance) && (targetDirection.y < distance) && (targetDirection.z < distance)) {
             drive.set(0, 0, 0);
             reachedTarget = true;
+            requestedYaw = 0f;
         } else {
             targetDirection.normalize();
             drive.set(targetDirection);
         }
-        float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
 
         CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);

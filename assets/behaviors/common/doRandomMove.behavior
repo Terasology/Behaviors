@@ -1,6 +1,8 @@
 {
   sequence : [
-    set_target_nearby_block,
+  {
+    set_target_nearby_block : { moveProbability: 65 }
+  },
     move_to
   ]
 }
