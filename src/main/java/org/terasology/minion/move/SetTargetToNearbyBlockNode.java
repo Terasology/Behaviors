@@ -56,7 +56,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
 
     private WalkableBlock findRandomNearbyBlock(WalkableBlock startBlock) {
         WalkableBlock currentBlock = startBlock;
-        for (int i = 0; i < random.nextInt(10) + 1; i++) {
+        for (int i = 0; i < random.nextInt(10) + 3; i++) {
             WalkableBlock[] neighbors = currentBlock.neighbors;
             List<WalkableBlock> existingNeighbors = Lists.newArrayList();
             for (WalkableBlock neighbor : neighbors) {
