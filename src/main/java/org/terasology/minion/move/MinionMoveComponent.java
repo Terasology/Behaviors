@@ -37,7 +37,7 @@ public class MinionMoveComponent implements Component {
     public boolean targetReached;
     public boolean breaking;
 
-    public Path path;
+    public transient Path path;
     public int currentIndex;
 
     public transient WalkableBlock currentBlock;
