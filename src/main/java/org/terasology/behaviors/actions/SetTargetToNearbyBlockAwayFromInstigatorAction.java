@@ -18,7 +18,7 @@ package org.terasology.behaviors.actions;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.behaviors.components.FleeComponent;
+import org.terasology.behaviors.components.FleeingComponent;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
@@ -63,8 +63,8 @@ public class SetTargetToNearbyBlockAwayFromInstigatorAction extends BaseAction {
 
     private WalkableBlock findRandomNearbyBlockAwayFromPlayer(WalkableBlock startBlock, Actor actor) {
         WalkableBlock currentBlock = startBlock;
-        FleeComponent fleeComponent = actor.getComponent(FleeComponent.class);
-        Vector3i playerPosition = new Vector3i(fleeComponent.instigator.getComponent(LocationComponent.class).getWorldPosition());
+        FleeingComponent fleeingComponent = actor.getComponent(FleeingComponent.class);
+        Vector3i playerPosition = new Vector3i(fleeingComponent.instigator.getComponent(LocationComponent.class).getWorldPosition());
         for (int i = 0; i < RANDOM_BLOCK_ITERATIONS; i++) {
             WalkableBlock[] neighbors = currentBlock.neighbors;
             List<WalkableBlock> existingNeighbors = Lists.newArrayList();
