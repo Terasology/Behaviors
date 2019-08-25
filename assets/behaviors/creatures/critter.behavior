@@ -2,7 +2,7 @@
   dynamic: [
       {
         guard: {
-          componentPresent: "Behaviors:Flee",
+          componentPresent: "Behaviors:Fleeing",
           child: {
             sequence: [
             check_flee_stop,
