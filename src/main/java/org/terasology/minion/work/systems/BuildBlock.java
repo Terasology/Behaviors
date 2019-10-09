@@ -61,7 +61,8 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     @Override
     public void initialise() {
         workFactory.register(this);
-        blockType = blockManager.getBlock("core:Dirt");
+        //TODO: set this based on configuration settings instead
+        setBlock("CoreBlocks:Dirt");
     }
 
     @Override
@@ -76,10 +77,10 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
 
     public List<WalkableBlock> getTargetPositions(EntityRef block) {
         List<WalkableBlock> targetPositions = Lists.newArrayList();
-        if (block == null || !block.hasComponent(BlockComponent.class)) {
+        if (block == null || !block.hasComponent(BlockComponent.class) || blockType == null) {
             return targetPositions;
         }
-        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).position);
         position.y--;
         WalkableBlock walkableBlock = pathfinderSystem.getBlock(position);
         if (walkableBlock != null) {
@@ -92,28 +93,28 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     @Override
     public boolean canMinionWork(EntityRef block, EntityRef minion) {
         WalkableBlock actualBlock = pathfinderSystem.getBlock(minion);
-        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).position);
         position.y--;
         WalkableBlock expectedBlock = pathfinderSystem.getBlock(position);
-        return actualBlock == expectedBlock;
+        return actualBlock == expectedBlock && blockType != null;
     }
 
     @Override
     public boolean isAssignable(EntityRef block) {
-        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).position);
         Block type = worldProvider.getBlock(position);
-        return type.isPenetrable();
+        return type.isPenetrable() && blockType != null;
     }
 
     @Override
     public void letMinionWork(EntityRef block, EntityRef minion) {
         block.removeComponent(WorkTargetComponent.class);
-        worldProvider.setBlock(block.getComponent(BlockComponent.class).getPosition(), blockType);
+        worldProvider.setBlock(block.getComponent(BlockComponent.class).position, blockType);
     }
 
     @Override
     public boolean isRequestable(EntityRef block) {
-        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).position);
         Vector3i pos = new Vector3i();
         for (int[] neighbor : DIRECT_NEIGHBORS) {
             pos.set(position.x + neighbor[0], position.y + neighbor[1], position.z + neighbor[2]);
@@ -134,5 +135,30 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     public String toString() {
         return "Build Block";
     }
+
+    /**
+     * Set the block type that this behavior will use to build
+     * @param uri The name of the block to use. Uses "CoreBlocks:Dirt" by default.
+     * @return True if block exists or intentionally set to null. False if block not found.
+     */
+    public boolean setBlock(String uri) {
+        Block tempBlock = blockManager.getBlock(uri);
+        if (tempBlock == null && uri != null) return false;
+        blockType = tempBlock;
+        return true;
+    }
+
+    /**
+     * Set the block type that this behavior will use to build
+     * @param block The block to use. Uses "CoreBlocks:Dirt" by default.
+     */
+    public void setBlock(Block block) {
+        blockType = block;
+    }
+
+    /**
+     * @return The block that will be placed
+     */
+    public Block getBlock() { return blockType; }
 }
 
