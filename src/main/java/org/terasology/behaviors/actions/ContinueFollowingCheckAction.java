@@ -15,6 +15,9 @@
  */
 package org.terasology.behaviors.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.behaviors.components.TargetComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
@@ -25,8 +28,11 @@ import org.terasology.math.geom.Vector3f;
 import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.rendering.nui.properties.Range;
 
+// TODO Refactor into continue_target_check using TargetComponent
 @BehaviorAction(name = "continue_following_check")
 public class ContinueFollowingCheckAction extends BaseAction {
+
+    private static final Logger logger = LoggerFactory.getLogger(ContinueFollowingCheckAction.class);
 
     @Range(min = 0, max = 20)
     private float minDistance = 0.0f;
@@ -38,11 +44,54 @@ public class ContinueFollowingCheckAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState state) {
+        logger.info("Continue?");
         FollowComponent followWish = actor.getComponent(FollowComponent.class);
-        if (followWish == null) {
+        if (followWish != null) {
+            return processFollow(followWish, actor);
+        }
+
+        TargetComponent targetWish = actor.getComponent(TargetComponent.class);
+        if (targetWish != null) {
+            BehaviorState behaviorState = processTarget(targetWish, actor);
+            logger.info("{}", behaviorState.name());
+            return behaviorState;
+        }
+
+        return BehaviorState.FAILURE;
+    }
+
+    private BehaviorState processFollow(FollowComponent followWish, Actor actor) {
+        EntityRef entityToFollow = followWish.entityToFollow;
+        if (entityToFollow == null || !entityToFollow.isActive()) {
             return BehaviorState.FAILURE;
         }
-        EntityRef entityToFollow = followWish.entityToFollow;
+        LocationComponent targetLocation = entityToFollow.getComponent(LocationComponent.class);
+        if (targetLocation == null) {
+            return BehaviorState.FAILURE;
+        }
+        Vector3f targetPoint = targetLocation.getWorldPosition();
+
+        LocationComponent currentLocation = actor.getComponent(LocationComponent.class);
+        if (currentLocation == null) {
+            return BehaviorState.FAILURE;
+        }
+        Vector3f currentPoint = currentLocation.getWorldPosition();
+
+        float minDistanceSquared = minDistance * minDistance;
+        float maxDistanceSquared = maxDistance * maxDistance;
+        float currentDistanceSquared = currentPoint.distanceSquared(targetPoint);
+        if (currentDistanceSquared <= minDistanceSquared) {
+            return send(BehaviorState.FAILURE);
+        }
+        if (currentDistanceSquared >= maxDistanceSquared) {
+            return send(BehaviorState.FAILURE);
+        }
+
+        return send(BehaviorState.SUCCESS);
+    }
+
+    private BehaviorState processTarget(TargetComponent targetComponent, Actor actor) {
+        EntityRef entityToFollow = targetComponent.target;
         if (entityToFollow == null || !entityToFollow.isActive()) {
             return BehaviorState.FAILURE;
         }
