@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 MovingBlocks
+ * Copyright 2019 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,54 +15,54 @@
  */
 package org.terasology.behaviors.actions;
 
-import org.terasology.behaviors.components.AttackOnHitComponent;
+import org.terasology.behaviors.components.TargetComponent;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.rendering.nui.properties.Range;
 
-
-@BehaviorAction(name = "check_attack_stop")
-public class CheckAttackStopAction extends BaseAction {
+// TODO Refactor this into check_target_stop or something similar
+@BehaviorAction(name = "check_target_stop")
+public class CheckTargetStopAction extends BaseAction {
 
     @Range(max = 40)
     private float maxDistance = 10f;
 
     /**
-     * Makes the character follow a player within a given range
-     * Sends FAILURE when the distance is greater than maxDistance
+     * Makes the character actively target a player within a given range
+     * Sends FAILURE when the distance is greater than maxDistance.
+     * What the character <em>does</em> with/to the target is determined by other behaviors
      */
     @Override
     public BehaviorState modify(Actor actor, BehaviorState state) {
-        BehaviorState status = getBehaviorStateWithoutReturn(actor);
-        if (status == BehaviorState.FAILURE) {
-            AttackOnHitComponent attackOnHitComponent = actor.getComponent(AttackOnHitComponent.class);
-            attackOnHitComponent.instigator = null;
-            actor.getEntity().saveComponent(attackOnHitComponent);
-            actor.getEntity().removeComponent(FollowComponent.class);
-        }
-        return status;
+        return getBehaviorState(actor);
     }
 
-    private BehaviorState getBehaviorStateWithoutReturn(Actor actor) {
+    private BehaviorState getBehaviorState(Actor actor) {
         LocationComponent actorLocationComponent = actor.getComponent(LocationComponent.class);
         if (actorLocationComponent == null) {
             return BehaviorState.FAILURE;
         }
         Vector3f actorPosition = actorLocationComponent.getWorldPosition();
-        float maxDistance = actor.hasComponent(AttackOnHitComponent.class) ? actor.getComponent(AttackOnHitComponent.class).maxDistance : this.maxDistance;
 
-        float maxDistanceSquared = maxDistance * maxDistance;
-        FollowComponent followWish = actor.getComponent(FollowComponent.class);
-        if (followWish == null || followWish.entityToFollow == null) {
+        float maxDistanceSquared = this.maxDistance * this.maxDistance;
+        TargetComponent targetWish = actor.getComponent(TargetComponent.class);
+
+        return processTarget(targetWish, actorPosition, maxDistanceSquared);
+
+    }
+
+    private BehaviorState processTarget(TargetComponent targetComponent,
+                                        Vector3f actorPosition,
+                                        float maxDistanceSquared) {
+        if (targetComponent == null || targetComponent.target == null) {
             return BehaviorState.FAILURE;
         }
 
-        LocationComponent locationComponent = followWish.entityToFollow.getComponent(LocationComponent.class);
+        LocationComponent locationComponent = targetComponent.target.getComponent(LocationComponent.class);
         if (locationComponent == null) {
             return BehaviorState.FAILURE;
         }
@@ -71,5 +71,4 @@ public class CheckAttackStopAction extends BaseAction {
         }
         return BehaviorState.FAILURE;
     }
-
 }

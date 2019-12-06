@@ -30,8 +30,8 @@ import org.terasology.math.geom.Vector3f;
 /**
  * Turns the actor to face the target defined by <b>TargetComponent</b>.<br/>
  * <br/>
- * <b>SUCCESS</b>: when the actor can see the target.<br/>
- * <b>FAILURE</b>: when there is no target or the target is out of sight.<br/>
+ * <b>SUCCESS</b>: when the actor was turned in the direction of the target.<br/>
+ * <b>FAILURE</b>: when there is no target or the target is already in sight.<br/>
  */
 @BehaviorAction(name = "look_at")
 public class LookAtAction extends BaseAction {
@@ -45,15 +45,12 @@ public class LookAtAction extends BaseAction {
         if (targetComponent.target == null) {
             return BehaviorState.FAILURE;
         }
-        boolean canSeeTarget = process(actor, targetComponent);
-
-        return canSeeTarget ? BehaviorState.SUCCESS : BehaviorState.FAILURE;
+        return process(actor, targetComponent);
     }
 
-    private boolean process(Actor actor, TargetComponent targetComponent) {
+    private BehaviorState process(Actor actor, TargetComponent targetComponent) {
 
         LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
-        boolean canSee = true;
         Vector3f worldPos = new Vector3f(locationComponent.getWorldPosition());
         Vector3f targetDirection = new Vector3f();
         LocationComponent targetLocation = targetComponent.target.getComponent(LocationComponent.class);
@@ -62,6 +59,18 @@ public class LookAtAction extends BaseAction {
 
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
+        // todo leaving these commented out just for now
+//        logger.trace("Requesting Yaw of {}", requestedYaw);
+        float currentYaw = locationComponent.getLocalRotation().getYaw() * TeraMath.RAD_TO_DEG;
+        // Negative values should be wrapped around
+        float correctedYaw = currentYaw < 0 ? currentYaw + 360f : currentYaw;
+//        logger.trace("correctedYaw is {}", correctedYaw);
+        boolean alreadyLooking = Math.abs(requestedYaw - correctedYaw) < 2f;
+//        logger.trace("Already looking {}", alreadyLooking);
+
+        if (alreadyLooking) {
+            return BehaviorState.FAILURE;
+        }
 
         targetDirection.normalize();
 
@@ -77,7 +86,7 @@ public class LookAtAction extends BaseAction {
         actor.getEntity().send(wantedInput);
 
         // TODO Some kind of ray cast to see if there are any obstacles
-        return canSee;
+        return BehaviorState.SUCCESS;
     }
 
 }
