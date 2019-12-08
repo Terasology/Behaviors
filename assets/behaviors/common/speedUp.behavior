@@ -1,0 +1,50 @@
+{
+    dynamic[
+        {
+            guard:{
+                componentPresent: "Behaviors:flee"
+
+                child:{
+                    sequence[
+                        check_flee_stop,
+                        {lookup: {tree: "Behaviors:flee"}}
+                    ]
+                }
+            }
+        },
+        {
+             sequence:[
+        	    {
+        		    set_speed: {speedMultiplier: 3.0}
+
+        		    animation:{
+        		      play: "engine:Walk.animationPool",
+        		      loop: "engine:Walk.animationPool"
+        		    },
+
+        		    {
+        		      lookup: {tree: "Behaviors:doRandomMove"}
+        		    },
+
+        		    {
+                        animation:{
+                        play: "engine:Stand.animationPool"
+                        loop: "engine:Stand.animationPool"
+                        }
+        		    },
+
+        		    {
+        		        set_speed: {speedMultiplier : 0}
+        		    },
+
+        		    {
+        		        sleep:{
+        		            time: 3
+        		        }
+        		    }
+        	    }
+        	 ]
+        }
+    ]
+
+}
