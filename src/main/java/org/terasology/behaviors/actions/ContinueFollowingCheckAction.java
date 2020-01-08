@@ -44,7 +44,6 @@ public class ContinueFollowingCheckAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState state) {
-        logger.info("Continue?");
         FollowComponent followWish = actor.getComponent(FollowComponent.class);
         if (followWish != null) {
             return processFollow(followWish, actor);
@@ -53,7 +52,6 @@ public class ContinueFollowingCheckAction extends BaseAction {
         TargetComponent targetWish = actor.getComponent(TargetComponent.class);
         if (targetWish != null) {
             BehaviorState behaviorState = processTarget(targetWish, actor);
-            logger.info("{}", behaviorState.name());
             return behaviorState;
         }
 
