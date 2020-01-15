@@ -42,7 +42,6 @@ public class ContinueFollowingCheckAction extends BaseAction {
         if (followWish == null) {
             return BehaviorState.FAILURE;
         }
-
         EntityRef entityToFollow = followWish.entityToFollow;
         if (entityToFollow == null || !entityToFollow.isActive()) {
             return BehaviorState.FAILURE;
