@@ -59,14 +59,10 @@ public class LookAtAction extends BaseAction {
 
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
-        // todo leaving these commented out just for now
-//        logger.trace("Requesting Yaw of {}", requestedYaw);
         float currentYaw = locationComponent.getLocalRotation().getYaw() * TeraMath.RAD_TO_DEG;
         // Negative values should be wrapped around
         float correctedYaw = currentYaw < 0 ? currentYaw + 360f : currentYaw;
-//        logger.trace("correctedYaw is {}", correctedYaw);
         boolean alreadyLooking = Math.abs(requestedYaw - correctedYaw) < 2f;
-//        logger.trace("Already looking {}", alreadyLooking);
 
         if (alreadyLooking) {
             return BehaviorState.FAILURE;
