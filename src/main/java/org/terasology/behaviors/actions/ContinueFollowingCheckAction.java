@@ -39,14 +39,10 @@ public class ContinueFollowingCheckAction extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState state) {
         FollowComponent followWish = actor.getComponent(FollowComponent.class);
-        if (followWish != null) {
-            return processFollow(followWish, actor);
+        if (followWish == null) {
+            return BehaviorState.FAILURE;
         }
 
-        return BehaviorState.FAILURE;
-    }
-
-    private BehaviorState processFollow(FollowComponent followWish, Actor actor) {
         EntityRef entityToFollow = followWish.entityToFollow;
         if (entityToFollow == null || !entityToFollow.isActive()) {
             return BehaviorState.FAILURE;
