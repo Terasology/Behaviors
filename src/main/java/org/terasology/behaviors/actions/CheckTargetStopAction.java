@@ -24,7 +24,6 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.rendering.nui.properties.Range;
 
-// TODO Refactor this into check_target_stop or something similar
 @BehaviorAction(name = "check_target_stop")
 public class CheckTargetStopAction extends BaseAction {
 
