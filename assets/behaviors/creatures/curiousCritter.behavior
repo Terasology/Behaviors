@@ -11,7 +11,7 @@
               {
                 sequence: [
                   check_target_stop,
-                  { lookup: {tree: "Behaviors:LookAtTargetedEntity"}}
+                  { lookup: {tree: "Behaviors:lookAtTargetedEntity"}}
                 ]
               }
             ]
