@@ -15,8 +15,6 @@
  */
 package org.terasology.behaviors.actions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.FindNearbyPlayersComponent;
 import org.terasology.behaviors.components.TargetComponent;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -31,15 +29,12 @@ import org.terasology.logic.behavior.core.BehaviorState;
 @BehaviorAction(name = "target_character")
 public class TargetCharacterAction extends BaseAction {
 
-    private static final Logger logger = LoggerFactory.getLogger(TargetCharacterAction.class);
-
     @Override
     public void construct(Actor actor) {
         TargetComponent targetComponent = new TargetComponent();
         FindNearbyPlayersComponent component = actor.getComponent(FindNearbyPlayersComponent.class);
         targetComponent.target = component.closestCharacter;
         actor.save(targetComponent);
-        logger.trace("Setting target to {}", targetComponent.target.getParentPrefab().toString());
     }
 
     @Override

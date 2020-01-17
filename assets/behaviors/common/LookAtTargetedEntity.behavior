@@ -1,0 +1,14 @@
+{
+  sequence: [
+    {
+      dynamic: [
+        {
+          sequence: [
+            { continue_targeting_check: { maxDistance: 10}},
+            {look_at: {maxAngleDegrees: 5}}
+          ]
+        }
+      ]
+    }
+  ]
+}

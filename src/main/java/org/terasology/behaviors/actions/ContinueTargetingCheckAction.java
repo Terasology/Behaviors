@@ -15,8 +15,6 @@
  */
 package org.terasology.behaviors.actions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.TargetComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -27,16 +25,17 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.rendering.nui.properties.Range;
 
+/**
+ * Similar to {@link ContinueFollowingCheckAction} but used with {@link TargetComponent}.
+ */
 @BehaviorAction(name = "continue_targeting_check")
 public class ContinueTargetingCheckAction extends BaseAction {
-
-    private static final Logger logger = LoggerFactory.getLogger(ContinueTargetingCheckAction.class);
 
     @Range(min = 0, max = 20)
     private float minDistance = 0.0f;
 
     @Range(min = 0, max = 100)
-    private float maxDistance = 100.0f;
+    private float maxDistance = 20.0f;
 
     private boolean reverse = false;
 

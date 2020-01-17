@@ -26,6 +26,7 @@ import org.terasology.logic.characters.CharacterMoveInputEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.rendering.nui.properties.Range;
 
 /**
  * Turns the actor to face the target defined by <b>TargetComponent</b>.<br/>
@@ -37,6 +38,14 @@ import org.terasology.math.geom.Vector3f;
 public class LookAtAction extends BaseAction {
 
     private static Logger logger = LoggerFactory.getLogger(LookAtAction.class);
+
+    /**
+     * The maximum angle (in degrees) between the current view direction, and the view direction to the target, below
+     * which the {@code Actor} will be considered "looking at" the target. I.e. the Actor will continue turning
+     * toward the target until {@code Math.abs(requestedAngle - currentAngle) < maxAngleDegrees}
+     */
+    @Range(min = 0, max = 10)
+    private float maxAngleDegrees = 2f;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
@@ -62,7 +71,9 @@ public class LookAtAction extends BaseAction {
         float currentYaw = locationComponent.getLocalRotation().getYaw() * TeraMath.RAD_TO_DEG;
         // Negative values should be wrapped around
         float correctedYaw = currentYaw < 0 ? currentYaw + 360f : currentYaw;
-        boolean alreadyLooking = Math.abs(requestedYaw - correctedYaw) < 2f;
+
+        // Is the angle between current and requested "close enough"
+        boolean alreadyLooking = Math.abs(requestedYaw - correctedYaw) < maxAngleDegrees;
 
         if (alreadyLooking) {
             return BehaviorState.FAILURE;
