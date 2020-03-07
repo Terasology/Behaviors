@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 MovingBlocks
+ * Copyright 2020 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,12 @@
  */
 package org.terasology.minion.move;
 
-import com.google.gson.annotations.SerializedName;
 import org.terasology.entitySystem.Component;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.model.Path;
+import org.terasology.persistence.typeHandling.annotations.SerializedName;
 
-/**
- *
- */
 public class MinionMoveComponent implements Component {
     public enum Type {
         @SerializedName("direct")
