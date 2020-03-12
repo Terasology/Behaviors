@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 MovingBlocks
+ * Copyright 2020 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.terasology.minion.work;
 
-import com.google.gson.annotations.Expose;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -86,12 +85,12 @@ public class FindWorkNode extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        if(workFactory == null){
+        if (workFactory == null) {
             setup();
         }
 
 
-        if (!constructed){
+        if (!constructed) {
 
             construct(actor);
             constructed = true;
