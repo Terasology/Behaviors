@@ -4,8 +4,14 @@
       dynamic: [
         {
           sequence: [
+            {
+              animation : {
+                play: "engine:Stand.animationPool",
+                loop: "engine:Stand.animationPool"
+              }
+            },
             { continue_targeting_check: { maxDistance: 10}},
-            {look_at: {maxAngleDegrees: 5}}
+            { look_at: {maxAngleDegrees: 5} }
           ]
         }
       ]
