@@ -10,7 +10,7 @@
                 loop: "engine:Stand.animationPool"
               }
             },
-            { continue_targeting_check: { maxDistance: 10}},
+            { check_target_stop: { maxDistance: 10}},
             { look_at: {maxAngleDegrees: 5} }
           ]
         }

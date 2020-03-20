@@ -23,8 +23,17 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 
 /**
- * Similar to {@code FollowComponent} but more generic. E.g. we may want to track the player to shoot at them
- * but not follow them.
+ * Sets the {@link TargetComponent} of the Actor to the nearest Player. The target can then be used for various NPC
+ * actions. E.g. a guard NPC may target a player to shoot at them if they get too close, a medic NPC may target a
+ * player to move towards and heal them.
+ * <br/>
+ * <b>Note:</b> this action should be guarded by a check on {@link FindNearbyPlayersComponent}. I.e.
+ * <pre>
+ *     guard: {
+ *           componentPresent: "Behaviors:FindNearbyPlayers",
+ *           values: ["N charactersWithinRange nonEmpty"],
+ *           ...
+ * </pre>
  */
 @BehaviorAction(name = "target_character")
 public class TargetCharacterAction extends BaseAction {

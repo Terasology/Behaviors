@@ -24,9 +24,20 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.rendering.nui.properties.Range;
 
+/**
+ * Checks whether the entity should continue targeting its current target (as defined by the {@link TargetComponent}).
+ * <br/>
+ * <b>SUCCESS</b>: when the actor is within {@code maxDistance} squared of the target.<br/>
+ * <b>FAILURE</b>: when there is no target, the target does not have a {@link LocationComponent},
+ * or the target is too far away.<br/>
+ */
 @BehaviorAction(name = "check_target_stop")
 public class CheckTargetStopAction extends BaseAction {
 
+    /**
+     * The maximum distance that the entity will continue targeting its target. Once the target moves <em>greater</em>
+     * than this distance away, the entity will stop targeting it
+     */
     @Range(max = 40)
     private float maxDistance = 10f;
 
