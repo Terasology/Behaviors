@@ -1,0 +1,20 @@
+{
+  sequence: [
+    {
+      dynamic: [
+        {
+          sequence: [
+            {
+              animation : {
+                play: "engine:Stand.animationPool",
+                loop: "engine:Stand.animationPool"
+              }
+            },
+            { check_target_stop: { maxDistance: 10}},
+            { look_at: {maxAngleDegrees: 5} }
+          ]
+        }
+      ]
+    }
+  ]
+}
