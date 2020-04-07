@@ -22,7 +22,7 @@ import org.terasology.entitySystem.entity.EntityRef;
  * This components is used by the FleeOnHit and FleeInProximity module to allow an
  * NPC to exhibit the Flee behavior
  */
-public class FleeComponent implements Component {
+public class FleeingComponent implements Component {
     /* Minimum distance from instigator after which the NPC will stop 'flee'ing */
     public float minDistance = 10f;
     /* Entity to run away from */

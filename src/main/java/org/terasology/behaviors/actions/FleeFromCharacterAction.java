@@ -16,7 +16,7 @@
 package org.terasology.behaviors.actions;
 
 import org.terasology.behaviors.components.FindNearbyPlayersComponent;
-import org.terasology.behaviors.components.FleeComponent;
+import org.terasology.behaviors.components.FleeingComponent;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
@@ -26,10 +26,10 @@ import org.terasology.logic.behavior.core.BehaviorState;
 public class FleeFromCharacterAction extends BaseAction {
     @Override
     public void construct(Actor actor) {
-        FleeComponent fleeComponent = new FleeComponent();
+        FleeingComponent fleeingComponent = new FleeingComponent();
         FindNearbyPlayersComponent component = actor.getComponent(FindNearbyPlayersComponent.class);
-        fleeComponent.instigator = component.closestCharacter;
-        actor.save(fleeComponent);
+        fleeingComponent.instigator = component.closestCharacter;
+        actor.save(fleeingComponent);
 
     }
 

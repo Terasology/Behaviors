@@ -26,7 +26,7 @@ import org.terasology.logic.health.event.OnDamagedEvent;
 import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.registry.In;
 import org.terasology.behaviors.components.AttackOnHitComponent;
-import org.terasology.behaviors.components.FleeComponent;
+import org.terasology.behaviors.components.FleeingComponent;
 import org.terasology.behaviors.components.FleeOnHitComponent;
 
 
@@ -43,10 +43,10 @@ public class BehaviorsEventSystem extends BaseComponentSystem {
     public void onDamage(OnDamagedEvent event, EntityRef entity) {
 
         // Make entity flee
-        FleeComponent fleeComponent = new FleeComponent();
-        fleeComponent.instigator = event.getInstigator();
-        fleeComponent.minDistance = entity.getComponent(FleeOnHitComponent.class).minDistance;
-        entity.saveComponent(fleeComponent);
+        FleeingComponent fleeingComponent = new FleeingComponent();
+        fleeingComponent.instigator = event.getInstigator();
+        fleeingComponent.minDistance = entity.getComponent(FleeOnHitComponent.class).minDistance;
+        entity.saveComponent(fleeingComponent);
 
         // Increase speed by multiplier factor
         CharacterMovementComponent characterMovementComponent = entity.getComponent(CharacterMovementComponent.class);

@@ -17,7 +17,7 @@ package org.terasology.behaviors.actions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.behaviors.components.FleeComponent;
+import org.terasology.behaviors.components.FleeingComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
@@ -35,8 +35,8 @@ public class CheckFleeStopAction extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
 
-        FleeComponent fleeComponent = actor.getComponent(FleeComponent.class);
-        EntityRef instigator = fleeComponent.instigator;
+        FleeingComponent fleeingComponent = actor.getComponent(FleeingComponent.class);
+        EntityRef instigator = fleeingComponent.instigator;
         if (instigator == null || !instigator.isActive()) {
             return BehaviorState.FAILURE;
         }
@@ -52,11 +52,11 @@ public class CheckFleeStopAction extends BaseAction {
         Vector3f selfLocation = targetLocation.getWorldPosition();
         float currentDistanceSquared = selfLocation.distanceSquared(instigatorLocation);
 
-        float minDistance = fleeComponent.minDistance;
+        float minDistance = fleeingComponent.minDistance;
         float minDistanceSquared = minDistance * minDistance;
 
         if (currentDistanceSquared >= minDistanceSquared) {
-            actor.getEntity().removeComponent(FleeComponent.class);
+            actor.getEntity().removeComponent(FleeingComponent.class);
             return BehaviorState.FAILURE;
         } else {
             return BehaviorState.SUCCESS;
