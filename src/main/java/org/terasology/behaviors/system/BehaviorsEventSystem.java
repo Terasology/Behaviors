@@ -46,12 +46,12 @@ public class BehaviorsEventSystem extends BaseComponentSystem {
         FleeingComponent fleeingComponent = new FleeingComponent();
         fleeingComponent.instigator = event.getInstigator();
         fleeingComponent.minDistance = entity.getComponent(FleeOnHitComponent.class).minDistance;
-        entity.saveComponent(fleeingComponent);
+        entity.addOrSaveComponent(fleeingComponent);
 
         // Increase speed by multiplier factor
         CharacterMovementComponent characterMovementComponent = entity.getComponent(CharacterMovementComponent.class);
         characterMovementComponent.speedMultiplier = entity.getComponent(FleeOnHitComponent.class).speedMultiplier;
-        entity.saveComponent(characterMovementComponent);
+        entity.addOrSaveComponent(characterMovementComponent);
 
     }
 
