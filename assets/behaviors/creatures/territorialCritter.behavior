@@ -1,0 +1,41 @@
+{
+  "selector": [
+    {
+      "guard": {
+        "componentPresent": "Behaviors:TerritoryDistance",
+        "values": ["V distanceSquared < 25"],
+        "child": {
+          "selector": [
+            {
+              "guard": {
+                "componentPresent": "Behaviors:FindNearbyPlayers",
+                "values": ["N charactersWithinRange nonEmpty"],
+                "child": {
+                    "sequence": [
+                      "set_target_nearby_player",
+                      {
+                        "lookup": {
+                          "tree": "Behaviors:hostile"
+                        }
+                      }
+                   ]
+                }
+              }
+            },
+            {
+              "lookup": {
+                "tree": "Behaviors:stray"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "sequence": [
+        "set_target_territory",
+        "move_to"
+      ]
+    }
+  ]
+}
