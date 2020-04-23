@@ -15,6 +15,7 @@
  */
 package org.terasology.behaviors.actions;
 
+import org.terasology.behaviors.components.AttackInProximityComponent;
 import org.terasology.behaviors.components.AttackOnHitComponent;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
@@ -40,9 +41,15 @@ public class CheckAttackStopAction extends BaseAction {
     public BehaviorState modify(Actor actor, BehaviorState state) {
         BehaviorState status = getBehaviorStateWithoutReturn(actor);
         if (status == BehaviorState.FAILURE) {
-            AttackOnHitComponent attackOnHitComponent = actor.getComponent(AttackOnHitComponent.class);
-            attackOnHitComponent.instigator = null;
-            actor.getEntity().saveComponent(attackOnHitComponent);
+            if (actor.hasComponent(AttackOnHitComponent.class)) {
+                AttackOnHitComponent attackOnHitComponent = actor.getComponent(AttackOnHitComponent.class);
+                attackOnHitComponent.instigator = null;
+                actor.getEntity().saveComponent(attackOnHitComponent);
+            } else if (actor.hasComponent(AttackInProximityComponent.class)) {
+                AttackInProximityComponent attackInProximityComponent = actor.getComponent(AttackInProximityComponent.class);
+                attackInProximityComponent.instigator = null;
+                actor.getEntity().saveComponent(attackInProximityComponent);
+            }
             actor.getEntity().removeComponent(FollowComponent.class);
         }
         return status;
@@ -54,7 +61,12 @@ public class CheckAttackStopAction extends BaseAction {
             return BehaviorState.FAILURE;
         }
         Vector3f actorPosition = actorLocationComponent.getWorldPosition();
-        float maxDistance = actor.hasComponent(AttackOnHitComponent.class) ? actor.getComponent(AttackOnHitComponent.class).maxDistance : this.maxDistance;
+        float maxDistance = this.maxDistance;
+        if (actor.hasComponent(AttackOnHitComponent.class)) {
+            maxDistance = actor.getComponent(AttackOnHitComponent.class).maxDistance;
+        } else if (actor.hasComponent(AttackInProximityComponent.class)) {
+            maxDistance = actor.getComponent(AttackInProximityComponent.class).maxDistance;
+        }
 
         float maxDistanceSquared = maxDistance * maxDistance;
         FollowComponent followWish = actor.getComponent(FollowComponent.class);
