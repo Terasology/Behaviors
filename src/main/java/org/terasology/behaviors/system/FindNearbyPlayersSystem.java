@@ -77,6 +77,7 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
 
             List<Vector3f> inRange = locationSet.stream()
                     .filter(loc -> loc.distanceSquared(actorPosition) <= maxDistanceSquared)
+                    .sorted(Comparator.comparingDouble(v3f -> v3f.distanceSquared(actorPosition)))
                     .collect(Collectors.toList());
             if (inRange.isEmpty()) {
                 findNearbyPlayersComponent.charactersWithinRange = Collections.emptyList();
@@ -85,7 +86,6 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
                 continue;
             }
 
-            inRange.sort(Comparator.comparingDouble(v3f -> v3f.distanceSquared(actorPosition)));
             List<EntityRef> charactersWithinRange = 
             	inRange.stream().map(clientLocationMap::get).collect(Collectors.toList());;
 
