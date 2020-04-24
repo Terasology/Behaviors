@@ -86,8 +86,8 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
             }
 
             inRange.sort(Comparator.comparingDouble(v3f -> v3f.distanceSquared(actorPosition)));
-            List<EntityRef> charactersWithinRange = new ArrayList<>(inRange.size());
-            inRange.forEach(v3f -> charactersWithinRange.add(clientLocationMap.get(v3f)));
+            List<EntityRef> charactersWithinRange = 
+            	inRange.stream().map(clientLocationMap::get).collect(Collectors.toList());;
 
             if (!isEqual(charactersWithinRange, findNearbyPlayersComponent.charactersWithinRange)) {
                 findNearbyPlayersComponent.charactersWithinRange = charactersWithinRange;
