@@ -15,7 +15,6 @@
  */
 package org.terasology.behaviors.system;
 
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -31,9 +30,15 @@ import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
 import org.terasology.behaviors.components.FindNearbyPlayersComponent;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class FindNearbyPlayersSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -46,47 +51,48 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
 
     @Override
     public void update(float delta) {
+        Iterable<EntityRef> clients = entityManager.getEntitiesWith(ClientComponent.class);
+        Map<Vector3f, EntityRef> clientLocationMap = new HashMap<>();
+
+        for (EntityRef client : clients) {
+            ClientComponent clientComponent = client.getComponent(ClientComponent.class);
+            EntityRef character = clientComponent.character;
+            AliveCharacterComponent aliveCharacterComponent = character.getComponent(AliveCharacterComponent.class);
+            if (aliveCharacterComponent == null) {
+                continue;
+            }
+            LocationComponent locationComponent = character.getComponent(LocationComponent.class);
+            if (locationComponent == null) {
+                continue;
+            }
+            clientLocationMap.put(locationComponent.getWorldPosition(), character);
+        }
+        Set<Vector3f> locationSet = clientLocationMap.keySet();
+
         for (EntityRef entity : entityManager.getEntitiesWith(FindNearbyPlayersComponent.class)) {
             Vector3f actorPosition = entity.getComponent(LocationComponent.class).getWorldPosition();
             FindNearbyPlayersComponent findNearbyPlayersComponent = entity.getComponent(FindNearbyPlayersComponent.class);
             float maxDistance = findNearbyPlayersComponent.searchRadius;
             float maxDistanceSquared = maxDistance * maxDistance;
-            Iterable<EntityRef> clients = entityManager.getEntitiesWith(ClientComponent.class);
-            List<EntityRef> charactersWithinRange = Lists.newArrayList();
 
-            EntityRef closestCharacter = EntityRef.NULL;
-            float minDistanceFromCharacter = 0.0f;
-
-            for (EntityRef client : clients) {
-                ClientComponent clientComponent = client.getComponent(ClientComponent.class);
-                EntityRef character = clientComponent.character;
-                AliveCharacterComponent aliveCharacterComponent = character.getComponent(AliveCharacterComponent.class);
-                if (aliveCharacterComponent == null) {
-                    continue;
-                }
-                LocationComponent locationComponent = character.getComponent(LocationComponent.class);
-                if (locationComponent == null) {
-                    continue;
-                }
-                if (locationComponent.getWorldPosition().distanceSquared(actorPosition) <= maxDistanceSquared) {
-                    if (charactersWithinRange.size() == 0) {
-                        closestCharacter = character;
-                        minDistanceFromCharacter = locationComponent.getWorldPosition().distanceSquared(actorPosition);
-                    } else {
-                        if (locationComponent.getWorldPosition().distanceSquared(actorPosition) < minDistanceFromCharacter) {
-                            closestCharacter = character;
-                            minDistanceFromCharacter = locationComponent.getWorldPosition().distanceSquared(actorPosition);
-                        }
-                    }
-                    charactersWithinRange.add(character);
-                }
+            List<Vector3f> inRange = locationSet.stream()
+                    .filter(loc -> loc.distanceSquared(actorPosition) <= maxDistanceSquared)
+                    .sorted(Comparator.comparingDouble(v3f -> v3f.distanceSquared(actorPosition)))
+                    .collect(Collectors.toList());
+            if (inRange.isEmpty()) {
+                findNearbyPlayersComponent.charactersWithinRange = Collections.emptyList();
+                findNearbyPlayersComponent.closestCharacter = EntityRef.NULL;
+                entity.saveComponent(findNearbyPlayersComponent);
+                continue;
             }
+
+            List<EntityRef> charactersWithinRange = 
+            	inRange.stream().map(clientLocationMap::get).collect(Collectors.toList());
 
             if (!isEqual(charactersWithinRange, findNearbyPlayersComponent.charactersWithinRange)) {
                 findNearbyPlayersComponent.charactersWithinRange = charactersWithinRange;
-                findNearbyPlayersComponent.closestCharacter = closestCharacter;
+                findNearbyPlayersComponent.closestCharacter = charactersWithinRange.get(0);
                 entity.saveComponent(findNearbyPlayersComponent);
-                
             }
         }
     }
