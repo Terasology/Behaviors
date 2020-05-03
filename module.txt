@@ -6,7 +6,8 @@
     "description" : "A set of behavior traits which could be applied to creatures and NPCs",
     "dependencies" : [
         {"id" : "Pathfinding", "minVersion" : "0.3.0"},
-        {"id" : "Health", "minVersion" : "0.1.0"}
+        {"id" : "Health", "minVersion" : "0.1.0"},
+        {"id" : "Inventory", "minVersion" : "1.1.0"}
     ],
     "isServerSideOnly" : true
 }
