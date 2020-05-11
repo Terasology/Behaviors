@@ -1,13 +1,14 @@
 {
-    "id" : "Behaviors",
-    "version" : "0.2.2-SNAPSHOT",
-    "author" : "synopia, dkambersky",
-    "displayName" : "Behaviors",
-    "description" : "A set of behavior traits which could be applied to creatures and NPCs",
-    "dependencies" : [
-        {"id" : "Pathfinding", "minVersion" : "0.3.0"},
-        {"id" : "Health", "minVersion" : "0.1.0"},
-        {"id" : "Inventory", "minVersion" : "1.1.0"}
+    "id": "Behaviors",
+    "version": "1.0.0",
+    "author": "synopia, dkambersky",
+    "displayName": "Behaviors",
+    "description": "A set of behavior traits which could be applied to creatures and NPCs",
+    "dependencies": [
+        { "id": "Pathfinding", "minVersion": "0.3.0" },
+        { "id": "Health", "minVersion": "0.1.0" },
+        { "id": "Inventory", "minVersion": "1.1.0" }
     ],
-    "isServerSideOnly" : true
+    "isServerSideOnly": true,
+    "isLibrary": true
 }
