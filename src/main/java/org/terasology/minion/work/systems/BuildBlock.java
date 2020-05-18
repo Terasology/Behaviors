@@ -62,7 +62,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     public void initialise() {
         workFactory.register(this);
         //TODO: set this based on configuration settings instead
-        setBlock("CoreBlocks:Dirt");
+        setBlock("CoreAssets:Dirt");
     }
 
     @Override
@@ -138,7 +138,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
 
     /**
      * Set the block type that this behavior will use to build
-     * @param uri The name of the block to use. Uses "CoreBlocks:Dirt" by default.
+     * @param uri The name of the block to use. Uses "CoreAssets:Dirt" by default.
      * @return True if block exists or intentionally set to null. False if block not found.
      */
     public boolean setBlock(String uri) {
@@ -150,7 +150,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
 
     /**
      * Set the block type that this behavior will use to build
-     * @param block The block to use. Uses "CoreBlocks:Dirt" by default.
+     * @param block The block to use. Uses "CoreAssets:Dirt" by default.
      */
     public void setBlock(Block block) {
         blockType = block;

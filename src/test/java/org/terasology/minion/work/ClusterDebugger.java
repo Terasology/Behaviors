@@ -77,7 +77,7 @@ public class ClusterDebugger extends JFrame {
                 register(new PathfinderTestGenerator(true, true));
             }
         });
-        //env.registerBlock("Core:Dirt", new Block(), false); TODO: Update to match recent changes in WorldProvidingHeadlessEnvironment
+        //env.registerBlock("CoreAssets:Dirt", new Block(), false); TODO: Update to match recent changes in WorldProvidingHeadlessEnvironment
 
         entityManager = CoreRegistry.get(EntityManager.class);
         mapWidth = 160;
