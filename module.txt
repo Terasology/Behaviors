@@ -5,7 +5,7 @@
     "displayName": "Behaviors",
     "description": "A set of behavior traits which could be applied to creatures and NPCs",
     "dependencies": [
-        { "id": "CoreWorlds", "minVersion": "1.1.0", "because": "tests/ClusterDebugger"},
+        { "id": "CoreWorlds", "minVersion": "1.1.0", "optional": true, "because": "tests/ClusterDebugger"},
         { "id": "Health", "minVersion": "1.0.0" },
         { "id": "Inventory", "minVersion": "1.1.0" },
         { "id": "Pathfinding", "minVersion": "1.0.0" }
