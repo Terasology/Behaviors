@@ -49,8 +49,15 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
     @In
     private EntityManager entityManager;
 
+    private float timeLeft;
+
     @Override
     public void update(float delta) {
+        timeLeft-=delta;
+        if (timeLeft > 0) {
+            return;
+        }
+
         Iterable<EntityRef> clients = entityManager.getEntitiesWith(ClientComponent.class);
         Map<Vector3f, EntityRef> clientLocationMap = new HashMap<>();
 
@@ -95,6 +102,7 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
                 entity.saveComponent(findNearbyPlayersComponent);
             }
         }
+        timeLeft+=1;
     }
 
     private boolean isEqual(List<EntityRef> one, List<EntityRef> two) {
