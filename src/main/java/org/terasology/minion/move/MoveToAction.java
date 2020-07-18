@@ -44,6 +44,7 @@ public class MoveToAction extends BaseAction {
     private static Logger logger = LoggerFactory.getLogger(MoveToAction.class);
     @Range(min = 0, max = 10)
     private float distance = 0.2f;
+    private float distanceSquared = distance*distance;
 
 
     @Override
@@ -84,7 +85,7 @@ public class MoveToAction extends BaseAction {
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
 
-        if((abs(targetDirection.x) < distance) && (abs(targetDirection.y) < distance) && (abs(targetDirection.z) < distance)) {
+        if(targetDirection.lengthSquared() < distanceSquared) {
             drive.set(0, 0, 0);
             reachedTarget = true;
         } else {
