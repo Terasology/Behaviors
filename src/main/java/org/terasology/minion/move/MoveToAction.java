@@ -27,6 +27,8 @@ import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.rendering.nui.properties.Range;
 
+import static org.joml.Math.abs;
+
 /**
  * <b>Properties:</b> <b>distance</b><br/>
  * <br/>
@@ -42,6 +44,7 @@ public class MoveToAction extends BaseAction {
     private static Logger logger = LoggerFactory.getLogger(MoveToAction.class);
     @Range(min = 0, max = 10)
     private float distance = 0.2f;
+    private float distanceSquared = distance*distance;
 
 
     @Override
@@ -82,7 +85,7 @@ public class MoveToAction extends BaseAction {
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
 
-        if((targetDirection.x < distance) && (targetDirection.y < distance) && (targetDirection.z < distance)) {
+        if(targetDirection.lengthSquared() < distanceSquared) {
             drive.set(0, 0, 0);
             reachedTarget = true;
         } else {
