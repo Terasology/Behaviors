@@ -44,8 +44,6 @@ public class MoveToAction extends BaseAction {
     private static Logger logger = LoggerFactory.getLogger(MoveToAction.class);
     @Range(min = 0, max = 10)
     private float distance = 0.2f;
-    private float distanceSquared = distance*distance;
-
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
@@ -85,7 +83,7 @@ public class MoveToAction extends BaseAction {
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
 
-        if(targetDirection.lengthSquared() < distanceSquared) {
+        if(targetDirection.lengthSquared() < distance*distance) {
             drive.set(0, 0, 0);
             reachedTarget = true;
         } else {
@@ -95,7 +93,6 @@ public class MoveToAction extends BaseAction {
 
         CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
-
 
         return reachedTarget;
     }
