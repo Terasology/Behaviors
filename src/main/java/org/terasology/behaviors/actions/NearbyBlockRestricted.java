@@ -18,8 +18,8 @@ import java.util.Random;
 import org.terasology.navgraph.WalkableBlock;
 
 /**
- * Sets a marketkeeper character's {@link MinionMoveComponent} target to a random nearby block inside the area of
- * their market building.
+ * Sets a character's {@link MinionMoveComponent} target to a random nearby block inside the area defined in the
+ * character's {@link StrayRestrictionComponent}.
  */
 @BehaviorAction(name = "set_target_nearby_block_restricted")
 public class NearbyBlockRestricted extends BaseAction {
@@ -68,10 +68,11 @@ public class NearbyBlockRestricted extends BaseAction {
     }
 
     /**
-     * Finds a block close to the character, with the condition that this block must be inside the market parcel.
+     * Finds a block close to the character, with the condition that this block must be inside character's allowed
+     * area.
      *
-     * @param startBlock The block that this characer is currently standing on.
-     * @return A random nearby block nearby inside the market area.
+     * @param startBlock The block that this character is currently standing on.
+     * @return A random nearby block nearby inside the allowed area.
      */
     private WalkableBlock findRandomNearbyBlockInMarket(WalkableBlock startBlock) {
         WalkableBlock currentBlock = startBlock;
