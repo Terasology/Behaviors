@@ -57,7 +57,7 @@ public class NearbyBlockRestricted extends BaseAction {
         if (random.nextInt(100) > (99 - moveProbability)) {
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             if (moveComponent.currentBlock != null) {
-                WalkableBlock target = findRandomNearbyBlockInMarket(moveComponent.currentBlock);
+                WalkableBlock target = randomNearbyBlockRestricted(moveComponent.currentBlock);
                 moveComponent.target = target.getBlockPosition().toVector3f();
                 actor.save(moveComponent);
             } else {
@@ -74,7 +74,7 @@ public class NearbyBlockRestricted extends BaseAction {
      * @param startBlock The block that this character is currently standing on.
      * @return A random nearby block nearby inside the allowed area.
      */
-    private WalkableBlock findRandomNearbyBlockInMarket(WalkableBlock startBlock) {
+    private WalkableBlock randomNearbyBlockRestricted(WalkableBlock startBlock) {
         WalkableBlock currentBlock = startBlock;
         for (int i = 0; i < random.nextInt(10) + 3; i++) {
             WalkableBlock[] neighbors = currentBlock.neighbors;
