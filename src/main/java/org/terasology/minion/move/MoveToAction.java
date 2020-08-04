@@ -27,15 +27,14 @@ import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.rendering.nui.properties.Range;
 
+import static org.joml.Math.abs;
+
 /**
  * <b>Properties:</b> <b>distance</b><br/>
- * <br/>
- * Moves the actor to the target defined by <b>MinionMoveComponent</b>.<br/>
- * <br/>
+ * <br/> Moves the actor to the target defined by <b>MinionMoveComponent</b>.<br/> <br/>
  * <b>SUCCESS</b>: when distance between actor and target is below <b>distance</b>.<br/>
  * <b>FAILURE</b>: when there is no target.<br/>
- * <br/>
- * Auto generated javadoc - modify README.markdown instead!
+ * <br/> Auto generated javadoc - modify README.markdown instead!
  */
 @BehaviorAction(name = "move_to")
 public class MoveToAction extends BaseAction {
@@ -82,7 +81,7 @@ public class MoveToAction extends BaseAction {
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
 
-        if((targetDirection.x < distance) && (targetDirection.y < distance) && (targetDirection.z < distance)) {
+        if (abs(targetDirection.x) < distance && (abs(targetDirection.y) < 2f) && (abs(targetDirection.z) < distance)) {
             drive.set(0, 0, 0);
             reachedTarget = true;
         } else {
@@ -90,7 +89,8 @@ public class MoveToAction extends BaseAction {
             drive.set(targetDirection);
         }
 
-        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, false, moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
+        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, false,
+                moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
 
 
