@@ -15,16 +15,16 @@
  */
 package org.terasology.grid;
 
-import org.lwjgl.input.Keyboard;
 import org.terasology.input.BindButtonEvent;
 import org.terasology.input.DefaultBinding;
 import org.terasology.input.InputType;
+import org.terasology.input.Keyboard;
 import org.terasology.input.RegisterBindButton;
 
 /**
  *
  */
 @RegisterBindButton(id = "grid_renderer", description = "Toggle grid renderer")
-@DefaultBinding(type = InputType.KEY, id = Keyboard.KEY_F6)
+@DefaultBinding(type = InputType.KEY, id = Keyboard.KeyId.F6)
 public class GridRendererButton extends BindButtonEvent {
 }
