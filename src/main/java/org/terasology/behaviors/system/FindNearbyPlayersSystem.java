@@ -15,6 +15,8 @@
  */
 package org.terasology.behaviors.system;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -28,6 +30,7 @@ import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
 import org.terasology.behaviors.components.FindNearbyPlayersComponent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -37,27 +40,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Updates all {@link FindNearbyPlayersComponent}s with information about nearby players.
- */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class FindNearbyPlayersSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(FindNearbyPlayersSystem.class);
 
     @In
     private EntityManager entityManager;
 
-    /**
-     * The amount of time (in seconds) left until the system updates all components.
-     */
-    private float timeLeft;
-
     @Override
     public void update(float delta) {
-        timeLeft-=delta;
-        if (timeLeft > 0) {
-            return;
-        }
-
         Iterable<EntityRef> clients = entityManager.getEntitiesWith(ClientComponent.class);
         Map<Vector3f, EntityRef> clientLocationMap = new HashMap<>();
 
@@ -102,7 +95,6 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
                 entity.saveComponent(findNearbyPlayersComponent);
             }
         }
-        timeLeft+=1;
     }
 
     private boolean isEqual(List<EntityRef> one, List<EntityRef> two) {
