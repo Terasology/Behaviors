@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
-import org.terasology.assets.ResourceUrn;
-import org.terasology.assets.management.AssetManager;
 import org.terasology.audio.AudioEndListener;
 import org.terasology.audio.AudioManager;
 import org.terasology.audio.StreamingSound;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
+import org.terasology.gestalt.module.sandbox.API;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.module.sandbox.API;
-import org.terasology.registry.In;
 import org.terasology.nui.properties.OneOf;
 import org.terasology.nui.properties.Range;
+import org.terasology.registry.In;
 
 /**
  * Plays music in background. Return SUCCESS when music ends.

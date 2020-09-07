@@ -3,14 +3,14 @@
 package org.terasology.behaviors.actions;
 
 import org.terasology.engine.ComponentFieldUri;
+import org.terasology.gestalt.module.sandbox.API;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.module.sandbox.API;
+import org.terasology.nui.properties.OneOf;
 import org.terasology.rendering.assets.animation.MeshAnimation;
 import org.terasology.rendering.logic.SkeletalMeshComponent;
-import org.terasology.nui.properties.OneOf;
 
 import java.util.List;
 import java.util.Random;

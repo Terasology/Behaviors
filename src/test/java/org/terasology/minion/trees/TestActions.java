@@ -5,17 +5,17 @@ package org.terasology.minion.trees;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.terasology.HeadlessEnvironment;
-import org.terasology.assets.ResourceUrn;
-import org.terasology.assets.management.AssetManager;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
+import org.terasology.gestalt.naming.Name;
 import org.terasology.logic.behavior.BehaviorSystem;
 import org.terasology.logic.behavior.asset.BehaviorTree;
 import org.terasology.logic.behavior.core.BehaviorTreeBuilder;
 import org.terasology.logic.behavior.nui.BehaviorEditor;
 import org.terasology.logic.behavior.nui.BehaviorNodeFactory;
-import org.terasology.naming.Name;
+import org.terasology.nui.properties.OneOfProviderFactory;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.InjectionHelper;
-import org.terasology.nui.properties.OneOfProviderFactory;
 
 public class TestActions {
     @Test
