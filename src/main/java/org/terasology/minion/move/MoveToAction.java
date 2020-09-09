@@ -4,12 +4,12 @@ package org.terasology.minion.move;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.logic.characters.CharacterMoveInputEvent;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.logic.characters.CharacterMoveInputEvent;
+import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.nui.properties.Range;
@@ -25,9 +25,9 @@ import static org.joml.Math.abs;
  */
 @BehaviorAction(name = "move_to")
 public class MoveToAction extends BaseAction {
-    private static Logger logger = LoggerFactory.getLogger(MoveToAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(MoveToAction.class);
     @Range(min = 0, max = 10)
-    private float distance = 0.2f;
+    private final float distance = 0.2f;
 
 
     @Override

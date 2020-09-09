@@ -1,26 +1,13 @@
-/*
- * Copyright 2015 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work.kmeans;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.engine.utilities.random.MersenneRandom;
+import org.terasology.engine.utilities.random.Random;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.utilities.random.MersenneRandom;
-import org.terasology.utilities.random.Random;
+import org.terasology.math.geom.Vector3i;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +18,15 @@ import java.util.Stack;
  *
  */
 public class Cluster {
-    private Map<Vector3i, Distance> distances = Maps.newHashMap();
-    private List<Cluster> children = Lists.newArrayList();
+    private final Map<Vector3i, Distance> distances = Maps.newHashMap();
+    private final List<Cluster> children = Lists.newArrayList();
+    private final DistanceFunction distanceFunction;
+    private final float maxDistanceBeforeSplit;
+    private final int splitCount;
+    private final Random random = new MersenneRandom();
+    private final int depth;
     private Vector3f position = new Vector3f();
-    private DistanceFunction distanceFunction;
-    private float maxDistanceBeforeSplit;
-    private int splitCount;
-    private Random random = new MersenneRandom();
     private boolean dirty = true;
-    private int depth;
 
     public Cluster(float maxDistanceBeforeSplit, int splitCount, int depth, DistanceFunction distanceFunction) {
         this.maxDistanceBeforeSplit = maxDistanceBeforeSplit;
@@ -82,10 +69,7 @@ public class Cluster {
                 minDist = distance;
             }
         }
-        if (nearest != null) {
-            return nearest;
-        }
-        return null;
+        return nearest;
     }
 
     public Cluster findNearestCluster(Vector3i target) {
@@ -146,7 +130,8 @@ public class Cluster {
             for (int i = children.size(); i < max; i++) {
                 Cluster cluster = create();
                 children.add(cluster);
-                cluster.setPosition(new Vector3f(randomAround(position.x), randomAround(position.y), randomAround(position.z)));
+                cluster.setPosition(new Vector3f(randomAround(position.x), randomAround(position.y),
+                        randomAround(position.z)));
             }
         }
 
@@ -263,6 +248,12 @@ public class Cluster {
         return position.toString() + " " + distances.size();
     }
 
+    public interface DistanceFunction {
+        float distance(Vector3i element, Vector3f target);
+
+        float distance(Vector3i element, Vector3i target);
+    }
+
     public static final class Distance {
         private float distance;
 
@@ -279,11 +270,5 @@ public class Cluster {
             distance = value;
             return diff;
         }
-    }
-
-    public interface DistanceFunction {
-        float distance(Vector3i element, Vector3f target);
-
-        float distance(Vector3i element, Vector3i target);
     }
 }

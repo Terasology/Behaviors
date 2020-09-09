@@ -1,32 +1,18 @@
-/*
- * Copyright 2019 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
 import org.terasology.behaviors.components.FindNearbyPlayersComponent;
 import org.terasology.behaviors.components.TargetComponent;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
 
 /**
  * Sets the {@link TargetComponent} of the Actor to the nearest Player. The target can then be used for various NPC
- * actions. E.g. a guard NPC may target a player to shoot at them if they get too close, a medic NPC may target a
- * player to move towards and heal them.
- * <br/>
+ * actions. E.g. a guard NPC may target a player to shoot at them if they get too close, a medic NPC may target a player
+ * to move towards and heal them. <br/>
  * <b>Note:</b> this action should be guarded by a check on {@link FindNearbyPlayersComponent}. I.e.
  * <pre>
  *     guard: {

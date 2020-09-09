@@ -1,27 +1,18 @@
-/*
- * Copyright 2015 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work.systems;
 
 import com.google.common.collect.Lists;
-import org.terasology.engine.SimpleUri;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.ComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.ComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockComponent;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.work.Work;
@@ -29,10 +20,6 @@ import org.terasology.minion.work.WorkFactory;
 import org.terasology.minion.work.WorkTargetComponent;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
-import org.terasology.registry.In;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockComponent;
 
 import java.util.List;
 
@@ -47,17 +34,13 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
             {-1, -1, 0}, {1, -1, 0}, {0, -1, -1}, {0, -1, 1},
             {-1, -2, 0}, {1, -2, 0}, {0, -2, -1}, {0, -2, 1},
     };
-
+    private final SimpleUri uri;
     @In
     private PathfinderSystem pathfinderSystem;
     @In
     private WorldProvider worldProvider;
     @In
     private WorkFactory workFactory;
-
-    private final SimpleUri uri;
-
-
 
 
     public RemoveBlock() {
@@ -99,7 +82,8 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
     @Override
     public boolean canMinionWork(EntityRef block, EntityRef minion) {
         Vector3f pos = new Vector3f();
-        pos.sub(block.getComponent(LocationComponent.class).getWorldPosition(), minion.getComponent(LocationComponent.class).getWorldPosition());
+        pos.sub(block.getComponent(LocationComponent.class).getWorldPosition(),
+                minion.getComponent(LocationComponent.class).getWorldPosition());
         pos.y /= 4;
         float length = pos.length();
         return length < 2;

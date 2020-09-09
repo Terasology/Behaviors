@@ -6,17 +6,17 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.engine.SimpleUri;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.registry.In;
-import org.terasology.registry.Share;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.registry.Share;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
 import org.terasology.nui.databinding.ReadOnlyBinding;
 import org.terasology.nui.itemRendering.StringTextRenderer;
 import org.terasology.nui.properties.OneOfProviderFactory;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
 
 import java.util.List;
 import java.util.Map;
@@ -28,19 +28,14 @@ import java.util.Map;
 @Share(value = WorkFactory.class)
 public class WorkFactory extends BaseComponentSystem {
     private static final Logger logger = LoggerFactory.getLogger(WorkFactory.class);
-
-
+    private final Map<SimpleUri, Work> workRegistry = Maps.newHashMap();
+    private final List<Work> works = Lists.newArrayList();
+    // TODO REAL IDLE
+    private final SimpleUri idle = new SimpleUri("Pathfinding:idle");
     @In
     private OneOfProviderFactory providerFactory;
-
     @In
     private BlockManager blockManager;
-
-    private Map<SimpleUri, Work> workRegistry = Maps.newHashMap();
-    private List<Work> works = Lists.newArrayList();
-    // TODO REAL IDLE
-    private SimpleUri idle = new SimpleUri("Pathfinding:idle");
-
     /* Kept to pass to RemoveBlock nodes if needed - so they don't
      * have to fetch their own Air block from somewhere
      */

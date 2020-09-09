@@ -5,34 +5,33 @@ package org.terasology.minion.move;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.TargetComponent;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.logic.characters.CharacterMoveInputEvent;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.logic.characters.CharacterMoveInputEvent;
+import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.nui.properties.Range;
 
 /**
- * Turns the actor to face the target defined by <b>TargetComponent</b>.<br/>
- * <br/>
+ * Turns the actor to face the target defined by <b>TargetComponent</b>.<br/> <br/>
  * <b>SUCCESS</b>: when the actor was turned in the direction of the target.<br/>
  * <b>FAILURE</b>: when there is no target or the target is already in sight.<br/>
  */
 @BehaviorAction(name = "look_at")
 public class LookAtAction extends BaseAction {
 
-    private static Logger logger = LoggerFactory.getLogger(LookAtAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(LookAtAction.class);
 
     /**
      * The maximum angle (in degrees) between the current view direction, and the view direction to the target, below
-     * which the {@code Actor} will be considered "looking at" the target. I.e. the Actor will continue turning
-     * toward the target until {@code Math.abs(requestedAngle - currentAngle) < maxAngleDegrees}
+     * which the {@code Actor} will be considered "looking at" the target. I.e. the Actor will continue turning toward
+     * the target until {@code Math.abs(requestedAngle - currentAngle) < maxAngleDegrees}
      */
     @Range(min = 0, max = 10)
-    private float maxAngleDegrees = 2f;
+    private final float maxAngleDegrees = 2f;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {

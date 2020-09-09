@@ -5,17 +5,17 @@ package org.terasology.minion.trees;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.terasology.HeadlessEnvironment;
+import org.terasology.engine.logic.behavior.BehaviorSystem;
+import org.terasology.engine.logic.behavior.asset.BehaviorTree;
+import org.terasology.engine.logic.behavior.core.BehaviorTreeBuilder;
+import org.terasology.engine.logic.behavior.nui.BehaviorEditor;
+import org.terasology.engine.logic.behavior.nui.BehaviorNodeFactory;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.InjectionHelper;
 import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.gestalt.naming.Name;
-import org.terasology.logic.behavior.BehaviorSystem;
-import org.terasology.logic.behavior.asset.BehaviorTree;
-import org.terasology.logic.behavior.core.BehaviorTreeBuilder;
-import org.terasology.logic.behavior.nui.BehaviorEditor;
-import org.terasology.logic.behavior.nui.BehaviorNodeFactory;
 import org.terasology.nui.properties.OneOfProviderFactory;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.InjectionHelper;
 
 public class TestActions {
     @Test
@@ -35,7 +35,8 @@ public class TestActions {
 
         BehaviorTreeBuilder builder = new BehaviorTreeBuilder();
         BehaviorEditor editor = new BehaviorEditor();
-        editor.setTree(CoreRegistry.get(AssetManager.class).getAsset(new ResourceUrn("Behaviors", "worker"), BehaviorTree.class).get());
+        editor.setTree(CoreRegistry.get(AssetManager.class).getAsset(new ResourceUrn("Behaviors", "worker"),
+                BehaviorTree.class).get());
         editor.createNode(nodeFactory.getNodeComponent(builder.fromJson("move_to")));
     }
 }

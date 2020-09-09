@@ -3,7 +3,7 @@
 package org.terasology.grid;
 
 import org.joml.Rectanglei;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.nui.Canvas;
 
 /**

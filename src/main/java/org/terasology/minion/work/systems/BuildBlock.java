@@ -1,37 +1,24 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work.systems;
 
 import com.google.common.collect.Lists;
-import org.terasology.engine.SimpleUri;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.ComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.ComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockComponent;
+import org.terasology.engine.world.block.BlockManager;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkFactory;
 import org.terasology.minion.work.WorkTargetComponent;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
-import org.terasology.registry.In;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockManager;
 
 import java.util.List;
 
@@ -138,6 +125,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
 
     /**
      * Set the block type that this behavior will use to build
+     *
      * @param uri The name of the block to use. Uses "CoreAssets:Dirt" by default.
      * @return True if block exists or intentionally set to null. False if block not found.
      */
@@ -149,16 +137,19 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     }
 
     /**
+     * @return The block that will be placed
+     */
+    public Block getBlock() {
+        return blockType;
+    }
+
+    /**
      * Set the block type that this behavior will use to build
+     *
      * @param block The block to use. Uses "CoreAssets:Dirt" by default.
      */
     public void setBlock(Block block) {
         blockType = block;
     }
-
-    /**
-     * @return The block that will be placed
-     */
-    public Block getBlock() { return blockType; }
 }
 

@@ -4,29 +4,26 @@ package org.terasology.minion.work;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
 import org.terasology.nui.properties.OneOf;
 
 /**
  * <b>Properties</b>: <b>filter</b><br/>
- * <br/>
- * Searches for open work of specific type (<b>filter</b>). If work is found, the actor is assigned.<br/>
- * <br/>
+ * <br/> Searches for open work of specific type (<b>filter</b>). If work is found, the actor is assigned.<br/> <br/>
  * <b>SUCCESS</b>: When work is found and assigned.<br/>
- * <br/>
- * Auto generated javadoc - modify README.markdown instead!
+ * <br/> Auto generated javadoc - modify README.markdown instead!
  */
 @BehaviorAction(name = "find_work")
 public class FindWorkNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(FindWorkNode.class);
 
     @OneOf.Provider(name = "work")
-    private String filter = "Behaviors:removeBlock";
+    private final String filter = "Behaviors:removeBlock";
 
     @In
     private transient WorkBoard workBoard;

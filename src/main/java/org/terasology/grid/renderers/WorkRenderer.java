@@ -3,17 +3,17 @@
 package org.terasology.grid.renderers;
 
 import org.joml.Rectanglei;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.grid.BlockRenderer;
 import org.joml.Vector3i;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.registry.Share;
+import org.terasology.engine.world.BlockEntityRegistry;
+import org.terasology.grid.BlockRenderer;
 import org.terasology.minion.work.WorkTargetComponent;
-import org.terasology.registry.In;
-import org.terasology.registry.Share;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
-import org.terasology.world.BlockEntityRegistry;
 
 /**
  *

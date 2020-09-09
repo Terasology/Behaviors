@@ -4,30 +4,30 @@ package org.terasology.minion.work;
 
 import com.google.common.collect.Sets;
 import org.terasology.WorldProvidingHeadlessEnvironment;
-import org.terasology.core.world.generator.AbstractBaseWorldGenerator;
-import org.terasology.engine.ComponentSystemManager;
-import org.terasology.engine.SimpleUri;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.internal.EngineEntityManager;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.characters.CharacterComponent;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.selection.ApplyBlockSelectionEvent;
-import org.terasology.math.Region3i;
+import org.terasology.coreworlds.generator.AbstractBaseWorldGenerator;
+import org.terasology.engine.core.ComponentSystemManager;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.internal.EngineEntityManager;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.characters.CharacterComponent;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.logic.selection.ApplyBlockSelectionEvent;
+import org.terasology.engine.math.Region3i;
+import org.terasology.engine.monitoring.PerformanceMonitor;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.minion.work.systems.WalkToBlock;
-import org.terasology.monitoring.PerformanceMonitor;
 import org.terasology.navgraph.Entrance;
 import org.terasology.navgraph.Floor;
 import org.terasology.navgraph.NavGraphSystem;
 import org.terasology.navgraph.WalkableBlock;
+import org.terasology.nui.properties.OneOfProviderFactory;
 import org.terasology.pathfinding.PathfinderTestGenerator;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.nui.properties.OneOfProviderFactory;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -43,20 +43,20 @@ import java.util.Map;
 import java.util.Set;
 
 public class ClusterDebugger extends JFrame {
-    private WorldProvidingHeadlessEnvironment env;
+    private final WorldProvidingHeadlessEnvironment env;
     private final int mapWidth;
     private final int mapHeight;
+    private final NavGraphSystem world;
+    private final EntityManager entityManager;
+    private final WalkToBlock walkToBlock;
+    private final WorkBoard workBoard;
+    private final Object mutex = new Object();
     private int level;
     private WalkableBlock hovered;
-    private NavGraphSystem world;
-    private EntityManager entityManager;
     private EngineEntityManager engineEntityManager;
-    private WalkToBlock walkToBlock;
     private Vector3i nearest;
     private Vector3i target;
-    private final WorkBoard workBoard;
     private List<Cluster> leafCluster;
-    private final Object mutex = new Object();
 
     public ClusterDebugger() throws HeadlessException {
         env = new WorldProvidingHeadlessEnvironment();
@@ -66,7 +66,8 @@ public class ClusterDebugger extends JFrame {
                 register(new PathfinderTestGenerator(true, true));
             }
         });
-        //env.registerBlock("CoreAssets:Dirt", new Block(), false); TODO: Update to match recent changes in WorldProvidingHeadlessEnvironment
+        //env.registerBlock("CoreAssets:Dirt", new Block(), false); TODO: Update to match recent changes in 
+        // WorldProvidingHeadlessEnvironment
 
         entityManager = CoreRegistry.get(EntityManager.class);
         mapWidth = 160;
@@ -101,17 +102,6 @@ public class ClusterDebugger extends JFrame {
         add(new DebugPanel());
     }
 
-    private boolean isEntrance(WalkableBlock block) {
-        boolean isEntrance = false;
-        for (Entrance entrance : block.floor.entrances()) {
-            if (entrance.getAbstractBlock() == block) {
-                isEntrance = true;
-                break;
-            }
-        }
-        return isEntrance;
-    }
-
     public static void main(String[] args) throws InterruptedException {
         final ClusterDebugger debugger = new ClusterDebugger();
         debugger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,9 +114,21 @@ public class ClusterDebugger extends JFrame {
         }
     }
 
+    private boolean isEntrance(WalkableBlock block) {
+        boolean isEntrance = false;
+        for (Entrance entrance : block.floor.entrances()) {
+            if (entrance.getAbstractBlock() == block) {
+                isEntrance = true;
+                break;
+            }
+        }
+        return isEntrance;
+    }
+
     public void update(float dt) {
         entityManager.getEventSystem().process();
-        for (UpdateSubscriberSystem updater : CoreRegistry.get(ComponentSystemManager.class).iterateUpdateSubscribers()) {
+        for (UpdateSubscriberSystem updater :
+                CoreRegistry.get(ComponentSystemManager.class).iterateUpdateSubscribers()) {
             PerformanceMonitor.startActivity(updater.getClass().getSimpleName());
             updater.update(dt);
             PerformanceMonitor.endActivity();
@@ -195,7 +197,8 @@ public class ClusterDebugger extends JFrame {
                         item.addComponent(new LocationComponent());
                         item.addComponent(new CharacterComponent());
 
-                        final Region3i selection = Region3i.createFromMinAndSize(new Vector3i(minX, minY, minZ), new Vector3i(maxX, maxY, maxZ));
+                        final Region3i selection = Region3i.createFromMinAndSize(new Vector3i(minX, minY, minZ),
+                                new Vector3i(maxX, maxY, maxZ));
                         ApplyBlockSelectionEvent event = new ApplyBlockSelectionEvent(item, selection);
                         item.send(event);
                     } else {

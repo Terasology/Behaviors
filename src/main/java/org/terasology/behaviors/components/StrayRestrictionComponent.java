@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.components;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 import org.terasology.math.geom.Rect2i;
 
 /**
@@ -20,6 +20,7 @@ public class StrayRestrictionComponent implements Component {
         this.allowedRegion = allowedRegion;
     }
 
-    public StrayRestrictionComponent() { }
+    public StrayRestrictionComponent() {
+    }
 
 }

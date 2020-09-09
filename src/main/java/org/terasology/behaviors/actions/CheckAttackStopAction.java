@@ -4,13 +4,13 @@ package org.terasology.behaviors.actions;
 
 import org.terasology.behaviors.components.AttackInProximityComponent;
 import org.terasology.behaviors.components.AttackOnHitComponent;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.behaviors.components.FollowComponent;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.math.geom.Vector3f;
 import org.terasology.nui.properties.Range;
 
 
@@ -18,11 +18,11 @@ import org.terasology.nui.properties.Range;
 public class CheckAttackStopAction extends BaseAction {
 
     @Range(max = 40)
-    private float maxDistance = 10f;
+    private final float maxDistance = 10f;
 
     /**
-     * Makes the character follow a player within a given range
-     * Sends FAILURE when the distance is greater than maxDistance
+     * Makes the character follow a player within a given range Sends FAILURE when the distance is greater than
+     * maxDistance
      */
     @Override
     public BehaviorState modify(Actor actor, BehaviorState state) {
@@ -33,7 +33,8 @@ public class CheckAttackStopAction extends BaseAction {
                 attackOnHitComponent.instigator = null;
                 actor.getEntity().saveComponent(attackOnHitComponent);
             } else if (actor.hasComponent(AttackInProximityComponent.class)) {
-                AttackInProximityComponent attackInProximityComponent = actor.getComponent(AttackInProximityComponent.class);
+                AttackInProximityComponent attackInProximityComponent =
+                        actor.getComponent(AttackInProximityComponent.class);
                 attackInProximityComponent.instigator = null;
                 actor.getEntity().saveComponent(attackInProximityComponent);
             }

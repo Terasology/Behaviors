@@ -2,21 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
-import org.terasology.audio.AudioEndListener;
-import org.terasology.audio.AudioManager;
-import org.terasology.audio.StaticSound;
+import org.terasology.engine.audio.AudioEndListener;
+import org.terasology.engine.audio.AudioManager;
+import org.terasology.engine.audio.StaticSound;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.In;
 import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.gestalt.module.sandbox.API;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.nui.properties.OneOf;
 import org.terasology.nui.properties.Range;
-import org.terasology.registry.In;
 
 /**
  * Plays a sound. Return SUCCESS when sound ends.
@@ -44,9 +44,11 @@ public class PlaySoundAction extends BaseAction {
             if (snd != null) {
                 if (actor.hasComponent(LocationComponent.class)) {
                     Vector3f worldPosition = actor.getComponent(LocationComponent.class).getWorldPosition();
-                    audioManager.playSound(snd, worldPosition, volume, AudioManager.PRIORITY_NORMAL, createEndListener(actor));
+                    audioManager.playSound(snd, worldPosition, volume, AudioManager.PRIORITY_NORMAL,
+                            createEndListener(actor));
                 } else {
-                    audioManager.playSound(snd, new Vector3f(), volume, AudioManager.PRIORITY_NORMAL, createEndListener(actor));
+                    audioManager.playSound(snd, new Vector3f(), volume, AudioManager.PRIORITY_NORMAL,
+                            createEndListener(actor));
                 }
                 actor.setValue(getId(), true);
             }

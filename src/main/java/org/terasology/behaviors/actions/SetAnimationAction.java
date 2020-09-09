@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
-import org.terasology.engine.ComponentFieldUri;
+import org.terasology.engine.core.ComponentFieldUri;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.rendering.assets.animation.MeshAnimation;
+import org.terasology.engine.rendering.logic.SkeletalMeshComponent;
 import org.terasology.gestalt.module.sandbox.API;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.nui.properties.OneOf;
-import org.terasology.rendering.assets.animation.MeshAnimation;
-import org.terasology.rendering.logic.SkeletalMeshComponent;
 
 import java.util.List;
 import java.util.Random;
@@ -23,13 +23,11 @@ import java.util.Random;
 @API
 @BehaviorAction(name = "animation")
 public class SetAnimationAction extends BaseAction {
+    private final transient Random random;
     @OneOf.Provider(name = "animations")
     private ComponentFieldUri play;
-
     @OneOf.Provider(name = "animations")
     private ComponentFieldUri loop;
-
-    private transient Random random;
 
     public SetAnimationAction() {
         random = new Random();
