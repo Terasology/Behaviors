@@ -6,13 +6,13 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.StrayRestrictionComponent;
+import org.terasology.behaviors.minion.move.MinionMoveComponent;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.minion.move.MinionMoveComponent;
-import org.terasology.navgraph.WalkableBlock;
+import org.terasology.pathfinding.navgraph.WalkableBlock;
 
 import java.util.List;
 import java.util.Random;

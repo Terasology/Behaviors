@@ -3,12 +3,12 @@
 package org.terasology.behaviors.actions;
 
 import org.terasology.behaviors.components.TerritoryDistance;
+import org.terasology.behaviors.minion.move.MinionMoveComponent;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.minion.move.MinionMoveComponent;
 
 @BehaviorAction(name = "set_target_territory")
 public class SetTargetToTerritory extends BaseAction {
