@@ -23,6 +23,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkFactory;
@@ -70,8 +71,7 @@ public class WalkToBlock extends BaseComponentSystem implements Work, ComponentS
         if (block == null || !block.hasComponent(BlockComponent.class)) {
             return targetPositions;
         }
-        Vector3i position = block.getComponent(BlockComponent.class).getPosition();
-        WalkableBlock walkableBlock = pathfinderSystem.getBlock(position);
+        WalkableBlock walkableBlock = pathfinderSystem.getBlock(JomlUtil.from(block.getComponent(BlockComponent.class).position));
         if (walkableBlock != null) {
             targetPositions.add(walkableBlock);
         }
@@ -82,7 +82,7 @@ public class WalkToBlock extends BaseComponentSystem implements Work, ComponentS
     @Override
     public boolean canMinionWork(EntityRef block, EntityRef minion) {
         WalkableBlock actualBlock = pathfinderSystem.getBlock(minion);
-        WalkableBlock expectedBlock = pathfinderSystem.getBlock(block.getComponent(BlockComponent.class).getPosition());
+        WalkableBlock expectedBlock = pathfinderSystem.getBlock(JomlUtil.from(block.getComponent(BlockComponent.class).position));
         logger.info("{} - {}", actualBlock.getBlockPosition(), expectedBlock.getBlockPosition());
         return actualBlock == expectedBlock;
     }
@@ -92,7 +92,7 @@ public class WalkToBlock extends BaseComponentSystem implements Work, ComponentS
         if (block == null || !block.hasComponent(BlockComponent.class)) {
             return false;
         }
-        WalkableBlock walkableBlock = pathfinderSystem.getBlock(block.getComponent(BlockComponent.class).getPosition());
+        WalkableBlock walkableBlock = pathfinderSystem.getBlock(JomlUtil.from(block.getComponent(BlockComponent.class).position));
         return walkableBlock != null;
     }
 

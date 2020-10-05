@@ -15,10 +15,12 @@
  */
 package org.terasology.minion.move;
 
+import org.joml.Vector3f;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.math.JomlUtil;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.model.Path;
 
@@ -37,7 +39,7 @@ public class SetupContinuousMoveNode extends BaseAction {
         if (moveComponent != null && moveComponent.path != null && moveComponent.path != Path.INVALID) {
             moveComponent.currentIndex = 0;
             WalkableBlock block = moveComponent.path.get(moveComponent.currentIndex);
-            moveComponent.target = block.getBlockPosition().toVector3f();
+            moveComponent.target = JomlUtil.from(new Vector3f(block.getBlockPosition()));
             actor.save(moveComponent);
 
             return BehaviorState.SUCCESS;

@@ -15,6 +15,7 @@
  */
 package org.terasology.minion.move;
 
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -22,12 +23,11 @@ import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
+import org.terasology.math.JomlUtil;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathRenderSystem;
 import org.terasology.pathfinding.model.Path;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
 
 /**
  * Call child node, as long as the actor has not reached the end of the path. Sets <b>MinionMoveComponent.target</b> to next step in path.<br/>
@@ -55,7 +55,7 @@ public class MoveAlongPathNode extends BaseAction {
             moveComponent.currentIndex = 0;
             WalkableBlock block = moveComponent.path.get(moveComponent.currentIndex);
             logger.info("Start moving along path to step " + moveComponent.currentIndex + " " + block.getBlockPosition());
-            moveComponent.target = block.getBlockPosition().toVector3f();
+            moveComponent.target = JomlUtil.from(new Vector3f(block.getBlockPosition()));
             actor.save(moveComponent);
         }
     }
@@ -70,15 +70,16 @@ public class MoveAlongPathNode extends BaseAction {
         if (moveComponent.currentIndex < moveComponent.path.size()) {
             WalkableBlock block = moveComponent.path.get(moveComponent.currentIndex);
             logger.info(" Continue moving along path to step " + moveComponent.currentIndex + " " + block.getBlockPosition());
-            Vector3f pos = block.getBlockPosition().toVector3f();
+            Vector3f pos = new Vector3f(block.getBlockPosition());
             pos.add(new Vector3f(0, 1, 0));
-            moveComponent.target = pos;
+            moveComponent.target = JomlUtil.from(pos);
             actor.save(moveComponent);
             return BehaviorState.RUNNING;
         } else {
             pathRenderSystem.removePath(moveComponent.path);
             LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
-            logger.info("Finished moving along path pos = " + locationComponent.getWorldPosition() + " block = " + moveComponent.currentBlock);
+            logger.info("Finished moving along path pos = " + locationComponent.getWorldPosition(new Vector3f()) + " " +
+                "block = " + moveComponent.currentBlock);
             return BehaviorState.SUCCESS;
         }
     }

@@ -15,18 +15,13 @@
  */
 package org.terasology.minion.move;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.joml.Vector3f;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
+import org.terasology.math.JomlUtil;
 import org.terasology.navgraph.WalkableBlock;
-import org.terasology.pathfinding.componentSystem.PathRenderSystem;
-import org.terasology.pathfinding.model.Path;
-import org.terasology.registry.CoreRegistry;
 
 /**
  * Call child node, as long as the actor has not reached the end of the path. Sets <b>MinionMoveComponent.target</b> to
@@ -50,9 +45,9 @@ public class ContinuousMoveAlongPathNode extends BaseAction {
         moveComponent.currentIndex++;
         if (moveComponent.currentIndex < moveComponent.path.size()) {
             WalkableBlock block = moveComponent.path.get(moveComponent.currentIndex);
-            Vector3f pos = block.getBlockPosition().toVector3f();
+            Vector3f pos = new Vector3f(block.getBlockPosition());
             pos.add(new Vector3f(0, 1, 0));
-            moveComponent.target = pos;
+            moveComponent.target = JomlUtil.from(pos);
             actor.save(moveComponent);
             return BehaviorState.RUNNING;
         } else {
@@ -61,5 +56,4 @@ public class ContinuousMoveAlongPathNode extends BaseAction {
             return BehaviorState.SUCCESS;
         }
     }
-
 }

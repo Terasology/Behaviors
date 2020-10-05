@@ -16,6 +16,7 @@
 package org.terasology.minion.move;
 
 import com.google.common.collect.Sets;
+import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeDeactivateComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
@@ -26,6 +27,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.events.HorizontalCollisionEvent;
 import org.terasology.logic.characters.events.OnEnterBlockEvent;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.JomlUtil;
 import org.terasology.navgraph.NavGraphChanged;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
@@ -77,7 +79,7 @@ public class MinionMoveSystem extends BaseComponentSystem {
         WalkableBlock block = pathfinderSystem.getBlock(minion);
         moveComponent.currentBlock = block;
         if (block != null && moveComponent.target == null) {
-            moveComponent.target = block.getBlockPosition().toVector3f();
+            moveComponent.target = JomlUtil.from(new Vector3f(block.getBlockPosition()));
         }
         minion.saveComponent(moveComponent);
     }

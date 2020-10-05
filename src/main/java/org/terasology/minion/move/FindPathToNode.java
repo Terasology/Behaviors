@@ -17,12 +17,12 @@ package org.terasology.minion.move;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.navgraph.NavGraphSystem;
 import org.terasology.navgraph.WalkableBlock;
@@ -59,7 +59,9 @@ public class FindPathToNode extends BaseAction {
 
     @Override
     public void construct(final Actor actor) {
-        if(pathfinderSystem==null){setup();}
+        if (pathfinderSystem == null) {
+            setup();
+        }
         final MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         Vector3f targetLocation = moveComponent.target;
         moveComponent.path = null;
@@ -69,30 +71,30 @@ public class FindPathToNode extends BaseAction {
             moveComponent.path = Path.INVALID;
             return;
         }
-        WalkableBlock workTarget = navGraphSystem.getBlock(targetLocation);
+        WalkableBlock workTarget = navGraphSystem.getBlock(JomlUtil.from(targetLocation));
         if (workTarget == null) {
             moveComponent.path = Path.INVALID;
             return;
         }
         SettableFuture<List<Path>> pathFuture = pathfinderSystem.requestPath(
-                actor.getEntity(), currentBlock.getBlockPosition(),
-                Arrays.asList(workTarget.getBlockPosition()));
+            actor.getEntity(), currentBlock.getBlockPosition(),
+            Arrays.asList(workTarget.getBlockPosition()));
 
         Futures.addCallback(pathFuture, new FutureCallback<List<Path>>() {
-                    @Override
-                    public void onSuccess(List<Path> paths) {
-                        if (paths == null) {
-                            moveComponent.path = Path.INVALID;
-                        } else if (paths.size() > 0) {
-                            moveComponent.path = paths.get(0);
-                        }
-                        actor.save(moveComponent);
-                    }
+            @Override
+            public void onSuccess(List<Path> paths) {
+                if (paths == null) {
+                    moveComponent.path = Path.INVALID;
+                } else if (paths.size() > 0) {
+                    moveComponent.path = paths.get(0);
+                }
+                actor.save(moveComponent);
+            }
 
-                    @Override
-                    public void onFailure(Throwable t) {
-                        moveComponent.path = Path.INVALID;
-                    }
+            @Override
+            public void onFailure(Throwable t) {
+                moveComponent.path = Path.INVALID;
+            }
         });
     }
 

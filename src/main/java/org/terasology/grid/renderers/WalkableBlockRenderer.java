@@ -26,7 +26,7 @@ public class WalkableBlockRenderer extends BaseComponentSystem implements BlockR
 
     @Override
     public void renderBlock(Canvas canvas, Vector3i blockPos, Rectanglei screenRegion) {
-        WalkableBlock block = navGraphSystem.getBlock(JomlUtil.from(blockPos));
+        WalkableBlock block = navGraphSystem.getBlock(blockPos);
         if (block != null) {
             canvas.drawLine(screenRegion.minX, screenRegion.minY, screenRegion.minX + 1, screenRegion.minY, Color.GREEN);
         }
