@@ -1,0 +1,26 @@
+{
+
+      sequence : [
+        {
+          set_flock_speed : { speedMultiplier: 0.3 }
+        },
+        {
+          animation : {
+            play: "engine:Walk.animationPool",
+            loop: "engine:Walk.animationPool"
+          }
+        },
+        flock_move,
+        {
+          animation : {
+            play: "engine:Stand.animationPool",
+            loop: "engine:Stand.animationPool"
+          }
+        },
+        {
+          sleep : {
+            time : 3
+          }
+        }
+      ]
+}
