@@ -40,7 +40,7 @@ public class SetAnimationAction extends BaseAction {
         SkeletalMeshComponent skeletalMesh = actor.getComponent(SkeletalMeshComponent.class);
         if (play != null) {
             List<?> animationListToPlay = (List<?>) actor.getComponentField(play);
-            if (animationListToPlay != null) {
+            if (animationListToPlay != null && !animationListToPlay.isEmpty()) {
                 skeletalMesh.animation = (MeshAnimation) animationListToPlay.get(
                         random.nextInt(animationListToPlay.size()));
             } else {
