@@ -24,6 +24,7 @@ import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Vector3i;
 
 import org.terasology.minion.move.MinionMoveComponent;
@@ -53,7 +54,7 @@ public class SetTargetToNearbyBlockAwayFromInstigatorAction extends BaseAction {
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         if (moveComponent.currentBlock != null) {
             WalkableBlock target = findRandomNearbyBlockAwayFromPlayer(moveComponent.currentBlock, actor);
-            moveComponent.target = target.getBlockPosition().toVector3f();
+            moveComponent.target = JomlUtil.from(target.getBlockPosition()).toVector3f();
             actor.save(moveComponent);
         } else {
             return BehaviorState.FAILURE;
@@ -76,8 +77,8 @@ public class SetTargetToNearbyBlockAwayFromInstigatorAction extends BaseAction {
             if (existingNeighbors.size() > 0) {
                 // Sorting the list of neighboring blocks based on distance from player (farthest first)
                 existingNeighbors.sort((one, two) -> {
-                    double a = one.getBlockPosition().distanceSquared(playerPosition);
-                    double b = two.getBlockPosition().distanceSquared(playerPosition);
+                    double a = one.getBlockPosition().distanceSquared(JomlUtil.from(playerPosition));
+                    double b = two.getBlockPosition().distanceSquared(JomlUtil.from(playerPosition));
                     return a > b ? -1
                             : a < b ? 1
                             : 0;

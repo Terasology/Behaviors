@@ -18,6 +18,7 @@ package org.terasology.minion.work;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.minion.work.kmeans.Cluster;
@@ -79,8 +80,8 @@ public class WorkType {
             if (workComponent.assignedMinion == null && workComponent.isRequestable(workEntity)) {
                 requestableWork.add(workEntity);
                 for (WalkableBlock block : work.getTargetPositions(workEntity)) {
-                    cluster.add(block.getBlockPosition());
-                    mapping.put(block.getBlockPosition(), workEntity);
+                    cluster.add(JomlUtil.from(block.getBlockPosition()));
+                    mapping.put(JomlUtil.from(block.getBlockPosition()), workEntity);
                 }
             } else {
                 remove(workEntity);
@@ -103,8 +104,8 @@ public class WorkType {
             openWork.remove(workEntity);
             requestableWork.remove(workEntity);
             for (WalkableBlock block : work.getTargetPositions(workEntity)) {
-                cluster.remove(block.getBlockPosition());
-                mapping.remove(block.getBlockPosition());
+                cluster.remove(JomlUtil.from(block.getBlockPosition()));
+                mapping.remove(JomlUtil.from(block.getBlockPosition()));
             }
         }
     }
@@ -114,11 +115,13 @@ public class WorkType {
     }
 
     public void removeRequestable(EntityRef workEntity) {
-        if(!workEntity.exists()){return;}
+        if (!workEntity.exists()) {
+            return;
+        }
         requestableWork.remove(workEntity);
         for (WalkableBlock block : work.getTargetPositions(workEntity)) {
-            cluster.remove(block.getBlockPosition());
-            mapping.remove(block.getBlockPosition());
+            cluster.remove(JomlUtil.from(block.getBlockPosition()));
+            mapping.remove(JomlUtil.from(block.getBlockPosition()));
         }
     }
 

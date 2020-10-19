@@ -14,6 +14,7 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.selection.ApplyBlockSelectionEvent;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.Region3i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.move.MinionMoveComponent;
@@ -89,7 +90,7 @@ public class ClusterDebugger extends JFrame {
 
         for (int x = 0; x < mapWidth / 16 + 1; x++) {
             for (int z = 0; z < mapHeight / 16 + 1; z++) {
-                world.updateChunk(new Vector3i(x, 0, z));
+                world.updateChunk(JomlUtil.from(new Vector3i(x, 0, z)));
             }
         }
         level = 45;
@@ -152,7 +153,7 @@ public class ClusterDebugger extends JFrame {
                 public void mouseMoved(MouseEvent e) {
                     int hoverX = e.getX() * mapWidth / getWidth();
                     int hoverZ = e.getY() * mapHeight / getHeight();
-                    hovered = world.getBlock(new Vector3i(hoverX, level, hoverZ));
+                    hovered = world.getBlock(JomlUtil.from(new Vector3i(hoverX, level, hoverZ)));
                     repaint();
                 }
 
@@ -171,7 +172,7 @@ public class ClusterDebugger extends JFrame {
                 public void mousePressed(MouseEvent e) {
                     int clickedX = e.getX() * mapWidth / getWidth();
                     int clickedZ = e.getY() * mapHeight / getHeight();
-                    block = world.getBlock(new Vector3i(clickedX, level, clickedZ));
+                    block = world.getBlock(JomlUtil.from(new Vector3i(clickedX, level, clickedZ)));
                     repaint();
                 }
 
@@ -179,7 +180,7 @@ public class ClusterDebugger extends JFrame {
                 public void mouseReleased(MouseEvent e) {
                     int clickedX = e.getX() * mapWidth / getWidth();
                     int clickedZ = e.getY() * mapHeight / getHeight();
-                    WalkableBlock lastBlock = world.getBlock(new Vector3i(clickedX, level, clickedZ));
+                    WalkableBlock lastBlock = world.getBlock(JomlUtil.from(new Vector3i(clickedX, level, clickedZ)));
 
                     if (e.getButton() == MouseEvent.BUTTON1) {
                         int minX = Math.min(block.x(), lastBlock.x());
@@ -228,7 +229,7 @@ public class ClusterDebugger extends JFrame {
                     int screenY = z * getHeight() / mapHeight;
                     int tileWidth = (x + 1) * getWidth() / mapWidth - screenX;
                     int tileHeight = (z + 1) * getHeight() / mapHeight - screenY;
-                    WalkableBlock current = world.getBlock(new Vector3i(x, level, z));
+                    WalkableBlock current = world.getBlock(JomlUtil.from(new Vector3i(x, level, z)));
                     if (current != null) {
                         boolean isEntrance = isEntrance(current);
 

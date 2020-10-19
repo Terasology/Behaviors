@@ -16,14 +16,15 @@
 package org.terasology.minion.work.systems;
 
 import com.google.common.collect.Lists;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.engine.SimpleUri;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.math.JomlUtil;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkFactory;
 import org.terasology.minion.work.WorkTargetComponent;
@@ -83,7 +84,7 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
     public List<WalkableBlock> getTargetPositions(EntityRef block) {
         List<WalkableBlock> result = Lists.newArrayList();
 
-        Vector3i worldPos = block.getComponent(BlockComponent.class).getPosition();
+        Vector3i worldPos = JomlUtil.from(block.getComponent(BlockComponent.class).position);
         WalkableBlock walkableBlock;
         Vector3i pos = new Vector3i();
         for (int[] neighbor : NEIGHBORS) {
@@ -98,8 +99,8 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
 
     @Override
     public boolean canMinionWork(EntityRef block, EntityRef minion) {
-        Vector3f pos = new Vector3f();
-        pos.sub(block.getComponent(LocationComponent.class).getWorldPosition(), minion.getComponent(LocationComponent.class).getWorldPosition());
+        Vector3f pos = block.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())
+            .sub(minion.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
         pos.y /= 4;
         float length = pos.length();
         return length < 2;
@@ -108,13 +109,12 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
     @Override
     public void letMinionWork(EntityRef block, EntityRef minion) {
         block.removeComponent(WorkTargetComponent.class);
-        worldProvider.setBlock(block.getComponent(BlockComponent.class).getPosition(), workFactory.getAir());
+        worldProvider.setBlock(block.getComponent(BlockComponent.class).position, workFactory.getAir());
     }
 
     @Override
     public boolean isAssignable(EntityRef block) {
-        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).getPosition());
-        Block type = worldProvider.getBlock(position);
+        Block type = worldProvider.getBlock(block.getComponent(BlockComponent.class).position);
         return !type.isPenetrable();
     }
 

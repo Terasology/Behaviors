@@ -10,6 +10,7 @@ import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.minion.move.MinionMoveComponent;
 
@@ -58,7 +59,7 @@ public class NearbyBlockRestricted extends BaseAction {
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             if (moveComponent.currentBlock != null) {
                 WalkableBlock target = randomNearbyBlockRestricted(moveComponent.currentBlock);
-                moveComponent.target = target.getBlockPosition().toVector3f();
+                moveComponent.target = JomlUtil.from(target.getBlockPosition()).toVector3f();
                 actor.save(moveComponent);
             } else {
                 return BehaviorState.FAILURE;

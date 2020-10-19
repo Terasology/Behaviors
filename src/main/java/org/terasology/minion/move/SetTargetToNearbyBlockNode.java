@@ -16,12 +16,14 @@
 package org.terasology.minion.move;
 
 import com.google.common.collect.Lists;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.math.JomlUtil;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.registry.In;
@@ -45,7 +47,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             if (moveComponent.currentBlock != null) {
                 WalkableBlock target = findRandomNearbyBlock(moveComponent.currentBlock);
-                moveComponent.target = target.getBlockPosition().toVector3f();
+                moveComponent.target = JomlUtil.from(new Vector3f(target.getBlockPosition()));
                 actor.save(moveComponent);
             } else {
                 return BehaviorState.FAILURE;

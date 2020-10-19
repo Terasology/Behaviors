@@ -16,12 +16,13 @@
 package org.terasology.minion.work.systems;
 
 import com.google.common.collect.Lists;
+import org.joml.Vector3i;
 import org.terasology.engine.SimpleUri;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.math.JomlUtil;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkFactory;
 import org.terasology.minion.work.WorkTargetComponent;
@@ -41,7 +42,7 @@ import java.util.List;
 @RegisterSystem
 public class BuildBlock extends BaseComponentSystem implements Work, ComponentSystem {
     private static final int[][] DIRECT_NEIGHBORS = new int[][]{
-            {-1, 0, 0}, {1, 0, 0}, {0, -1, 0}, {0, 1, 0}, {0, 0, -1}, {0, 0, 1}
+        {-1, 0, 0}, {1, 0, 0}, {0, -1, 0}, {0, 1, 0}, {0, 0, -1}, {0, 0, 1}
     };
     private final SimpleUri uri;
     @In
@@ -80,7 +81,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
         if (block == null || !block.hasComponent(BlockComponent.class) || blockType == null) {
             return targetPositions;
         }
-        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).position);
+        Vector3i position = new Vector3i(JomlUtil.from(block.getComponent(BlockComponent.class).position));
         position.y--;
         WalkableBlock walkableBlock = pathfinderSystem.getBlock(position);
         if (walkableBlock != null) {
@@ -93,7 +94,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     @Override
     public boolean canMinionWork(EntityRef block, EntityRef minion) {
         WalkableBlock actualBlock = pathfinderSystem.getBlock(minion);
-        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).position);
+        Vector3i position = new Vector3i(JomlUtil.from(block.getComponent(BlockComponent.class).position));
         position.y--;
         WalkableBlock expectedBlock = pathfinderSystem.getBlock(position);
         return actualBlock == expectedBlock && blockType != null;
@@ -101,7 +102,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
 
     @Override
     public boolean isAssignable(EntityRef block) {
-        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).position);
+        Vector3i position = new Vector3i(JomlUtil.from(block.getComponent(BlockComponent.class).position));
         Block type = worldProvider.getBlock(position);
         return type.isPenetrable() && blockType != null;
     }
@@ -114,7 +115,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
 
     @Override
     public boolean isRequestable(EntityRef block) {
-        Vector3i position = new Vector3i(block.getComponent(BlockComponent.class).position);
+        Vector3i position = new Vector3i(JomlUtil.from(block.getComponent(BlockComponent.class).position));
         Vector3i pos = new Vector3i();
         for (int[] neighbor : DIRECT_NEIGHBORS) {
             pos.set(position.x + neighbor[0], position.y + neighbor[1], position.z + neighbor[2]);
@@ -138,18 +139,22 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
 
     /**
      * Set the block type that this behavior will use to build
+     *
      * @param uri The name of the block to use. Uses "CoreAssets:Dirt" by default.
      * @return True if block exists or intentionally set to null. False if block not found.
      */
     public boolean setBlock(String uri) {
         Block tempBlock = blockManager.getBlock(uri);
-        if (tempBlock == null && uri != null) return false;
+        if (tempBlock == null && uri != null) {
+            return false;
+        }
         blockType = tempBlock;
         return true;
     }
 
     /**
      * Set the block type that this behavior will use to build
+     *
      * @param block The block to use. Uses "CoreAssets:Dirt" by default.
      */
     public void setBlock(Block block) {
@@ -159,6 +164,8 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     /**
      * @return The block that will be placed
      */
-    public Block getBlock() { return blockType; }
+    public Block getBlock() {
+        return blockType;
+    }
 }
 
