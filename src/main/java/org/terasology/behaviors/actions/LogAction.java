@@ -30,7 +30,7 @@ public class LogAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        logger.info(String.format("Actor %s logs message: %s ", actor.getEntity().toString(), actor.getValue(getId())));
+        logger.debug(String.format("Actor %s logs message: %s ", actor.getEntity().toString(), actor.getValue(getId())));
         return BehaviorState.SUCCESS;
     }
 }
