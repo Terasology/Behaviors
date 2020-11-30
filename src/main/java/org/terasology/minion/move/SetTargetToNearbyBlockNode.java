@@ -23,7 +23,6 @@ import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.math.JomlUtil;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.registry.In;
@@ -35,11 +34,10 @@ import java.util.Random;
 @BehaviorAction(name = "set_target_nearby_block")
 public class SetTargetToNearbyBlockNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(SetTargetToNearbyBlockNode.class);
+    private int moveProbability = 100;
     private transient Random random = new Random();
     @In
     private PathfinderSystem pathfinderSystem;
-
-    private int moveProbability = 100;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
@@ -47,7 +45,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             if (moveComponent.currentBlock != null) {
                 WalkableBlock target = findRandomNearbyBlock(moveComponent.currentBlock);
-                moveComponent.target = JomlUtil.from(new Vector3f(target.getBlockPosition()));
+                moveComponent.target = new Vector3f(target.getBlockPosition());
                 actor.save(moveComponent);
             } else {
                 return BehaviorState.FAILURE;

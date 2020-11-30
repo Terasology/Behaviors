@@ -46,7 +46,7 @@ public class SetTargetToWorkNode extends BaseAction {
             if (targetPositions.size() > 0) {
                 WalkableBlock block = targetPositions.get(0);
                 MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
-                moveComponent.target = JomlUtil.from(new Vector3f(block.getBlockPosition()));
+                moveComponent.target = new Vector3f(block.getBlockPosition());
                 actor.save(moveComponent);
                 return BehaviorState.SUCCESS;
             }

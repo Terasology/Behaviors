@@ -15,6 +15,7 @@
  */
 package org.terasology.behaviors.system;
 
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.TerritoryDistance;
@@ -27,7 +28,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
     public void update(float delta) {
         for (EntityRef entity : entityManager.getEntitiesWith(TerritoryDistance.class, LocationComponent.class)) {
             TerritoryDistance territoryDistance = entity.getComponent(TerritoryDistance.class);
-            territoryDistance.distanceSquared = territoryDistance.location.distanceSquared(entity.getComponent(LocationComponent.class).getWorldPosition());
+            territoryDistance.distanceSquared = territoryDistance.location.distanceSquared(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
             entity.saveComponent(territoryDistance);
         }
     }
@@ -65,7 +65,7 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
     @ReceiveEvent(components = {TerritoryDistance.class})
     public void onCreatureSpawned(OnActivatedComponent event, EntityRef creature) {
         TerritoryDistance territoryDistance = creature.getComponent(TerritoryDistance.class);
-        territoryDistance.location = creature.getComponent(LocationComponent.class).getWorldPosition();
+        territoryDistance.location = creature.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
         creature.saveComponent(territoryDistance);
     }
 }

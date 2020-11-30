@@ -45,9 +45,7 @@ public class ContinuousMoveAlongPathNode extends BaseAction {
         moveComponent.currentIndex++;
         if (moveComponent.currentIndex < moveComponent.path.size()) {
             WalkableBlock block = moveComponent.path.get(moveComponent.currentIndex);
-            Vector3f pos = new Vector3f(block.getBlockPosition());
-            pos.add(new Vector3f(0, 1, 0));
-            moveComponent.target = JomlUtil.from(pos);
+            moveComponent.target = new Vector3f(block.getBlockPosition()).add(new Vector3f(0, 1, 0));
             actor.save(moveComponent);
             return BehaviorState.RUNNING;
         } else {

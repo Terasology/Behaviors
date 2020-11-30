@@ -15,14 +15,12 @@
  */
 package org.terasology.behaviors.actions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.joml.Vector3f;
 import org.terasology.behaviors.components.TerritoryDistance;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.minion.move.MinionMoveComponent;
 
 @BehaviorAction(name = "set_target_territory")

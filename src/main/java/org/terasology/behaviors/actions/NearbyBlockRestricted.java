@@ -3,6 +3,7 @@
 package org.terasology.behaviors.actions;
 
 import com.google.common.collect.Lists;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.StrayRestrictionComponent;
@@ -10,13 +11,12 @@ import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.minion.move.MinionMoveComponent;
+import org.terasology.navgraph.WalkableBlock;
 
 import java.util.List;
 import java.util.Random;
-import org.terasology.navgraph.WalkableBlock;
 
 /**
  * Sets a character's {@link MinionMoveComponent} target to a random nearby block inside the area defined in the
@@ -59,7 +59,7 @@ public class NearbyBlockRestricted extends BaseAction {
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             if (moveComponent.currentBlock != null) {
                 WalkableBlock target = randomNearbyBlockRestricted(moveComponent.currentBlock);
-                moveComponent.target = JomlUtil.from(target.getBlockPosition()).toVector3f();
+                moveComponent.target = new Vector3f(target.getBlockPosition());
                 actor.save(moveComponent);
             } else {
                 return BehaviorState.FAILURE;

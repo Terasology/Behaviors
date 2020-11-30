@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.move;
 
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -10,8 +11,8 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.characters.CharacterMoveInputEvent;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.TeraMath;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.nui.properties.Range;
 
 import static org.joml.Math.abs;
@@ -61,9 +62,8 @@ public class MoveToAction extends BaseAction {
 
         LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
         boolean reachedTarget = false;
-        Vector3f worldPos = new Vector3f(locationComponent.getWorldPosition());
-        Vector3f targetDirection = new Vector3f();
-        targetDirection.sub(moveComponent.target, worldPos);
+        Vector3f worldPos = locationComponent.getWorldPosition(new Vector3f());
+        Vector3f targetDirection = moveComponent.target.sub(worldPos, new Vector3f());
         Vector3f drive = new Vector3f();
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
         float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
@@ -76,8 +76,9 @@ public class MoveToAction extends BaseAction {
             drive.set(targetDirection);
         }
 
-        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, false,
-                moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
+        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw,
+            JomlUtil.from(drive), false, false,
+            moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
 
 

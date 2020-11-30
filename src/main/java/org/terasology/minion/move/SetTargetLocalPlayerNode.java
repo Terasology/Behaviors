@@ -46,7 +46,7 @@ public class SetTargetLocalPlayerNode extends BaseAction {
         WalkableBlock block = pathfinderSystem.getBlock(position);
         if (block != null) {
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
-            moveComponent.target = JomlUtil.from(new Vector3f(block.getBlockPosition()));
+            moveComponent.target = new Vector3f(block.getBlockPosition());
             actor.save(moveComponent);
         }
         return BehaviorState.SUCCESS;

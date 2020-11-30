@@ -15,9 +15,9 @@
  */
 package org.terasology.minion.work;
 
+import org.joml.Vector3i;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.math.geom.Vector3i;
 
 /**
  * Work's minion component. Indicates, the minion is currently executing a work.
@@ -30,7 +30,6 @@ public class MinionWorkComponent implements Component {
     public transient float cooldown;
     public transient Work filter;
     public transient boolean workSearchDone;
-
 
     public MinionWorkComponent() {
     }
