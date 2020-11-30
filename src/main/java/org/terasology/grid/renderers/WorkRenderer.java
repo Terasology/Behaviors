@@ -30,10 +30,10 @@ public class WorkRenderer extends BaseComponentSystem implements BlockRenderer {
         if (entity != null && entity.hasComponent(WorkTargetComponent.class)) {
             WorkTargetComponent workTargetComponent = entity.getComponent(WorkTargetComponent.class);
 
-            canvas.drawLine(screenRegion.minX, screenRegion.minY, screenRegion.maxX, screenRegion.minY, Color.WHITE);
-            canvas.drawLine(screenRegion.maxX, screenRegion.minY, screenRegion.maxX, screenRegion.maxY, Color.WHITE);
-            canvas.drawLine(screenRegion.maxX, screenRegion.maxY, screenRegion.minX, screenRegion.maxY, Color.WHITE);
-            canvas.drawLine(screenRegion.minX, screenRegion.maxY, screenRegion.minX, screenRegion.minY, Color.WHITE);
+            canvas.drawLine(screenRegion.minX, screenRegion.minY, screenRegion.maxX, screenRegion.minY, Color.white);
+            canvas.drawLine(screenRegion.maxX, screenRegion.minY, screenRegion.maxX, screenRegion.maxY, Color.white);
+            canvas.drawLine(screenRegion.maxX, screenRegion.maxY, screenRegion.minX, screenRegion.maxY, Color.white);
+            canvas.drawLine(screenRegion.minX, screenRegion.maxY, screenRegion.minX, screenRegion.minY, Color.white);
 
         }
     }

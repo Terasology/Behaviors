@@ -11,13 +11,11 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.grid.EntityRenderer;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.minion.move.MinionMoveComponent;
+import org.terasology.nui.Colorc;
 import org.terasology.registry.Share;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
 
-/**
- *
- */
 @RegisterSystem
 @Share(value = EntityRenderer.class)
 public class DefaultEntityRenderer extends BaseComponentSystem implements EntityRenderer {
@@ -39,9 +37,9 @@ public class DefaultEntityRenderer extends BaseComponentSystem implements Entity
         int x2 = screenRegion.minX + w / 2 + (int) (Math.cos(yaw - Math.PI / 2) * w);
         int y2 = screenRegion.minY + h / 2 + (int) (Math.sin(yaw - Math.PI / 2) * h);
 
-        Color color = Color.YELLOW;
+        Colorc color = Color.yellow;
         if (entity.hasComponent(MinionMoveComponent.class)) {
-            color = Color.BLUE;
+            color = Color.blue;
         }
         canvas.drawLine(x0, y0, x1, y1, color);
         canvas.drawLine(x0, y0, x2, y2, color);

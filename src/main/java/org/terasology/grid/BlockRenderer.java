@@ -6,9 +6,6 @@ import org.joml.Rectanglei;
 import org.joml.Vector3i;
 import org.terasology.nui.Canvas;
 
-/**
- *
- */
 public interface BlockRenderer {
     void renderBlock(Canvas canvas, Vector3i blockPos, Rectanglei screenRegion);
 }

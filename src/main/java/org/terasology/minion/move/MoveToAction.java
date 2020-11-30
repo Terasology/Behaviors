@@ -44,7 +44,7 @@ public class MoveToAction extends BaseAction {
             state = reachedTarget ? BehaviorState.SUCCESS : BehaviorState.RUNNING;
 
         }
-        if (moveComponent != null && moveComponent.target != null) {
+        if (moveComponent.target != null) {
             if (moveComponent.horizontalCollision) {
                 moveComponent.horizontalCollision = false;
                 moveComponent.jumpCooldown = 0.3f;
@@ -77,11 +77,10 @@ public class MoveToAction extends BaseAction {
         }
 
         CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw, drive, false, false,
-                moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
+            moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
 
 
         return reachedTarget;
     }
-
 }

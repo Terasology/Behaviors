@@ -35,9 +35,6 @@ import org.terasology.nui.events.NUIMouseReleaseEvent;
 import org.terasology.nui.events.NUIMouseWheelEvent;
 import org.terasology.nui.layouts.ZoomableLayout;
 
-/**
- *
- */
 public class GridRenderer extends ZoomableLayout {
     private static final Logger logger = LoggerFactory.getLogger(GridRenderer.class);
 
@@ -67,7 +64,8 @@ public class GridRenderer extends ZoomableLayout {
             Work work = CoreRegistry.get(WorkFactory.class).getWork("pathfinding:walkToBlock");
             WorkComponent workComponent = new WorkComponent();
             workComponent.uri = work.getUri();
-            EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(workComponent, new LocationComponent(), new CharacterComponent());
+            EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(workComponent, new LocationComponent()
+                , new CharacterComponent());
 
             Vector2f start = screenToWorld(startDrag);
             Vector2f end = screenToWorld(endDrag);
@@ -112,7 +110,8 @@ public class GridRenderer extends ZoomableLayout {
 
         canvas.addInteractionRegion(listener);
 
-        Vector3f playerPosition = CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocationComponent.class).getWorldPosition();
+        Vector3f playerPosition =
+            CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocationComponent.class).getWorldPosition();
         Vector2f windowSize = getWindowSize();
         Vector2f topLeft = new Vector2f(playerPosition.x - windowSize.x / 2, playerPosition.z - windowSize.y / 2);
         setWindowPosition(topLeft);
@@ -127,7 +126,8 @@ public class GridRenderer extends ZoomableLayout {
             for (int x = (int) worldStart.x; x < (int) worldEnd.x; x++) {
                 Vector2i tileStart = worldToScreen(new Vector2f(x, z));
                 Vector2i tileEnd = worldToScreen(new Vector2f(x + 1, z + 1));
-                Rectanglei screenRegion = JomlUtil.rectangleiFromMinAndSize(tileStart.x, tileStart.y, tileEnd.x - 1, tileEnd.y - 1);
+                Rectanglei screenRegion = JomlUtil.rectangleiFromMinAndSize(tileStart.x, tileStart.y, tileEnd.x - 1,
+                    tileEnd.y - 1);
 
                 blockRenderer.renderBlock(canvas, new Vector3i(x, y, z), screenRegion);
                 walkableBlockRenderer.renderBlock(canvas, new Vector3i(x, y, z), screenRegion);
@@ -135,7 +135,8 @@ public class GridRenderer extends ZoomableLayout {
             }
         }
 
-        for (EntityRef entity : CoreRegistry.get(EntityManager.class).getEntitiesWith(LocationComponent.class, CharacterComponent.class)) {
+        for (EntityRef entity : CoreRegistry.get(EntityManager.class).getEntitiesWith(LocationComponent.class,
+            CharacterComponent.class)) {
             Vector3f worldPos = entity.getComponent(LocationComponent.class).getWorldPosition();
             Vector2i min = worldToScreen(new Vector2f(worldPos.x - 0.4f, worldPos.z - 0.4f));
             Vector2i max = worldToScreen(new Vector2f(worldPos.x + 0.4f, worldPos.z + 0.4f));

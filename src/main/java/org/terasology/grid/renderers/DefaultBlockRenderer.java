@@ -20,8 +20,6 @@ import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockPart;
 import org.terasology.world.block.tiles.WorldAtlas;
 
-
-
 @RegisterSystem
 @Share(value = DefaultBlockRenderer.class)
 public class DefaultBlockRenderer extends BaseComponentSystem implements BlockRenderer {
@@ -51,7 +49,7 @@ public class DefaultBlockRenderer extends BaseComponentSystem implements BlockRe
             if (!block.isTranslucent()) {
                 Vector2f textureAtlasPos = block.getPrimaryAppearance().getTextureAtlasPos(BlockPart.TOP);
                 canvas.drawTextureRaw(terrainTex, screenRegion, color, ScaleMode.SCALE_FILL,
-                        textureAtlasPos.x, textureAtlasPos.y, relativeTileSize, relativeTileSize);
+                    textureAtlasPos.x, textureAtlasPos.y, relativeTileSize, relativeTileSize);
                 break;
             } else {
                 // TODO alpha blocks

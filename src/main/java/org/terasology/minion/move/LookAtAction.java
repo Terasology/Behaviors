@@ -28,8 +28,8 @@ public class LookAtAction extends BaseAction {
 
     /**
      * The maximum angle (in degrees) between the current view direction, and the view direction to the target, below
-     * which the {@code Actor} will be considered "looking at" the target. I.e. the Actor will continue turning
-     * toward the target until {@code Math.abs(requestedAngle - currentAngle) < maxAngleDegrees}
+     * which the {@code Actor} will be considered "looking at" the target. I.e. the Actor will continue turning toward
+     * the target until {@code Math.abs(requestedAngle - currentAngle) < maxAngleDegrees}
      */
     @Range(min = 0, max = 10)
     private float maxAngleDegrees = 2f;
@@ -69,14 +69,14 @@ public class LookAtAction extends BaseAction {
         targetDirection.normalize();
 
         CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(
-                0,
-                0,
-                requestedYaw,
-                drive,
-                false,
-                false,
-                false,
-                (long) (actor.getDelta() * 1000));
+            0,
+            0,
+            requestedYaw,
+            drive,
+            false,
+            false,
+            false,
+            (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
 
         // TODO Some kind of ray cast to see if there are any obstacles
