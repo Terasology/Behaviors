@@ -54,7 +54,7 @@ public class MoveAlongPathNode extends BaseAction {
             pathRenderSystem.addPath(moveComponent.path);
             moveComponent.currentIndex = 0;
             WalkableBlock block = moveComponent.path.get(moveComponent.currentIndex);
-            logger.info("Start moving along path to step " + moveComponent.currentIndex + " " + block.getBlockPosition());
+            logger.debug("Start moving along path to step " + moveComponent.currentIndex + " " + block.getBlockPosition());
             moveComponent.target = JomlUtil.from(new Vector3f(block.getBlockPosition()));
             actor.save(moveComponent);
         }
@@ -69,7 +69,7 @@ public class MoveAlongPathNode extends BaseAction {
         moveComponent.currentIndex++;
         if (moveComponent.currentIndex < moveComponent.path.size()) {
             WalkableBlock block = moveComponent.path.get(moveComponent.currentIndex);
-            logger.info(" Continue moving along path to step " + moveComponent.currentIndex + " " + block.getBlockPosition());
+            logger.debug(" Continue moving along path to step " + moveComponent.currentIndex + " " + block.getBlockPosition());
             Vector3f pos = new Vector3f(block.getBlockPosition());
             pos.add(new Vector3f(0, 1, 0));
             moveComponent.target = JomlUtil.from(pos);
@@ -78,7 +78,7 @@ public class MoveAlongPathNode extends BaseAction {
         } else {
             pathRenderSystem.removePath(moveComponent.path);
             LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
-            logger.info("Finished moving along path pos = " + locationComponent.getWorldPosition(new Vector3f()) + " " +
+            logger.debug("Finished moving along path pos = " + locationComponent.getWorldPosition(new Vector3f()) + " " +
                 "block = " + moveComponent.currentBlock);
             return BehaviorState.SUCCESS;
         }
