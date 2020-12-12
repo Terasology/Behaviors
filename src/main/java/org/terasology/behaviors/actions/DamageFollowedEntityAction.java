@@ -45,7 +45,7 @@ public class DamageFollowedEntityAction extends BaseAction {
         }
 
         Prefab damageType = EngineDamageTypes.PHYSICAL.get();
-        entityToAttack.send(new DoDamageEvent(damage, damageType));
+        entityToAttack.send(new DoDamageEvent(damage, damageType, actor.getEntity()));
         return BehaviorState.SUCCESS;
     }
 
