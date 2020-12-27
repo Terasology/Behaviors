@@ -126,7 +126,7 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
         if (work == null) {
             return;
         }
-        BlockRegion selection = JomlUtil.from(event.getSelection());
+        BlockRegion selection = event.getSelection();
         Vector3i size = selection.getSize(new Vector3i());
         Vector3i block = new Vector3i();
 

@@ -45,8 +45,9 @@ public class PlaySoundAction extends BaseAction {
                 if (actor.hasComponent(LocationComponent.class)) {
                     Vector3f worldPosition = actor.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
                     audioManager.playSound(snd, worldPosition, volume, AudioManager.PRIORITY_NORMAL, createEndListener(actor));
+
                 } else {
-                    audioManager.playSound(snd, new Vector3f(), volume, AudioManager.PRIORITY_NORMAL, createEndListener(actor));
+                    audioManager.playSound(snd, new org.joml.Vector3f(), volume, AudioManager.PRIORITY_NORMAL, createEndListener(actor));
                 }
                 actor.setValue(getId(), true);
             }

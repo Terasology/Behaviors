@@ -34,6 +34,7 @@ import org.terasology.nui.events.NUIMouseDragEvent;
 import org.terasology.nui.events.NUIMouseReleaseEvent;
 import org.terasology.nui.events.NUIMouseWheelEvent;
 import org.terasology.nui.layouts.ZoomableLayout;
+import org.terasology.world.block.BlockRegion;
 
 /**
  *
@@ -67,13 +68,14 @@ public class GridRenderer extends ZoomableLayout {
             Work work = CoreRegistry.get(WorkFactory.class).getWork("pathfinding:walkToBlock");
             WorkComponent workComponent = new WorkComponent();
             workComponent.uri = work.getUri();
-            EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(workComponent, new LocationComponent(), new CharacterComponent());
+            EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(workComponent, new LocationComponent()
+                , new CharacterComponent());
 
             Vector2f start = screenToWorld(startDrag);
             Vector2f end = screenToWorld(endDrag);
             Vector3i startInt = new Vector3i((int) start.x, y, (int) start.y);
             Vector3i endInt = new Vector3i((int) end.x, y, (int) end.y);
-            Region3i rect = Region3i.createFromMinMax(JomlUtil.from(startInt), JomlUtil.from(endInt));
+            BlockRegion rect = new BlockRegion(startInt, endInt);
             ApplyBlockSelectionEvent selectionEvent = new ApplyBlockSelectionEvent(entityRef, rect);
             entityRef.send(selectionEvent);
             startDrag = null;
