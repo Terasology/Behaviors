@@ -29,6 +29,7 @@ import org.terasology.pathfinding.PathfinderTestGenerator;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.nui.properties.OneOfProviderFactory;
+import org.terasology.world.block.BlockRegion;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -196,7 +197,7 @@ public class ClusterDebugger extends JFrame {
                         item.addComponent(new LocationComponent());
                         item.addComponent(new CharacterComponent());
 
-                        final Region3i selection = Region3i.createFromMinAndSize(new Vector3i(minX, minY, minZ), new Vector3i(maxX, maxY, maxZ));
+                        final BlockRegion selection = new BlockRegion(minX, minY, minZ).setSize(maxX, maxY, maxZ);
                         ApplyBlockSelectionEvent event = new ApplyBlockSelectionEvent(item, selection);
                         item.send(event);
                     } else {
