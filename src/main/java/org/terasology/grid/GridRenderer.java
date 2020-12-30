@@ -3,7 +3,10 @@
 package org.terasology.grid;
 
 import org.joml.Rectanglei;
+import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -16,13 +19,9 @@ import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.selection.ApplyBlockSelectionEvent;
-import org.joml.Vector2f;
-import org.joml.Vector2i;
-import org.joml.Vector3i;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkComponent;
 import org.terasology.minion.work.WorkFactory;
-import org.terasology.registry.CoreRegistry;
 import org.terasology.nui.BaseInteractionListener;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
@@ -32,6 +31,7 @@ import org.terasology.nui.events.NUIMouseDragEvent;
 import org.terasology.nui.events.NUIMouseReleaseEvent;
 import org.terasology.nui.events.NUIMouseWheelEvent;
 import org.terasology.nui.layouts.ZoomableLayout;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.BlockRegion;
 
 /**
@@ -70,9 +70,7 @@ public class GridRenderer extends ZoomableLayout {
 
             Vector2f start = screenToWorld(startDrag);
             Vector2f end = screenToWorld(endDrag);
-            Vector3i startInt = new Vector3i((int) start.x, y, (int) start.y);
-            Vector3i endInt = new Vector3i((int) end.x, y, (int) end.y);
-            BlockRegion rect = new BlockRegion(startInt, endInt);
+            BlockRegion rect = new BlockRegion((int) start.x, y, (int) start.y).union((int) end.x, y, (int) end.y);
             ApplyBlockSelectionEvent selectionEvent = new ApplyBlockSelectionEvent(entityRef, rect);
             entityRef.send(selectionEvent);
             startDrag = null;
