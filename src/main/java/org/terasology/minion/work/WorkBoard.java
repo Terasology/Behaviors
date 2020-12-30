@@ -32,7 +32,6 @@ import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.selection.ApplyBlockSelectionEvent;
 import org.terasology.math.JomlUtil;
-import org.terasology.math.Region3i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.minion.work.kmeans.Cluster;
@@ -43,6 +42,7 @@ import org.terasology.registry.Share;
 import org.terasology.utilities.concurrency.Task;
 import org.terasology.utilities.concurrency.TaskMaster;
 import org.terasology.world.BlockEntityRegistry;
+import org.terasology.world.block.BlockRegion;
 
 import java.util.Map;
 
@@ -126,15 +126,16 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
         if (work == null) {
             return;
         }
-        Region3i selection = event.getSelection();
-        Vector3i size = selection.size();
-        Vector3i block = new Vector3i();
+        BlockRegion selection = event.getSelection();
+        org.joml.Vector3i size = selection.getSize(new org.joml.Vector3i());
+        org.joml.Vector3i min = selection.getMin(new org.joml.Vector3i());
+        org.joml.Vector3i block = new org.joml.Vector3i();
 
         for (int z = 0; z < size.z; z++) {
             for (int y = 0; y < size.y; y++) {
                 for (int x = 0; x < size.x; x++) {
                     block.set(x, y, z);
-                    block.add(selection.min());
+                    block.add(min);
                     EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(block);
                     if (work.isAssignable(blockEntity)) {
                         WorkTargetComponent workTargetComponent = blockEntity.getComponent(WorkTargetComponent.class);

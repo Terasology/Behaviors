@@ -3,6 +3,10 @@
 package org.terasology.grid;
 
 import org.joml.Rectanglei;
+import org.joml.Vector2f;
+import org.joml.Vector2i;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -16,15 +20,9 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.selection.ApplyBlockSelectionEvent;
 import org.terasology.math.JomlUtil;
-import org.terasology.math.Region3i;
-import org.terasology.math.geom.Vector3f;
-import org.joml.Vector2f;
-import org.joml.Vector2i;
-import org.joml.Vector3i;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkComponent;
 import org.terasology.minion.work.WorkFactory;
-import org.terasology.registry.CoreRegistry;
 import org.terasology.nui.BaseInteractionListener;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
@@ -34,6 +32,8 @@ import org.terasology.nui.events.NUIMouseDragEvent;
 import org.terasology.nui.events.NUIMouseReleaseEvent;
 import org.terasology.nui.events.NUIMouseWheelEvent;
 import org.terasology.nui.layouts.ZoomableLayout;
+import org.terasology.registry.CoreRegistry;
+import org.terasology.world.block.BlockRegion;
 
 /**
  *
@@ -73,7 +73,7 @@ public class GridRenderer extends ZoomableLayout {
             Vector2f end = screenToWorld(endDrag);
             Vector3i startInt = new Vector3i((int) start.x, y, (int) start.y);
             Vector3i endInt = new Vector3i((int) end.x, y, (int) end.y);
-            Region3i rect = Region3i.createFromMinMax(JomlUtil.from(startInt), JomlUtil.from(endInt));
+            BlockRegion rect = new BlockRegion(startInt, endInt);
             ApplyBlockSelectionEvent selectionEvent = new ApplyBlockSelectionEvent(entityRef, rect);
             entityRef.send(selectionEvent);
             startDrag = null;
@@ -112,7 +112,7 @@ public class GridRenderer extends ZoomableLayout {
 
         canvas.addInteractionRegion(listener);
 
-        Vector3f playerPosition = CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocationComponent.class).getWorldPosition();
+        Vector3f playerPosition = CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
         Vector2f windowSize = getWindowSize();
         Vector2f topLeft = new Vector2f(playerPosition.x - windowSize.x / 2, playerPosition.z - windowSize.y / 2);
         setWindowPosition(topLeft);
@@ -136,7 +136,7 @@ public class GridRenderer extends ZoomableLayout {
         }
 
         for (EntityRef entity : CoreRegistry.get(EntityManager.class).getEntitiesWith(LocationComponent.class, CharacterComponent.class)) {
-            Vector3f worldPos = entity.getComponent(LocationComponent.class).getWorldPosition();
+            Vector3f worldPos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             Vector2i min = worldToScreen(new Vector2f(worldPos.x - 0.4f, worldPos.z - 0.4f));
             Vector2i max = worldToScreen(new Vector2f(worldPos.x + 0.4f, worldPos.z + 0.4f));
             entityRenderer.renderBlock(canvas, entity, new Rectanglei(min, max));
