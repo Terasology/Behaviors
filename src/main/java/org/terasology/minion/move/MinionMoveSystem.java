@@ -79,7 +79,7 @@ public class MinionMoveSystem extends BaseComponentSystem {
         WalkableBlock block = pathfinderSystem.getBlock(minion);
         moveComponent.currentBlock = block;
         if (block != null && moveComponent.target == null) {
-            moveComponent.target = JomlUtil.from(new Vector3f(block.getBlockPosition()));
+            moveComponent.target = new Vector3f(block.getBlockPosition());
         }
         minion.saveComponent(moveComponent);
     }

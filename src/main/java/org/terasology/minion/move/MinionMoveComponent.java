@@ -15,8 +15,8 @@
  */
 package org.terasology.minion.move;
 
+import org.joml.Vector3f;
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.model.Path;
 import org.terasology.persistence.typeHandling.annotations.SerializedName;

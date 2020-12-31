@@ -3,6 +3,7 @@
 package org.terasology.behaviors.actions;
 
 import com.google.common.collect.Lists;
+import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -11,7 +12,6 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.characters.AliveCharacterComponent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
@@ -34,7 +34,7 @@ public class FollowPlayerWithinRangeAction extends BaseAction {
         if (actorLocationComponent == null) {
             return BehaviorState.FAILURE;
         }
-        Vector3f actorPosition = actorLocationComponent.getWorldPosition();
+        Vector3f actorPosition = actorLocationComponent.getWorldPosition(new Vector3f());
 
         float maxDistanceSquared = (float) Math.pow(maxDistance, 2);
         Iterable<EntityRef> clients = entityManager.getEntitiesWith(ClientComponent.class);
@@ -43,6 +43,7 @@ public class FollowPlayerWithinRangeAction extends BaseAction {
         EntityRef closestCharacter = EntityRef.NULL;
         float minDistanceFromCharacter = 0.0f;
 
+        Vector3f locationPosition = new Vector3f();
         for (EntityRef client : clients) {
             ClientComponent clientComponent = client.getComponent(ClientComponent.class);
             EntityRef character = clientComponent.character;
@@ -54,14 +55,15 @@ public class FollowPlayerWithinRangeAction extends BaseAction {
             if (locationComponent == null) {
                 continue;
             }
-            if (locationComponent.getWorldPosition().distanceSquared(actorPosition) <= maxDistanceSquared) {
+            locationComponent.getWorldPosition(locationPosition);
+            if (locationPosition.distanceSquared(actorPosition) <= maxDistanceSquared) {
                 if (charactersWithinRange.size() == 0) {
                     closestCharacter = character;
-                    minDistanceFromCharacter = locationComponent.getWorldPosition().distanceSquared(actorPosition);
+                    minDistanceFromCharacter = locationPosition.distanceSquared(actorPosition);
                 } else {
-                    if (locationComponent.getWorldPosition().distanceSquared(actorPosition) < minDistanceFromCharacter) {
+                    if (locationPosition.distanceSquared(actorPosition) < minDistanceFromCharacter) {
                         closestCharacter = character;
-                        minDistanceFromCharacter = locationComponent.getWorldPosition().distanceSquared(actorPosition);
+                        minDistanceFromCharacter = locationPosition.distanceSquared(actorPosition);
                     }
                 }
 

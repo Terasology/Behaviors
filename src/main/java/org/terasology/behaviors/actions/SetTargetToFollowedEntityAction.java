@@ -15,6 +15,7 @@
  */
 package org.terasology.behaviors.actions;
 
+import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
@@ -34,7 +35,7 @@ public class SetTargetToFollowedEntityAction extends BaseAction {
         if (moveComponent.currentBlock != null) {
             EntityRef followedEntity = actor.getComponent(FollowComponent.class).entityToFollow;
             if (followedEntity != null && followedEntity != EntityRef.NULL) {
-                moveComponent.target = followedEntity.getComponent(LocationComponent.class).getWorldPosition();
+                moveComponent.target = followedEntity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
                 actor.save(moveComponent);
             } else {
                 return BehaviorState.FAILURE;

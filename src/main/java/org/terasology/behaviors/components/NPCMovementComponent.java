@@ -15,8 +15,8 @@
  */
 package org.terasology.behaviors.components;
 
+import org.joml.Vector3f;
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Vector3f;
 
 /**
  * Non player characters should have this components even if they don't move, so that movement input gets simulated fo

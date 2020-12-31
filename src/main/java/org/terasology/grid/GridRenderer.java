@@ -66,7 +66,8 @@ public class GridRenderer extends ZoomableLayout {
             Work work = CoreRegistry.get(WorkFactory.class).getWork("pathfinding:walkToBlock");
             WorkComponent workComponent = new WorkComponent();
             workComponent.uri = work.getUri();
-            EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(workComponent, new LocationComponent(), new CharacterComponent());
+            EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(workComponent, new LocationComponent()
+                , new CharacterComponent());
 
             Vector2f start = screenToWorld(startDrag);
             Vector2f end = screenToWorld(endDrag);

@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
+import org.joml.Vector3f;
 import org.terasology.behaviors.components.TargetComponent;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.nui.properties.Range;
 
 /**
@@ -43,7 +43,7 @@ public class CheckTargetStopAction extends BaseAction {
         if (actorLocationComponent == null) {
             return BehaviorState.FAILURE;
         }
-        Vector3f actorPosition = actorLocationComponent.getWorldPosition();
+        Vector3f actorPosition = actorLocationComponent.getWorldPosition(new Vector3f());
 
         float maxDistanceSquared = this.maxDistance * this.maxDistance;
         TargetComponent targetWish = actor.getComponent(TargetComponent.class);
@@ -63,7 +63,7 @@ public class CheckTargetStopAction extends BaseAction {
         if (locationComponent == null) {
             return BehaviorState.FAILURE;
         }
-        if (locationComponent.getWorldPosition().distanceSquared(actorPosition) <= maxDistanceSquared) {
+        if (locationComponent.getWorldPosition(new Vector3f()).distanceSquared(actorPosition) <= maxDistanceSquared) {
             return BehaviorState.SUCCESS;
         }
         return BehaviorState.FAILURE;

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.move;
 
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.TargetComponent;
@@ -11,8 +12,8 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.characters.CharacterMoveInputEvent;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.TeraMath;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.nui.properties.Range;
 
 /**
@@ -28,8 +29,8 @@ public class LookAtAction extends BaseAction {
 
     /**
      * The maximum angle (in degrees) between the current view direction, and the view direction to the target, below
-     * which the {@code Actor} will be considered "looking at" the target. I.e. the Actor will continue turning
-     * toward the target until {@code Math.abs(requestedAngle - currentAngle) < maxAngleDegrees}
+     * which the {@code Actor} will be considered "looking at" the target. I.e. the Actor will continue turning toward
+     * the target until {@code Math.abs(requestedAngle - currentAngle) < maxAngleDegrees}
      */
     @Range(min = 0, max = 10)
     private float maxAngleDegrees = 2f;
@@ -47,10 +48,10 @@ public class LookAtAction extends BaseAction {
     private BehaviorState process(Actor actor, TargetComponent targetComponent) {
 
         LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
-        Vector3f worldPos = new Vector3f(locationComponent.getWorldPosition());
-        Vector3f targetDirection = new Vector3f();
         LocationComponent targetLocation = targetComponent.target.getComponent(LocationComponent.class);
-        targetDirection.sub(targetLocation.getWorldPosition(), worldPos);
+        Vector3f locationPosition = locationComponent.getWorldPosition(new Vector3f());
+        Vector3f targetPosition = targetLocation.getWorldPosition(new Vector3f());
+        Vector3f targetDirection = targetPosition.sub(locationPosition, new Vector3f());
         Vector3f drive = new Vector3f(); // Leave blank for no movement
 
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
@@ -69,18 +70,17 @@ public class LookAtAction extends BaseAction {
         targetDirection.normalize();
 
         CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(
-                0,
-                0,
-                requestedYaw,
-                drive,
-                false,
-                false,
-                false,
-                (long) (actor.getDelta() * 1000));
+            0,
+            0,
+            requestedYaw,
+            JomlUtil.from(drive),
+            false,
+            false,
+            false,
+            (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
 
         // TODO Some kind of ray cast to see if there are any obstacles
         return BehaviorState.SUCCESS;
     }
-
 }

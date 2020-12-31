@@ -36,8 +36,6 @@ public class JumpNode extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
-
-
         long delta = (long) (actor.getDelta() * 1000);
         Event event = new CharacterMoveInputEvent(0, 0, 0, new Vector3f(), false, false, true, delta);
         actor.getEntity().send(event);
@@ -46,8 +44,7 @@ public class JumpNode extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-
-        return actor.getComponent(CharacterMovementComponent.class).grounded ? BehaviorState.SUCCESS : BehaviorState.RUNNING;
+        return actor.getComponent(CharacterMovementComponent.class).grounded ? BehaviorState.SUCCESS :
+            BehaviorState.RUNNING;
     }
-
 }

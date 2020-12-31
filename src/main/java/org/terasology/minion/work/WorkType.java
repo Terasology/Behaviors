@@ -17,10 +17,9 @@ package org.terasology.minion.work;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.math.JomlUtil;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.navgraph.WalkableBlock;
 
@@ -51,7 +50,7 @@ public class WorkType {
 
             @Override
             public float distance(Vector3i element, Vector3f target) {
-                Vector3f diff = element.toVector3f();
+                Vector3f diff = new Vector3f(element);
                 diff.sub(target);
                 return diff.length();
             }
@@ -80,8 +79,8 @@ public class WorkType {
             if (workComponent.assignedMinion == null && workComponent.isRequestable(workEntity)) {
                 requestableWork.add(workEntity);
                 for (WalkableBlock block : work.getTargetPositions(workEntity)) {
-                    cluster.add(JomlUtil.from(block.getBlockPosition()));
-                    mapping.put(JomlUtil.from(block.getBlockPosition()), workEntity);
+                    cluster.add(block.getBlockPosition());
+                    mapping.put(block.getBlockPosition(), workEntity);
                 }
             } else {
                 remove(workEntity);
@@ -104,8 +103,8 @@ public class WorkType {
             openWork.remove(workEntity);
             requestableWork.remove(workEntity);
             for (WalkableBlock block : work.getTargetPositions(workEntity)) {
-                cluster.remove(JomlUtil.from(block.getBlockPosition()));
-                mapping.remove(JomlUtil.from(block.getBlockPosition()));
+                cluster.remove(block.getBlockPosition());
+                mapping.remove(block.getBlockPosition());
             }
         }
     }
@@ -120,8 +119,8 @@ public class WorkType {
         }
         requestableWork.remove(workEntity);
         for (WalkableBlock block : work.getTargetPositions(workEntity)) {
-            cluster.remove(JomlUtil.from(block.getBlockPosition()));
-            mapping.remove(JomlUtil.from(block.getBlockPosition()));
+            cluster.remove(block.getBlockPosition());
+            mapping.remove(block.getBlockPosition());
         }
     }
 

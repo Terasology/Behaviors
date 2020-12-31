@@ -23,7 +23,6 @@ import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathRenderSystem;
 import org.terasology.pathfinding.model.Path;
@@ -55,7 +54,7 @@ public class MoveAlongPathNode extends BaseAction {
             moveComponent.currentIndex = 0;
             WalkableBlock block = moveComponent.path.get(moveComponent.currentIndex);
             logger.debug("Start moving along path to step " + moveComponent.currentIndex + " " + block.getBlockPosition());
-            moveComponent.target = JomlUtil.from(new Vector3f(block.getBlockPosition()));
+            moveComponent.target = new Vector3f(block.getBlockPosition());
             actor.save(moveComponent);
         }
     }
@@ -72,7 +71,7 @@ public class MoveAlongPathNode extends BaseAction {
             logger.debug(" Continue moving along path to step " + moveComponent.currentIndex + " " + block.getBlockPosition());
             Vector3f pos = new Vector3f(block.getBlockPosition());
             pos.add(new Vector3f(0, 1, 0));
-            moveComponent.target = JomlUtil.from(pos);
+            moveComponent.target = pos;
             actor.save(moveComponent);
             return BehaviorState.RUNNING;
         } else {

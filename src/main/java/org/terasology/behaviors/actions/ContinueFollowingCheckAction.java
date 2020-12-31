@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
+import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.nui.properties.Range;
 
@@ -37,13 +37,13 @@ public class ContinueFollowingCheckAction extends BaseAction {
         if (targetLocation == null) {
             return BehaviorState.FAILURE;
         }
-        Vector3f targetPoint = targetLocation.getWorldPosition();
+        Vector3f targetPoint = targetLocation.getWorldPosition(new Vector3f());
 
         LocationComponent currentLocation = actor.getComponent(LocationComponent.class);
         if (currentLocation == null) {
             return BehaviorState.FAILURE;
         }
-        Vector3f currentPoint = currentLocation.getWorldPosition();
+        Vector3f currentPoint = currentLocation.getWorldPosition(new Vector3f());
 
         float minDistanceSquared = minDistance * minDistance;
         float maxDistanceSquared = maxDistance * maxDistance;

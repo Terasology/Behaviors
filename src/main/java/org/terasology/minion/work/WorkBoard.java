@@ -16,6 +16,7 @@
 package org.terasology.minion.work;
 
 import com.google.common.collect.Maps;
+import org.joml.Vector3i;
 import org.joml.Vector3ic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +33,6 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.selection.ApplyBlockSelectionEvent;
-import org.terasology.math.JomlUtil;
-import org.terasology.math.Region3i;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.navgraph.NavGraphChanged;
@@ -312,7 +310,7 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
             if (block == null) {
                 throw new IllegalStateException("No block " + target);
             }
-            Vector3i currentPosition = JomlUtil.from(block.getBlockPosition());
+            Vector3i currentPosition = block.getBlockPosition();
             Cluster nearestCluster = workType.getCluster().findNearestCluster(currentPosition);
             if (nearestCluster != null) {
                 Vector3i nearestTarget = nearestCluster.findNearest(currentPosition);
