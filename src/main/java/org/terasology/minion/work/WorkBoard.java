@@ -16,6 +16,7 @@
 package org.terasology.minion.work;
 
 import com.google.common.collect.Maps;
+import org.joml.Vector3i;
 import org.joml.Vector3ic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,6 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.selection.ApplyBlockSelectionEvent;
-import org.terasology.math.JomlUtil;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.navgraph.NavGraphChanged;
