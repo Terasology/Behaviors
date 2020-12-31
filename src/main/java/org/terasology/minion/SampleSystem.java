@@ -15,7 +15,7 @@
  */
 package org.terasology.minion;
 
-import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -50,14 +50,8 @@ public class SampleSystem extends BaseComponentSystem {
             return;
         }
         Block solid = blockManager.getBlock(buildWallComponent.blockType);
-        Vector3i size = event.getSelection().getSize(new Vector3i());
-        Vector3i pos = event.getSelection().getMin(new Vector3i());
-        for (int z = 0; z < size.z; z++) {
-            for (int y = 0; y < size.y; y++) {
-                for (int x = 0; x < size.x; x++) {
-                    worldProvider.setBlock(new Vector3i(pos.x + x, pos.y + y, pos.z + z), solid);
-                }
-            }
+        for(Vector3ic pos: event.getSelection()) {
+            worldProvider.setBlock(pos, solid);
         }
     }
 

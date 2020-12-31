@@ -16,7 +16,7 @@
 package org.terasology.minion.work;
 
 import com.google.common.collect.Maps;
-import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -127,25 +127,16 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
             return;
         }
         BlockRegion selection = event.getSelection();
-        Vector3i size = selection.getSize(new Vector3i());
-        Vector3i block = new Vector3i();
-
-        for (int z = 0; z < size.z; z++) {
-            for (int y = 0; y < size.y; y++) {
-                for (int x = 0; x < size.x; x++) {
-                    block.set(x, y, z);
-                    block.add(selection.getMin(new Vector3i()));
-                    EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(block);
-                    if (work.isAssignable(blockEntity)) {
-                        WorkTargetComponent workTargetComponent = blockEntity.getComponent(WorkTargetComponent.class);
-                        if (workTargetComponent != null) {
-                            blockEntity.removeComponent(WorkTargetComponent.class);
-                        }
-                        workTargetComponent = new WorkTargetComponent();
-                        workTargetComponent.setWork(work);
-                        blockEntity.addComponent(workTargetComponent);
-                    }
+        for (Vector3ic pos : selection) {
+            EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(pos);
+            if (work.isAssignable(blockEntity)) {
+                WorkTargetComponent workTargetComponent = blockEntity.getComponent(WorkTargetComponent.class);
+                if (workTargetComponent != null) {
+                    blockEntity.removeComponent(WorkTargetComponent.class);
                 }
+                workTargetComponent = new WorkTargetComponent();
+                workTargetComponent.setWork(work);
+                blockEntity.addComponent(workTargetComponent);
             }
         }
     }
