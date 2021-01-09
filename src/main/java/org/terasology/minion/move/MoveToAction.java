@@ -11,7 +11,6 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.characters.CharacterMoveInputEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.math.TeraMath;
 import org.terasology.nui.properties.Range;
 
@@ -77,7 +76,7 @@ public class MoveToAction extends BaseAction {
         }
 
         CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, requestedYaw,
-            JomlUtil.from(drive), false, false,
+            drive, false, false,
             moveComponent.jumpMode, (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
 
