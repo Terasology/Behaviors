@@ -51,9 +51,9 @@ public class WorkRenderSystem extends BaseComponentSystem implements RenderSyste
             pos.set((int) worldPosition.x, (int) worldPosition.y, (int) worldPosition.z);
             WorkTargetComponent work = entityRef.getComponent(WorkTargetComponent.class);
             if (work.isRequestable(entityRef)) {
-                selectionRenderer.renderMark(JomlUtil.from(pos));
+                selectionRenderer.renderMark(pos);
             } else if (work.isAssignable(entityRef)) {
-                selectionRenderer.renderMark2(JomlUtil.from(pos));
+                selectionRenderer.renderMark2(pos);
             }
         }
         selectionRenderer.endRenderOverlay();
