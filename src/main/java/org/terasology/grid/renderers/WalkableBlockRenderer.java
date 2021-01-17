@@ -3,17 +3,16 @@
 package org.terasology.grid.renderers;
 
 import org.joml.Rectanglei;
+import org.joml.Vector3i;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.grid.BlockRenderer;
-import org.joml.Vector3i;
-import org.terasology.math.JomlUtil;
 import org.terasology.navgraph.NavGraphSystem;
 import org.terasology.navgraph.WalkableBlock;
-import org.terasology.registry.In;
-import org.terasology.registry.Share;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
+import org.terasology.registry.In;
+import org.terasology.registry.Share;
 
 /**
  * Created by synopia on 12.02.14.
