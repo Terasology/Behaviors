@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.move;
 
+import org.joml.Math;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,6 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.characters.CharacterMoveInputEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.TeraMath;
 import org.terasology.nui.properties.Range;
 
 import static org.joml.Math.abs;
@@ -65,7 +65,7 @@ public class MoveToAction extends BaseAction {
         Vector3f targetDirection = moveComponent.target.sub(worldPos, new Vector3f());
         Vector3f drive = new Vector3f();
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
-        float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
+        float requestedYaw = (float) (180f + Math.toDegrees(yaw));
 
         if (abs(targetDirection.x) < distance && (abs(targetDirection.y) < 2f) && (abs(targetDirection.z) < distance)) {
             drive.set(0, 0, 0);
