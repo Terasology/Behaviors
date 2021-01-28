@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.grid.renderers;
 
-import org.joml.Rectanglei;
+import org.terasology.joml.geom.Rectanglei;
 import org.joml.Vector2fc;
 import org.joml.Vector3i;
 import org.terasology.entitySystem.systems.BaseComponentSystem;

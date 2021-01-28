@@ -9,7 +9,6 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.math.JomlUtil;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkFactory;
 import org.terasology.minion.work.WorkTargetComponent;
@@ -68,7 +67,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
         if (block == null || !block.hasComponent(BlockComponent.class) || blockType == null) {
             return targetPositions;
         }
-        Vector3i position = new Vector3i(JomlUtil.from(block.getComponent(BlockComponent.class).position));
+        Vector3i position = block.getComponent(BlockComponent.class).getPosition(new Vector3i());
         position.y--;
         WalkableBlock walkableBlock = pathfinderSystem.getBlock(position);
         if (walkableBlock != null) {
@@ -81,7 +80,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     @Override
     public boolean canMinionWork(EntityRef block, EntityRef minion) {
         WalkableBlock actualBlock = pathfinderSystem.getBlock(minion);
-        Vector3i position = new Vector3i(JomlUtil.from(block.getComponent(BlockComponent.class).position));
+        Vector3i position = block.getComponent(BlockComponent.class).getPosition(new Vector3i());
         position.y--;
         WalkableBlock expectedBlock = pathfinderSystem.getBlock(position);
         return actualBlock == expectedBlock && blockType != null;
@@ -89,7 +88,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
 
     @Override
     public boolean isAssignable(EntityRef block) {
-        Vector3i position = new Vector3i(JomlUtil.from(block.getComponent(BlockComponent.class).position));
+        Vector3i position = block.getComponent(BlockComponent.class).getPosition(new Vector3i());
         Block type = worldProvider.getBlock(position);
         return type.isPenetrable() && blockType != null;
     }
@@ -102,7 +101,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
 
     @Override
     public boolean isRequestable(EntityRef block) {
-        Vector3i position = new Vector3i(JomlUtil.from(block.getComponent(BlockComponent.class).position));
+        Vector3i position = block.getComponent(BlockComponent.class).getPosition(new Vector3i());
         Vector3i pos = new Vector3i();
         for (int[] neighbor : DIRECT_NEIGHBORS) {
             pos.set(position.x + neighbor[0], position.y + neighbor[1], position.z + neighbor[2]);

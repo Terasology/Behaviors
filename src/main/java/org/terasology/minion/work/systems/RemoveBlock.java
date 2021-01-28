@@ -11,7 +11,6 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkFactory;
 import org.terasology.minion.work.WorkTargetComponent;
@@ -71,7 +70,7 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
     public List<WalkableBlock> getTargetPositions(EntityRef block) {
         List<WalkableBlock> result = Lists.newArrayList();
 
-        Vector3i worldPos = JomlUtil.from(block.getComponent(BlockComponent.class).position);
+        Vector3i worldPos = block.getComponent(BlockComponent.class).getPosition(new Vector3i());
         WalkableBlock walkableBlock;
         Vector3i pos = new Vector3i();
         for (int[] neighbor : NEIGHBORS) {

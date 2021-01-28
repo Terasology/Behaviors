@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.move;
 
+import org.joml.Math;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,6 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.characters.CharacterMoveInputEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.TeraMath;
 import org.terasology.nui.properties.Range;
 
 /**
@@ -54,8 +54,8 @@ public class LookAtAction extends BaseAction {
         Vector3f drive = new Vector3f(); // Leave blank for no movement
 
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
-        float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
-        float currentYaw = locationComponent.getLocalRotation().getYaw() * TeraMath.RAD_TO_DEG;
+        float requestedYaw = (float) (180f + Math.toDegrees(yaw));
+        float currentYaw = (float) Math.toDegrees(locationComponent.getLocalRotation().getYaw());
         // Negative values should be wrapped around
         float correctedYaw = currentYaw < 0 ? currentYaw + 360f : currentYaw;
 
