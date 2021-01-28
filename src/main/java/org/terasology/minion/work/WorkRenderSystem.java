@@ -24,7 +24,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.RenderSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.registry.In;
 import org.terasology.rendering.world.selection.BlockSelectionRenderer;
 import org.terasology.utilities.Assets;

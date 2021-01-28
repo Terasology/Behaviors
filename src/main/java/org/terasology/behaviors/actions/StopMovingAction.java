@@ -21,7 +21,6 @@ import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.characters.CharacterMoveInputEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.TeraMath;
 import org.terasology.minion.move.MinionMoveComponent;
 
 @BehaviorAction(name = "stop_moving")
@@ -37,7 +36,6 @@ public class StopMovingAction extends BaseAction {
         Vector3f targetDirection = moveComponent.target.sub(worldPos, new Vector3f());
 
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
-        float requestedYaw = 180f + yaw * TeraMath.RAD_TO_DEG;
 
         CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, 0, new Vector3f(), false, false, false, (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);

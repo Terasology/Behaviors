@@ -15,8 +15,10 @@
  */
 package org.terasology.behaviors.system;
 
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.behaviors.components.FindNearbyPlayersComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -25,12 +27,9 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.characters.AliveCharacterComponent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
-import org.terasology.behaviors.components.FindNearbyPlayersComponent;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -65,12 +64,12 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
             if (locationComponent == null) {
                 continue;
             }
-            clientLocationMap.put(locationComponent.getWorldPosition(), character);
+            clientLocationMap.put(locationComponent.getWorldPosition(new Vector3f()), character);
         }
         Set<Vector3f> locationSet = clientLocationMap.keySet();
 
         for (EntityRef entity : entityManager.getEntitiesWith(FindNearbyPlayersComponent.class)) {
-            Vector3f actorPosition = entity.getComponent(LocationComponent.class).getWorldPosition();
+            Vector3f actorPosition = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             FindNearbyPlayersComponent findNearbyPlayersComponent = entity.getComponent(FindNearbyPlayersComponent.class);
             float maxDistance = findNearbyPlayersComponent.searchRadius;
             float maxDistanceSquared = maxDistance * maxDistance;
@@ -86,7 +85,7 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
                 continue;
             }
 
-            List<EntityRef> charactersWithinRange = 
+            List<EntityRef> charactersWithinRange =
             	inRange.stream().map(clientLocationMap::get).collect(Collectors.toList());
 
             if (!isEqual(charactersWithinRange, findNearbyPlayersComponent.charactersWithinRange)) {

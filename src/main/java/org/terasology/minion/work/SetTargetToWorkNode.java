@@ -21,7 +21,6 @@ import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.math.JomlUtil;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.navgraph.WalkableBlock;
 

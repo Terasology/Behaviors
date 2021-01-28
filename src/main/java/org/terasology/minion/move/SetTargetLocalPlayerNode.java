@@ -21,7 +21,6 @@ import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.JomlUtil;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.registry.In;

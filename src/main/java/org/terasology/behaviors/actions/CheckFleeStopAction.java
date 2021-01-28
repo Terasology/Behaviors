@@ -15,6 +15,7 @@
  */
 package org.terasology.behaviors.actions;
 
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.FleeingComponent;
@@ -24,7 +25,6 @@ import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 
 
 @BehaviorAction(name = "check_flee_stop")
@@ -48,8 +48,8 @@ public class CheckFleeStopAction extends BaseAction {
         if (currentLocation == null) {
             return BehaviorState.FAILURE;
         }
-        Vector3f instigatorLocation = currentLocation.getWorldPosition();
-        Vector3f selfLocation = targetLocation.getWorldPosition();
+        Vector3f instigatorLocation = currentLocation.getWorldPosition(new Vector3f());
+        Vector3f selfLocation = targetLocation.getWorldPosition(new Vector3f());
         float currentDistanceSquared = selfLocation.distanceSquared(instigatorLocation);
 
         float minDistance = fleeingComponent.minDistance;
