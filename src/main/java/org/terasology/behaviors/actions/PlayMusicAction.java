@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
@@ -12,9 +12,9 @@ import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.module.sandbox.API;
-import org.terasology.registry.In;
 import org.terasology.nui.properties.OneOf;
 import org.terasology.nui.properties.Range;
+import org.terasology.registry.In;
 
 /**
  * Plays music in background. Return SUCCESS when music ends.

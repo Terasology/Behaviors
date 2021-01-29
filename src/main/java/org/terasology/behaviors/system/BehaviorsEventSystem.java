@@ -1,7 +1,11 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.system;
 
+import org.terasology.behaviors.components.AttackOnHitComponent;
+import org.terasology.behaviors.components.FleeOnHitComponent;
+import org.terasology.behaviors.components.FleeingComponent;
+import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -10,11 +14,7 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterMovementComponent;
 import org.terasology.logic.health.event.OnDamagedEvent;
-import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.registry.In;
-import org.terasology.behaviors.components.AttackOnHitComponent;
-import org.terasology.behaviors.components.FleeingComponent;
-import org.terasology.behaviors.components.FleeOnHitComponent;
 
 
 /*
