@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
@@ -11,9 +11,9 @@ import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.math.geom.Rect2i;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.navgraph.WalkableBlock;
+import org.terasology.world.block.BlockArea;
 
 import java.util.List;
 import java.util.Random;
@@ -35,7 +35,7 @@ public class NearbyBlockRestricted extends BaseAction {
     /**
      * The world region that this character is allowed to stray in. Defines an x&z area in world space.
      */
-    private Rect2i allowedRegion;
+    private BlockArea allowedRegion = new BlockArea(BlockArea.INVALID);
 
     /**
      * The probability out of 100 that this character will have a new target selected when this node is run.
@@ -50,7 +50,7 @@ public class NearbyBlockRestricted extends BaseAction {
         }
 
         StrayRestrictionComponent strayRestriction = actor.getComponent(StrayRestrictionComponent.class);
-        allowedRegion = strayRestriction.allowedRegion;
+        allowedRegion.set(strayRestriction.allowedRegion);
     }
 
     @Override
