@@ -1,19 +1,19 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.grid.renderers;
 
-import org.terasology.joml.geom.Rectanglei;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.grid.EntityRenderer;
+import org.terasology.joml.geom.Rectanglei;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.minion.move.MinionMoveComponent;
-import org.terasology.registry.Share;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
+import org.terasology.registry.Share;
 
 /**
  *

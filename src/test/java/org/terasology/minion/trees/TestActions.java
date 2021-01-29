@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.trees;
 
@@ -13,9 +13,9 @@ import org.terasology.logic.behavior.core.BehaviorTreeBuilder;
 import org.terasology.logic.behavior.nui.BehaviorEditor;
 import org.terasology.logic.behavior.nui.BehaviorNodeFactory;
 import org.terasology.naming.Name;
+import org.terasology.nui.properties.OneOfProviderFactory;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.InjectionHelper;
-import org.terasology.nui.properties.OneOfProviderFactory;
 
 public class TestActions {
     @Test

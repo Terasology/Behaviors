@@ -1,9 +1,10 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector3f;
+import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -12,10 +13,9 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.characters.AliveCharacterComponent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.network.ClientComponent;
-import org.terasology.registry.In;
 import org.terasology.nui.properties.Range;
+import org.terasology.registry.In;
 
 import java.util.List;
 

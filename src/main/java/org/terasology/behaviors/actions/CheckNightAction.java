@@ -1,12 +1,12 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
+import org.terasology.behaviors.system.NightTrackerSystem;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.behaviors.system.NightTrackerSystem;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 

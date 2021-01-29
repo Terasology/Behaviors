@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work;
 
@@ -8,9 +8,9 @@ import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.nui.properties.OneOf;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.nui.properties.OneOf;
 
 /**
  * <b>Properties</b>: <b>filter</b><br/>

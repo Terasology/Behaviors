@@ -1,8 +1,7 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.grid;
 
-import org.terasology.joml.geom.Rectanglei;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
@@ -15,6 +14,7 @@ import org.terasology.grid.renderers.DefaultBlockRenderer;
 import org.terasology.grid.renderers.WalkableBlockRenderer;
 import org.terasology.grid.renderers.WorkRenderer;
 import org.terasology.input.Keyboard;
+import org.terasology.joml.geom.Rectanglei;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
