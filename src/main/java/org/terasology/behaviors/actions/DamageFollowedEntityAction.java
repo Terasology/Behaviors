@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.actions;
 
+import org.joml.Vector3f;
 import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -40,7 +41,9 @@ public class DamageFollowedEntityAction extends BaseAction {
         if (healthComponent == null) {
             return BehaviorState.FAILURE;
         }
-        if (actor.getComponent(LocationComponent.class).getWorldPosition().distance(entityToAttack.getComponent(LocationComponent.class).getWorldPosition()) > attackRange) {
+        Vector3f actorPos = actor.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+        Vector3f targetPos = entityToAttack.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+        if (actorPos.distance(targetPos) > attackRange) {
             return BehaviorState.FAILURE;
         }
 
