@@ -55,7 +55,8 @@ public class LookAtAction extends BaseAction {
 
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
         float requestedYaw = (float) (180f + Math.toDegrees(yaw));
-        float currentYaw = (float) Math.toDegrees(locationComponent.getLocalRotation().getYaw());
+        Vector3f eulerAngles = locationComponent.getLocalRotation().getEulerAnglesXYZ(new Vector3f());
+        float currentYaw = (float) Math.toDegrees(eulerAngles.y());
         // Negative values should be wrapped around
         float correctedYaw = currentYaw < 0 ? currentYaw + 360f : currentYaw;
 
