@@ -1,9 +1,10 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work.systems;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.terasology.engine.SimpleUri;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -96,7 +97,8 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     @Override
     public void letMinionWork(EntityRef block, EntityRef minion) {
         block.removeComponent(WorkTargetComponent.class);
-        worldProvider.setBlock(block.getComponent(BlockComponent.class).position, blockType);
+        Vector3ic pos = block.getComponent(BlockComponent.class).getPosition();
+        worldProvider.setBlock(pos, blockType);
     }
 
     @Override

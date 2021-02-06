@@ -1,10 +1,11 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work.systems;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.terasology.engine.SimpleUri;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -95,12 +96,14 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
     @Override
     public void letMinionWork(EntityRef block, EntityRef minion) {
         block.removeComponent(WorkTargetComponent.class);
-        worldProvider.setBlock(block.getComponent(BlockComponent.class).position, workFactory.getAir());
+        Vector3ic pos = block.getComponent(BlockComponent.class).getPosition();
+        worldProvider.setBlock(pos, workFactory.getAir());
     }
 
     @Override
     public boolean isAssignable(EntityRef block) {
-        Block type = worldProvider.getBlock(block.getComponent(BlockComponent.class).position);
+        Vector3ic pos = block.getComponent(BlockComponent.class).getPosition();
+        Block type = worldProvider.getBlock(pos);
         return !type.isPenetrable();
     }
 
