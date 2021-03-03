@@ -16,6 +16,7 @@
 package org.terasology.minion.move;
 
 import com.google.common.collect.Sets;
+import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeDeactivateComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
@@ -77,7 +78,7 @@ public class MinionMoveSystem extends BaseComponentSystem {
         WalkableBlock block = pathfinderSystem.getBlock(minion);
         moveComponent.currentBlock = block;
         if (block != null && moveComponent.target == null) {
-            moveComponent.target = block.getBlockPosition().toVector3f();
+            moveComponent.target = new Vector3f(block.getBlockPosition());
         }
         minion.saveComponent(moveComponent);
     }

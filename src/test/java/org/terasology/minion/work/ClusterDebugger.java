@@ -1,21 +1,9 @@
-/*
- * Copyright 2020 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work;
 
 import com.google.common.collect.Sets;
+import org.joml.Vector3i;
 import org.terasology.WorldProvidingHeadlessEnvironment;
 import org.terasology.core.world.generator.AbstractBaseWorldGenerator;
 import org.terasology.engine.ComponentSystemManager;
@@ -27,8 +15,6 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.selection.ApplyBlockSelectionEvent;
-import org.terasology.math.Region3i;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.minion.work.systems.WalkToBlock;
@@ -37,10 +23,11 @@ import org.terasology.navgraph.Entrance;
 import org.terasology.navgraph.Floor;
 import org.terasology.navgraph.NavGraphSystem;
 import org.terasology.navgraph.WalkableBlock;
+import org.terasology.nui.properties.OneOfProviderFactory;
 import org.terasology.pathfinding.PathfinderTestGenerator;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.nui.properties.OneOfProviderFactory;
+import org.terasology.world.block.BlockRegion;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -208,7 +195,7 @@ public class ClusterDebugger extends JFrame {
                         item.addComponent(new LocationComponent());
                         item.addComponent(new CharacterComponent());
 
-                        final Region3i selection = Region3i.createFromMinAndSize(new Vector3i(minX, minY, minZ), new Vector3i(maxX, maxY, maxZ));
+                        final BlockRegion selection = new BlockRegion(minX, minY, minZ).setSize(maxX, maxY, maxZ);
                         ApplyBlockSelectionEvent event = new ApplyBlockSelectionEvent(item, selection);
                         item.send(event);
                     } else {

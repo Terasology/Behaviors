@@ -1,20 +1,11 @@
-/*
- * Copyright 2017 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.system;
 
+import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.behaviors.components.FindNearbyPlayersComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -23,10 +14,8 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.characters.AliveCharacterComponent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
-import org.terasology.behaviors.components.FindNearbyPlayersComponent;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,27 +26,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Updates all {@link FindNearbyPlayersComponent}s with information about nearby players.
- */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class FindNearbyPlayersSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(FindNearbyPlayersSystem.class);
 
     @In
     private EntityManager entityManager;
 
-    /**
-     * The amount of time (in seconds) left until the system updates all components.
-     */
-    private float timeLeft;
-
     @Override
     public void update(float delta) {
-        timeLeft-=delta;
-        if (timeLeft > 0) {
-            return;
-        }
-
         Iterable<EntityRef> clients = entityManager.getEntitiesWith(ClientComponent.class);
         Map<Vector3f, EntityRef> clientLocationMap = new HashMap<>();
 
@@ -72,12 +51,12 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
             if (locationComponent == null) {
                 continue;
             }
-            clientLocationMap.put(locationComponent.getWorldPosition(), character);
+            clientLocationMap.put(locationComponent.getWorldPosition(new Vector3f()), character);
         }
         Set<Vector3f> locationSet = clientLocationMap.keySet();
 
         for (EntityRef entity : entityManager.getEntitiesWith(FindNearbyPlayersComponent.class)) {
-            Vector3f actorPosition = entity.getComponent(LocationComponent.class).getWorldPosition();
+            Vector3f actorPosition = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             FindNearbyPlayersComponent findNearbyPlayersComponent = entity.getComponent(FindNearbyPlayersComponent.class);
             float maxDistance = findNearbyPlayersComponent.searchRadius;
             float maxDistanceSquared = maxDistance * maxDistance;
@@ -93,7 +72,7 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
                 continue;
             }
 
-            List<EntityRef> charactersWithinRange = 
+            List<EntityRef> charactersWithinRange =
             	inRange.stream().map(clientLocationMap::get).collect(Collectors.toList());
 
             if (!isEqual(charactersWithinRange, findNearbyPlayersComponent.charactersWithinRange)) {
@@ -102,7 +81,6 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
                 entity.saveComponent(findNearbyPlayersComponent);
             }
         }
-        timeLeft+=1;
     }
 
     private boolean isEqual(List<EntityRef> one, List<EntityRef> two) {

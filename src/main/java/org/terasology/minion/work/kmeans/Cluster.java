@@ -1,24 +1,11 @@
-/*
- * Copyright 2015 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work.kmeans;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.math.geom.Vector3f;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.utilities.random.MersenneRandom;
 import org.terasology.utilities.random.Random;
 
@@ -76,7 +63,7 @@ public class Cluster {
         Vector3i nearest = null;
         for (Map.Entry<Vector3i, Distance> entry : distances.entrySet()) {
             Vector3i element = entry.getKey();
-            float distance = distanceFunction.distance(element, target.toVector3f());
+            float distance = distanceFunction.distance(element, new Vector3f(target));
             if (distance < minDist) {
                 nearest = element;
                 minDist = distance;
@@ -237,9 +224,9 @@ public class Cluster {
     public void updateCluster() {
         position = new Vector3f();
         for (Vector3i element : distances.keySet()) {
-            position.add(element.toVector3f());
+            position.add(new Vector3f(element));
         }
-        position.scale(1.f / distances.size());
+        position.mul(1.f / distances.size());
     }
 
     public int getDepth() {

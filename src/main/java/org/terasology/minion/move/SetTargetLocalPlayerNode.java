@@ -15,12 +15,12 @@
  */
 package org.terasology.minion.move;
 
+import org.joml.Vector3f;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.registry.In;
@@ -41,11 +41,11 @@ public class SetTargetLocalPlayerNode extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        Vector3f position = localPlayer.getPosition();
+        Vector3f position = localPlayer.getPosition(new Vector3f());
         WalkableBlock block = pathfinderSystem.getBlock(position);
         if (block != null) {
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
-            moveComponent.target = block.getBlockPosition().toVector3f();
+            moveComponent.target = new Vector3f(block.getBlockPosition());
             actor.save(moveComponent);
         }
         return BehaviorState.SUCCESS;

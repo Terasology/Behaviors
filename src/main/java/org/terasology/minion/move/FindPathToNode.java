@@ -1,29 +1,15 @@
-/*
- * Copyright 2015 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.move;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
+import org.joml.Vector3f;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.navgraph.NavGraphSystem;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
@@ -59,7 +45,9 @@ public class FindPathToNode extends BaseAction {
 
     @Override
     public void construct(final Actor actor) {
-        if(pathfinderSystem==null){setup();}
+        if (pathfinderSystem == null) {
+            setup();
+        }
         final MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         Vector3f targetLocation = moveComponent.target;
         moveComponent.path = null;
@@ -75,24 +63,24 @@ public class FindPathToNode extends BaseAction {
             return;
         }
         SettableFuture<List<Path>> pathFuture = pathfinderSystem.requestPath(
-                actor.getEntity(), currentBlock.getBlockPosition(),
-                Arrays.asList(workTarget.getBlockPosition()));
+            actor.getEntity(), currentBlock.getBlockPosition(),
+            Arrays.asList(workTarget.getBlockPosition()));
 
         Futures.addCallback(pathFuture, new FutureCallback<List<Path>>() {
-                    @Override
-                    public void onSuccess(List<Path> paths) {
-                        if (paths == null) {
-                            moveComponent.path = Path.INVALID;
-                        } else if (paths.size() > 0) {
-                            moveComponent.path = paths.get(0);
-                        }
-                        actor.save(moveComponent);
-                    }
+            @Override
+            public void onSuccess(List<Path> paths) {
+                if (paths == null) {
+                    moveComponent.path = Path.INVALID;
+                } else if (paths.size() > 0) {
+                    moveComponent.path = paths.get(0);
+                }
+                actor.save(moveComponent);
+            }
 
-                    @Override
-                    public void onFailure(Throwable t) {
-                        moveComponent.path = Path.INVALID;
-                    }
+            @Override
+            public void onFailure(Throwable t) {
+                moveComponent.path = Path.INVALID;
+            }
         });
     }
 

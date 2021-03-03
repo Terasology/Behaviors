@@ -15,6 +15,8 @@
  */
 package org.terasology.minion.work;
 
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -22,8 +24,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.RenderSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.rendering.world.selection.BlockSelectionRenderer;
 import org.terasology.utilities.Assets;
@@ -46,7 +46,7 @@ public class WorkRenderSystem extends BaseComponentSystem implements RenderSyste
         Vector3i pos = new Vector3i();
         for (EntityRef entityRef : entityManager.getEntitiesWith(BlockComponent.class, WorkTargetComponent.class)) {
             LocationComponent location = entityRef.getComponent(LocationComponent.class);
-            Vector3f worldPosition = location.getWorldPosition();
+            Vector3f worldPosition = location.getWorldPosition(new Vector3f());
             pos.set((int) worldPosition.x, (int) worldPosition.y, (int) worldPosition.z);
             WorkTargetComponent work = entityRef.getComponent(WorkTargetComponent.class);
             if (work.isRequestable(entityRef)) {
