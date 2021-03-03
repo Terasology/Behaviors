@@ -5,8 +5,8 @@ package org.terasology.minion.trees;
 
 
 import com.google.common.collect.Sets;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.terasology.assets.ResourceUrn;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -21,7 +21,7 @@ import org.terasology.registry.InjectionHelper;
 
 import java.util.Set;
 
-public class TestActionsMTE extends ModuleTestingEnvironment {
+class TestActionsMTE extends ModuleTestingEnvironment {
 
     protected EntityManager entityManager;
 
@@ -29,8 +29,8 @@ public class TestActionsMTE extends ModuleTestingEnvironment {
         return Sets.newHashSet("engine", "ModuleTestingEnvironment", "Behaviors");
     }
 
-    @Before
-    public void beforeMyModuleTests() {
+    @BeforeEach
+    void beforeMyModuleTests() {
         entityManager = getHostContext().get(EntityManager.class);
         runUntil(1000, () -> {
             return true;
@@ -39,7 +39,7 @@ public class TestActionsMTE extends ModuleTestingEnvironment {
 
 
     @Test
-    public void moveTo() {
+    void moveTo() {
 
         BehaviorNodeFactory nodeFactory = new BehaviorNodeFactory();
         BehaviorSystem behaviorSystem = new BehaviorSystem();
@@ -58,6 +58,4 @@ public class TestActionsMTE extends ModuleTestingEnvironment {
         editor.setTree(getHostContext().get(AssetManager.class).getAsset(new ResourceUrn("Behaviors", "worker"), BehaviorTree.class).get());
         editor.createNode(nodeFactory.getNodeComponent(builder.fromJson("move_to")));
     }
-
-
 }
