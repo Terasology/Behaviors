@@ -4,6 +4,7 @@ package org.terasology.minion.move;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import org.joml.Vector3f;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -19,16 +20,12 @@ import org.terasology.registry.In;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /**
- * Requests a path to a target defined using the <b>MinionMoveComponent.target</b>.<br/>
- * <br/>
+ * Requests a path to a target defined using the <b>MinionMoveComponent.target</b>.<br/> <br/>
  * <b>SUCCESS</b> / <b>FAILURE</b>: when paths is found or not found (invalid).<br/>
  * <b>RUNNING</b>: as long as path is searched.<br/>
- * <br/>
- * Auto generated javadoc - modify README.markdown instead!
+ * <br/> Auto generated javadoc - modify README.markdown instead!
  */
 @BehaviorAction(name = "find_path")
 public class FindPathToNode extends BaseAction {
@@ -38,12 +35,6 @@ public class FindPathToNode extends BaseAction {
 
     @In
     private transient PathfinderSystem pathfinderSystem;
-
-    private final Executor executor = Executors.newSingleThreadExecutor((runnable)-> {
-        Thread thread = new Thread(runnable);
-        thread.setDaemon(true);
-        return thread;
-    });
 
     @Override
     public void setup() {
@@ -71,8 +62,8 @@ public class FindPathToNode extends BaseAction {
             return;
         }
         SettableFuture<List<Path>> pathFuture = pathfinderSystem.requestPath(
-            actor.getEntity(), currentBlock.getBlockPosition(),
-            Arrays.asList(workTarget.getBlockPosition()));
+                actor.getEntity(), currentBlock.getBlockPosition(),
+                Arrays.asList(workTarget.getBlockPosition()));
 
         Futures.addCallback(pathFuture, new FutureCallback<List<Path>>() {
             @Override
@@ -89,7 +80,7 @@ public class FindPathToNode extends BaseAction {
             public void onFailure(Throwable t) {
                 moveComponent.path = Path.INVALID;
             }
-        }, executor);
+        }, MoreExecutors.directExecutor());
     }
 
     @Override
