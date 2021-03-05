@@ -1,9 +1,10 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.move;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import org.joml.Vector3f;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -21,12 +22,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Requests a path to a target defined using the <b>MinionMoveComponent.target</b>.<br/>
- * <br/>
+ * Requests a path to a target defined using the <b>MinionMoveComponent.target</b>.<br/> <br/>
  * <b>SUCCESS</b> / <b>FAILURE</b>: when paths is found or not found (invalid).<br/>
  * <b>RUNNING</b>: as long as path is searched.<br/>
- * <br/>
- * Auto generated javadoc - modify README.markdown instead!
+ * <br/> Auto generated javadoc - modify README.markdown instead!
  */
 @BehaviorAction(name = "find_path")
 public class FindPathToNode extends BaseAction {
@@ -63,8 +62,8 @@ public class FindPathToNode extends BaseAction {
             return;
         }
         SettableFuture<List<Path>> pathFuture = pathfinderSystem.requestPath(
-            actor.getEntity(), currentBlock.getBlockPosition(),
-            Arrays.asList(workTarget.getBlockPosition()));
+                actor.getEntity(), currentBlock.getBlockPosition(),
+                Arrays.asList(workTarget.getBlockPosition()));
 
         Futures.addCallback(pathFuture, new FutureCallback<List<Path>>() {
             @Override
@@ -81,7 +80,7 @@ public class FindPathToNode extends BaseAction {
             public void onFailure(Throwable t) {
                 moveComponent.path = Path.INVALID;
             }
-        });
+        }, MoreExecutors.directExecutor());
     }
 
     @Override
