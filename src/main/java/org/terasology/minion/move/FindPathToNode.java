@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.move;
 
@@ -19,6 +19,8 @@ import org.terasology.registry.In;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Requests a path to a target defined using the <b>MinionMoveComponent.target</b>.<br/>
@@ -36,6 +38,12 @@ public class FindPathToNode extends BaseAction {
 
     @In
     private transient PathfinderSystem pathfinderSystem;
+
+    private final Executor executor = Executors.newSingleThreadExecutor((runnable)-> {
+        Thread thread = new Thread(runnable);
+        thread.setDaemon(true);
+        return thread;
+    });
 
     @Override
     public void setup() {
@@ -81,7 +89,7 @@ public class FindPathToNode extends BaseAction {
             public void onFailure(Throwable t) {
                 moveComponent.path = Path.INVALID;
             }
-        });
+        }, executor);
     }
 
     @Override
