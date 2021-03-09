@@ -4,16 +4,16 @@ package org.terasology.grid.renderers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.characters.CharacterComponent;
+import org.terasology.engine.registry.Share;
 import org.terasology.grid.EntityRenderer;
 import org.terasology.joml.geom.Rectanglei;
-import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
-import org.terasology.registry.Share;
 
 /**
  *

@@ -4,21 +4,21 @@ package org.terasology.grid.renderers;
 
 import org.joml.Vector2fc;
 import org.joml.Vector3i;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.registry.Share;
+import org.terasology.engine.rendering.assets.texture.Texture;
+import org.terasology.engine.utilities.Assets;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockPart;
+import org.terasology.engine.world.block.tiles.WorldAtlas;
 import org.terasology.grid.BlockRenderer;
 import org.terasology.joml.geom.Rectanglei;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
 import org.terasology.nui.ScaleMode;
-import org.terasology.registry.In;
-import org.terasology.registry.Share;
-import org.terasology.rendering.assets.texture.Texture;
-import org.terasology.utilities.Assets;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockPart;
-import org.terasology.world.block.tiles.WorldAtlas;
 
 @RegisterSystem
 @Share(value = DefaultBlockRenderer.class)

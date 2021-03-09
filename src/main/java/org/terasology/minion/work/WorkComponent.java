@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work;
 
-import org.terasology.engine.SimpleUri;
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.entitySystem.Component;
 
 /**
  *

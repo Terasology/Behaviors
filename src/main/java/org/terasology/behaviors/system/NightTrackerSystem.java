@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.system;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.registry.Share;
-import org.terasology.world.sun.OnDawnEvent;
-import org.terasology.world.sun.OnDuskEvent;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.Share;
+import org.terasology.engine.world.sun.OnDawnEvent;
+import org.terasology.engine.world.sun.OnDuskEvent;
 
 /**
  * Tracks the current night status for time-based behavior trees.

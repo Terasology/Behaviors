@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.grid;
 
-import org.terasology.input.BindButtonEvent;
-import org.terasology.input.DefaultBinding;
+import org.terasology.engine.input.BindButtonEvent;
+import org.terasology.engine.input.DefaultBinding;
+import org.terasology.engine.input.RegisterBindButton;
 import org.terasology.input.InputType;
 import org.terasology.input.Keyboard;
-import org.terasology.input.RegisterBindButton;
 
 /**
  *

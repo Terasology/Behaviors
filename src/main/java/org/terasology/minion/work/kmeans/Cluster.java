@@ -6,8 +6,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
-import org.terasology.utilities.random.MersenneRandom;
-import org.terasology.utilities.random.Random;
+import org.terasology.engine.utilities.random.MersenneRandom;
+import org.terasology.engine.utilities.random.Random;
 
 import java.util.ArrayList;
 import java.util.List;

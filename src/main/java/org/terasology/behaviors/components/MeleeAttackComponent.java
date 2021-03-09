@@ -3,8 +3,8 @@
 package org.terasology.behaviors.components;
 
 import com.google.common.collect.Lists;
-import org.terasology.entitySystem.Component;
-import org.terasology.rendering.assets.animation.MeshAnimation;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.rendering.assets.animation.MeshAnimation;
 
 import java.util.List;
 

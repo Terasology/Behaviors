@@ -8,17 +8,19 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.characters.CharacterComponent;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.logic.selection.ApplyBlockSelectionEvent;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.grid.renderers.DefaultBlockRenderer;
 import org.terasology.grid.renderers.WalkableBlockRenderer;
 import org.terasology.grid.renderers.WorkRenderer;
 import org.terasology.input.Keyboard;
 import org.terasology.joml.geom.Rectanglei;
-import org.terasology.logic.characters.CharacterComponent;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.LocalPlayer;
-import org.terasology.logic.selection.ApplyBlockSelectionEvent;
 import org.terasology.minion.work.Work;
 import org.terasology.minion.work.WorkComponent;
 import org.terasology.minion.work.WorkFactory;
@@ -31,8 +33,6 @@ import org.terasology.nui.events.NUIMouseDragEvent;
 import org.terasology.nui.events.NUIMouseReleaseEvent;
 import org.terasology.nui.events.NUIMouseWheelEvent;
 import org.terasology.nui.layouts.ZoomableLayout;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.BlockRegion;
 
 /**
  *

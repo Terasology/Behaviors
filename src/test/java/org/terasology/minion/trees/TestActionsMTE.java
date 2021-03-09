@@ -9,17 +9,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.terasology.assets.ResourceUrn;
 import org.terasology.assets.management.AssetManager;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.logic.behavior.asset.BehaviorTree;
-import org.terasology.logic.behavior.core.BehaviorTreeBuilder;
-import org.terasology.logic.behavior.nui.BehaviorEditor;
-import org.terasology.logic.behavior.nui.BehaviorNodeComponent;
-import org.terasology.logic.behavior.nui.BehaviorNodeFactory;
-import org.terasology.logic.behavior.nui.RenderableNode;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.logic.behavior.asset.BehaviorTree;
+import org.terasology.engine.logic.behavior.core.BehaviorTreeBuilder;
+import org.terasology.engine.logic.behavior.nui.BehaviorEditor;
+import org.terasology.engine.logic.behavior.nui.BehaviorNodeComponent;
+import org.terasology.engine.logic.behavior.nui.BehaviorNodeFactory;
+import org.terasology.engine.logic.behavior.nui.RenderableNode;
+import org.terasology.engine.registry.In;
 import org.terasology.moduletestingenvironment.MTEExtension;
 import org.terasology.moduletestingenvironment.ModuleTestingHelper;
 import org.terasology.moduletestingenvironment.extension.Dependencies;
-import org.terasology.registry.In;
 
 import java.util.Optional;
 

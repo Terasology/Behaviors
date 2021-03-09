@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.components;
 
-import org.terasology.entitySystem.Component;
-import org.terasology.world.block.BlockArea;
-import org.terasology.world.block.BlockAreac;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.world.block.BlockArea;
+import org.terasology.engine.world.block.BlockAreac;
 
 /**
  * Attached to characters that use the {@link org.terasology.behaviors.actions.NearbyBlockRestricted} behavior, which

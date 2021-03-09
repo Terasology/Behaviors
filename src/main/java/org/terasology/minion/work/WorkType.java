@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.navgraph.WalkableBlock;
 

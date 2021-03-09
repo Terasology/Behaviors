@@ -4,12 +4,12 @@ package org.terasology.behaviors.actions;
 
 import org.joml.Vector3f;
 import org.terasology.behaviors.components.FollowComponent;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.minion.move.MinionMoveComponent;
 
 @BehaviorAction(name = "set_target_to_followed_entity")

@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work;
 
-import org.terasology.engine.SimpleUri;
-import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.block.ForceBlockActive;
 import org.terasology.navgraph.WalkableBlock;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.ForceBlockActive;
 
 import java.util.List;
 

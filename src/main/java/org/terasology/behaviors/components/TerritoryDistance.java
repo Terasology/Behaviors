@@ -3,7 +3,7 @@
 package org.terasology.behaviors.components;
 
 import org.joml.Vector3f;
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 
 public class TerritoryDistance implements Component {
     public float distanceSquared;

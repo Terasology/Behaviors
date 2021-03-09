@@ -3,12 +3,12 @@
 package org.terasology.behaviors.actions;
 
 import org.terasology.behaviors.system.NightTrackerSystem;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
 
 /**
  * Behavior node that checks the current night status, succeeds at nighttime and fails at daytime.

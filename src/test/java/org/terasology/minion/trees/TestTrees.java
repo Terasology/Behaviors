@@ -8,17 +8,17 @@ import org.junit.jupiter.api.Test;
 import org.terasology.HeadlessEnvironment;
 import org.terasology.assets.ResourceUrn;
 import org.terasology.assets.management.AssetManager;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.behavior.DefaultBehaviorTreeRunner;
-import org.terasology.logic.behavior.asset.BehaviorTree;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BehaviorTreeBuilder;
-import org.terasology.logic.behavior.core.BehaviorTreeRunner;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.behavior.DefaultBehaviorTreeRunner;
+import org.terasology.engine.logic.behavior.asset.BehaviorTree;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BehaviorTreeBuilder;
+import org.terasology.engine.logic.behavior.core.BehaviorTreeRunner;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.rendering.logic.SkeletalMeshComponent;
 import org.terasology.naming.Name;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.logic.SkeletalMeshComponent;
 
 /**
  * Created by synopia on 22/01/15.
