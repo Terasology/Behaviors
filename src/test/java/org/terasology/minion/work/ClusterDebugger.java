@@ -4,8 +4,8 @@ package org.terasology.minion.work;
 
 import com.google.common.collect.Sets;
 import org.joml.Vector3i;
-import org.terasology.WorldProvidingHeadlessEnvironment;
 import org.terasology.core.world.generator.AbstractBaseWorldGenerator;
+import org.terasology.engine.WorldProvidingHeadlessEnvironment;
 import org.terasology.engine.core.ComponentSystemManager;
 import org.terasology.engine.core.SimpleUri;
 import org.terasology.engine.entitySystem.entity.EntityManager;
