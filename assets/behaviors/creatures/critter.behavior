@@ -15,11 +15,17 @@
           }
         }
       },
+        {
+          guard: {
+            componentPresent: "Behaviors:Follow",
+            values: ["N entityToFollow exists"],
+            child: { lookup: {tree: "Behaviors:follow" }}
+          }
+        },
       {
         lookup: {
           tree: "Behaviors:stray"
         }
       }
-
   ]
 }
