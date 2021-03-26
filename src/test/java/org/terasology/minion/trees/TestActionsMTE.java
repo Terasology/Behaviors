@@ -5,6 +5,7 @@ package org.terasology.minion.trees;
 
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.terasology.assets.ResourceUrn;
@@ -25,6 +26,7 @@ import java.util.Optional;
 
 @ExtendWith(MTEExtension.class)
 @Dependencies({"engine", "ModuleTestingEnvironment", "Behaviors"})
+@Tag("MteTest")
 class TestActionsMTE {
 
     @In
