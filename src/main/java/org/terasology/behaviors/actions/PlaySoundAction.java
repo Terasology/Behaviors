@@ -3,8 +3,8 @@
 package org.terasology.behaviors.actions;
 
 import org.joml.Vector3f;
-import org.terasology.assets.ResourceUrn;
-import org.terasology.assets.management.AssetManager;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.audio.AudioEndListener;
 import org.terasology.engine.audio.AudioManager;
 import org.terasology.engine.audio.StaticSound;
@@ -14,7 +14,7 @@ import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.registry.In;
-import org.terasology.module.sandbox.API;
+import org.terasology.gestalt.module.sandbox.API;
 import org.terasology.nui.properties.OneOf;
 import org.terasology.nui.properties.Range;
 
