@@ -14,7 +14,7 @@
         },
         {
             "id": "Health",
-            "minVersion": "1.0.0"
+            "minVersion": "2.0.0-SNAPSHOT"
         },
         {
             "id": "Inventory",

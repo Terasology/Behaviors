@@ -1,0 +1,1 @@
+{"sequence":[{"move_to":{"distance":0.7}},{"selector":[{"lookup":{"tree":"Behaviors:doWalkTo"}},{"lookup":{"tree":"Behaviors:doBuildBlock"}},{"lookup":{"tree":"Behaviors:doRemoveBlock"}}]}]}
