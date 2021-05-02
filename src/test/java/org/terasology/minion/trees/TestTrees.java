@@ -5,8 +5,8 @@ package org.terasology.minion.trees;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.terasology.assets.ResourceUrn;
-import org.terasology.assets.management.AssetManager;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.HeadlessEnvironment;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
@@ -18,7 +18,7 @@ import org.terasology.engine.logic.behavior.core.BehaviorTreeRunner;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.rendering.logic.SkeletalMeshComponent;
-import org.terasology.naming.Name;
+import org.terasology.gestalt.naming.Name;
 
 /**
  * Created by synopia on 22/01/15.
