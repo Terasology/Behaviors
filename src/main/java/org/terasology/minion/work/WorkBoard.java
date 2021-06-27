@@ -3,10 +3,12 @@
 package org.terasology.minion.work;
 
 import com.google.common.collect.Maps;
+import io.reactivex.rxjava3.core.Observable;
 import org.joml.Vector3i;
 import org.joml.Vector3ic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.engine.core.GameThread;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
@@ -22,8 +24,6 @@ import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.logic.selection.ApplyBlockSelectionEvent;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.registry.Share;
-import org.terasology.engine.utilities.concurrency.Task;
-import org.terasology.engine.utilities.concurrency.TaskMaster;
 import org.terasology.engine.world.BlockEntityRegistry;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.minion.move.MinionMoveComponent;
@@ -41,7 +41,6 @@ import java.util.Map;
 public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSystem {
     private static final Logger logger = LoggerFactory.getLogger(WorkBoard.class);
     private final Map<Work, WorkType> workTypes = Maps.newHashMap();
-    private TaskMaster<WorkBoardTask> taskMaster = TaskMaster.createPriorityTaskMaster("Workboard", 1, 1024);
 
     @In
     private BlockEntityRegistry blockEntityRegistry;
@@ -70,7 +69,47 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
 
     @ReceiveEvent
     public void onNavGraph(NavGraphChanged event, EntityRef entityRef) {
-        offer(new UpdateChunkTask());
+        Observable.just(entityManager.getEntitiesWith(WorkTargetComponent.class))
+                .subscribeOn(GameThread.computation())
+                .flatMapIterable(entityRefs -> entityRefs)
+                .subscribe(this::updateTarget);
+    }
+
+    private void updateTarget(EntityRef target) {
+        WorkTargetComponent component = target.getComponent(WorkTargetComponent.class);
+        if (component != null) {
+            WorkType workType = getWorkType(component.getWork());
+            workType.update(target);
+        }
+    }
+
+    private void removeTarget(EntityRef target) {
+        WorkTargetComponent component = target.getComponent(WorkTargetComponent.class);
+        if (component != null) {
+            WorkType workType = getWorkType(component.getWork());
+            workType.remove(target);
+        }
+    }
+
+    private void findWork(WorkTask task) {
+        WalkableBlock block;
+        block = task.target.getComponent(MinionMoveComponent.class).currentBlock;
+        if (block == null) {
+            throw new IllegalStateException("No block " + task.target);
+        }
+        Vector3i currentPosition = block.getBlockPosition();
+        Cluster nearestCluster = task.workType.getCluster().findNearestCluster(currentPosition);
+        if (nearestCluster != null) {
+            Vector3i nearestTarget = nearestCluster.findNearest(currentPosition);
+            if (nearestTarget != null) {
+                EntityRef work = task.workType.getWorkForTarget(nearestTarget);
+                if (task.callback.workReady(nearestCluster, nearestTarget, work)) {
+                    task.workType.removeRequestable(work);
+                }
+                return;
+            }
+        }
+        task.callback.workReady(null, null, null);
     }
 
     @ReceiveEvent
@@ -78,7 +117,17 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
         if (workTarget == null) {
             return;
         }
-        offer(new UpdateTargetTask(entityRef));
+        Observable.just(entityRef).subscribeOn(GameThread.computation()).subscribe(this::updateTarget);
+    }
+
+    @ReceiveEvent
+    public void onRemove(BeforeRemoveComponent event, EntityRef entityRef, WorkTargetComponent workTarget) {
+        Observable.just(entityRef).subscribeOn(GameThread.computation()).subscribe(this::removeTarget);
+    }
+
+    @ReceiveEvent
+    public void onChange(OnChangedComponent event, EntityRef entityRef, WorkTargetComponent workTarget) {
+        Observable.just(entityRef).subscribeOn(GameThread.computation()).subscribe(this::updateTarget);
     }
 
     @ReceiveEvent
@@ -86,17 +135,7 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
         if (workTarget == null) {
             return;
         }
-        offer(new UpdateTargetTask(entityRef));
-    }
-
-    @ReceiveEvent
-    public void onRemove(BeforeRemoveComponent event, EntityRef entityRef, WorkTargetComponent workTarget) {
-        offer(new RemoveTargetTask(entityRef));
-    }
-
-    @ReceiveEvent
-    public void onChange(OnChangedComponent event, EntityRef entityRef, WorkTargetComponent workTarget) {
-        offer(new UpdateTargetTask(entityRef));
+        Observable.just(entityRef).subscribeOn(GameThread.computation()).subscribe(this::updateTarget);
     }
 
     public void getWork(EntityRef entity, Work filter, WorkBoardCallback callback) {
@@ -104,7 +143,7 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
             return;
         }
         WorkType workType = getWorkType(filter);
-        offer(new FindWorkTask(entity, workType, callback));
+        Observable.just(new WorkTask(entity, workType, callback)).subscribe(this::findWork);
     }
 
     @ReceiveEvent(components = {LocationComponent.class, CharacterComponent.class})
@@ -130,11 +169,6 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
 
     @Override
     public void shutdown() {
-        taskMaster.shutdown(new ShutdownTask(), false);
-    }
-
-    public void offer(WorkBoardTask task) {
-        taskMaster.offer(task);
     }
 
     public WorkType getWorkType(Work work) {
@@ -153,195 +187,16 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
         boolean workReady(Cluster cluster, Vector3i position, EntityRef work);
     }
 
-    public interface WorkBoardTask extends Task, Comparable<WorkBoardTask> {
-        int getPriority();
-    }
-
-    private final class UpdateChunkTask implements WorkBoardTask {
-        @Override
-        public int getPriority() {
-            return 0;
-        }
-
-        @Override
-        public int compareTo(WorkBoardTask o) {
-            return Integer.compare(this.getPriority(), o.getPriority());
-        }
-
-        @Override
-        public String getName() {
-            return "WorkBoard:UpdateChunk";
-        }
-
-        @Override
-        public void run() {
-            for (EntityRef work : entityManager.getEntitiesWith(WorkTargetComponent.class)) {
-                WorkTargetComponent workTargetComponent = work.getComponent(WorkTargetComponent.class);
-                WorkType workType = getWorkType(workTargetComponent.getWork());
-                if (workType != null) {
-                    workType.update(work);
-                }
-            }
-        }
-
-        @Override
-        public boolean isTerminateSignal() {
-            return false;
-        }
-    }
-
-    private final class UpdateTargetTask implements WorkBoardTask {
-        private EntityRef target;
-
-        private UpdateTargetTask(EntityRef target) {
-            this.target = target;
-        }
-
-        @Override
-        public int getPriority() {
-            return 1;
-        }
-
-        @Override
-        public int compareTo(WorkBoardTask o) {
-            return Integer.compare(this.getPriority(), o.getPriority());
-        }
-
-        @Override
-        public String getName() {
-            return "WorkBoard:UpdateTarget";
-        }
-
-        @Override
-        public void run() {
-            WorkTargetComponent component = target.getComponent(WorkTargetComponent.class);
-            if (component != null) {
-                WorkType workType = getWorkType(component.getWork());
-                workType.update(target);
-            }
-        }
-
-        @Override
-        public boolean isTerminateSignal() {
-            return false;
-        }
-    }
-
-    private final class RemoveTargetTask implements WorkBoardTask {
-        private EntityRef target;
-
-        private RemoveTargetTask(EntityRef target) {
-            this.target = target;
-        }
-
-        @Override
-        public int getPriority() {
-            return 2;
-        }
-
-        @Override
-        public int compareTo(WorkBoardTask o) {
-            return Integer.compare(this.getPriority(), o.getPriority());
-        }
-
-        @Override
-        public String getName() {
-            return "WorkBoard:RemoveTarget";
-        }
-
-        @Override
-        public void run() {
-            WorkTargetComponent component = target.getComponent(WorkTargetComponent.class);
-            if (component != null) {
-                WorkType workType = getWorkType(component.getWork());
-                workType.remove(target);
-            }
-        }
-
-        @Override
-        public boolean isTerminateSignal() {
-            return false;
-        }
-    }
-
-    private static final class FindWorkTask implements WorkBoardTask {
+    private static class WorkTask {
         private EntityRef target;
         private WorkType workType;
         private WorkBoardCallback callback;
 
-        private FindWorkTask(EntityRef target, WorkType workType, WorkBoardCallback callback) {
+        public WorkTask(EntityRef target, WorkType type, WorkBoardCallback callback) {
             this.target = target;
-            this.workType = workType;
+            this.workType = type;
             this.callback = callback;
         }
-
-        @Override
-        public int getPriority() {
-            return 10;
-        }
-
-        @Override
-        public int compareTo(WorkBoardTask o) {
-            return Integer.compare(this.getPriority(), o.getPriority());
-        }
-
-        @Override
-        public String getName() {
-            return "WorkBoard:FindWorkTask";
-        }
-
-        @Override
-        public void run() {
-            WalkableBlock block;
-            block = target.getComponent(MinionMoveComponent.class).currentBlock;
-            if (block == null) {
-                throw new IllegalStateException("No block " + target);
-            }
-            Vector3i currentPosition = block.getBlockPosition();
-            Cluster nearestCluster = workType.getCluster().findNearestCluster(currentPosition);
-            if (nearestCluster != null) {
-                Vector3i nearestTarget = nearestCluster.findNearest(currentPosition);
-                if (nearestTarget != null) {
-                    EntityRef work = workType.getWorkForTarget(nearestTarget);
-                    if (callback.workReady(nearestCluster, nearestTarget, work)) {
-                        workType.removeRequestable(work);
-                    }
-                    return;
-                }
-            }
-            callback.workReady(null, null, null);
-        }
-
-        @Override
-        public boolean isTerminateSignal() {
-            return false;
-        }
     }
 
-    public static class ShutdownTask implements WorkBoardTask {
-        @Override
-        public int getPriority() {
-            return -1;
-        }
-
-        @Override
-        public int compareTo(WorkBoardTask o) {
-            return Integer.compare(this.getPriority(), o.getPriority());
-        }
-
-        @Override
-        public String getName() {
-            return "WorkBoard:ShutdownTask";
-        }
-
-        @Override
-        public void run() {
-
-        }
-
-        @Override
-        public boolean isTerminateSignal() {
-            return true;
-        }
-    }
 }
