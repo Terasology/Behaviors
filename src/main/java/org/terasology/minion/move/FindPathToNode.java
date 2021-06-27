@@ -2,10 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.move;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.MoreExecutors;
-import com.google.common.util.concurrent.SettableFuture;
 import org.joml.Vector3f;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
@@ -18,8 +14,7 @@ import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.pathfinding.model.Path;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 /**
  * Requests a path to a target defined using the <b>MinionMoveComponent.target</b>.<br/> <br/>
@@ -61,26 +56,19 @@ public class FindPathToNode extends BaseAction {
             moveComponent.path = Path.INVALID;
             return;
         }
-        SettableFuture<List<Path>> pathFuture = pathfinderSystem.requestPath(
+        pathfinderSystem.requestPath(
                 actor.getEntity(), currentBlock.getBlockPosition(),
-                Arrays.asList(workTarget.getBlockPosition()));
+                Collections.singletonList(workTarget.getBlockPosition())).blockingSubscribe(paths -> {
+                    if (paths == null) {
+                        moveComponent.path = Path.INVALID;
+                    } else if (paths.size() > 0) {
+                        moveComponent.path = paths.get(0);
+                    }
+                    actor.save(moveComponent);
+                }, throwable -> {
 
-        Futures.addCallback(pathFuture, new FutureCallback<List<Path>>() {
-            @Override
-            public void onSuccess(List<Path> paths) {
-                if (paths == null) {
-                    moveComponent.path = Path.INVALID;
-                } else if (paths.size() > 0) {
-                    moveComponent.path = paths.get(0);
-                }
-                actor.save(moveComponent);
-            }
+        }, () -> moveComponent.path = Path.INVALID);
 
-            @Override
-            public void onFailure(Throwable t) {
-                moveComponent.path = Path.INVALID;
-            }
-        }, MoreExecutors.directExecutor());
     }
 
     @Override
