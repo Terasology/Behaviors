@@ -15,6 +15,8 @@ import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.pathfinding.model.Path;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Requests a path to a target defined using the <b>MinionMoveComponent.target</b>.<br/> <br/>
@@ -56,19 +58,15 @@ public class FindPathToNode extends BaseAction {
             moveComponent.path = Path.INVALID;
             return;
         }
+        moveComponent.path = Path.INVALID;
         pathfinderSystem.requestPath(
                 actor.getEntity(), currentBlock.getBlockPosition(),
-                Collections.singletonList(workTarget.getBlockPosition())).blockingSubscribe(paths -> {
-                    if (paths == null) {
-                        moveComponent.path = Path.INVALID;
-                    } else if (paths.size() > 0) {
-                        moveComponent.path = paths.get(0);
-                    }
-                    actor.save(moveComponent);
-                }, throwable -> {
-
-        }, () -> moveComponent.path = Path.INVALID);
-
+                Collections.singletonList(workTarget.getBlockPosition())).blockOptional().ifPresent(paths -> {
+            if (paths.size() > 0) {
+                moveComponent.path = paths.get(0);
+            }
+        });
+        actor.save(moveComponent);
     }
 
     @Override
