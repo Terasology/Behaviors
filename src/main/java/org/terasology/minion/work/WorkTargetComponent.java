@@ -1,12 +1,12 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work;
 
 import org.terasology.engine.core.SimpleUri;
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.world.block.ForceBlockActive;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.navgraph.WalkableBlock;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * Work's block component. Using this component, jobs can be assigned to individual blocks
  */
 @ForceBlockActive
-public class WorkTargetComponent implements Component, Work {
+public class WorkTargetComponent implements Component<WorkTargetComponent>, Work {
     public String workUri;
     public transient EntityRef assignedMinion;
     private transient Work work;
@@ -68,5 +68,12 @@ public class WorkTargetComponent implements Component, Work {
     @Override
     public SimpleUri getUri() {
         return getWork().getUri();
+    }
+
+    @Override
+    public void copy(WorkTargetComponent other) {
+        this.workUri = other.workUri;
+        this.assignedMinion = other.assignedMinion;
+        this.work = other.work;
     }
 }
