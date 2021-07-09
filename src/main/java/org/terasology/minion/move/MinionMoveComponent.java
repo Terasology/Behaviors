@@ -1,14 +1,15 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.move;
 
 import org.joml.Vector3f;
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.model.Path;
 import org.terasology.persistence.typeHandling.annotations.SerializedName;
 
-public class MinionMoveComponent implements Component {
+public class MinionMoveComponent implements Component<MinionMoveComponent> {
+
     public enum Type {
         @SerializedName("direct")
         DIRECT,
@@ -29,5 +30,18 @@ public class MinionMoveComponent implements Component {
     public transient boolean jumpMode;
     public transient float jumpCooldown;
 
+    @Override
+    public void copy(MinionMoveComponent other) {
+        this.type = other.type;
+        this.target = new Vector3f(other.target);
+        this.targetReached = other.targetReached;
+        this.breaking = other.breaking;
+        this.path = other.path;
+        this.currentIndex = other.currentIndex;
+        this.currentBlock = other.currentBlock;
+        this.horizontalCollision = other.horizontalCollision;
+        this.jumpMode = other.jumpMode;
+        this.jumpCooldown = other.jumpCooldown;
+    }
 }
 
