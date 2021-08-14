@@ -15,7 +15,7 @@ public class TargetComponent implements Component<TargetComponent> {
     public EntityRef target = EntityRef.NULL;
 
     @Override
-    public void copy(TargetComponent other) {
+    public void copyFrom(TargetComponent other) {
         this.target = other.target;
     }
 }

@@ -16,7 +16,7 @@ public class FleeingComponent implements Component<FleeingComponent> {
     public EntityRef instigator;
 
     @Override
-    public void copy(FleeingComponent other) {
+    public void copyFrom(FleeingComponent other) {
         this.minDistance = other.minDistance;
         this.instigator = other.instigator;
     }

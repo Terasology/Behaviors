@@ -17,7 +17,7 @@ public class AttackInProximityComponent implements Component<AttackInProximityCo
     public long timeWhenHit;
 
     @Override
-    public void copy(AttackInProximityComponent other) {
+    public void copyFrom(AttackInProximityComponent other) {
         this.maxDistance = other.maxDistance;
         this.speedMultiplier = other.speedMultiplier;
         this.instigator = other.instigator;

@@ -71,7 +71,7 @@ public class WorkTargetComponent implements Component<WorkTargetComponent>, Work
     }
 
     @Override
-    public void copy(WorkTargetComponent other) {
+    public void copyFrom(WorkTargetComponent other) {
         this.workUri = other.workUri;
         this.assignedMinion = other.assignedMinion;
         this.work = other.work;

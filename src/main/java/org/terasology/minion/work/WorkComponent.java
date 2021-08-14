@@ -20,7 +20,7 @@ public class WorkComponent implements Component<WorkComponent> {
     }
 
     @Override
-    public void copy(WorkComponent other) {
+    public void copyFrom(WorkComponent other) {
         this.workType = other.workType;
         this.uri = other.uri;
     }

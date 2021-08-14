@@ -24,7 +24,7 @@ public class StrayRestrictionComponent implements Component<StrayRestrictionComp
     public StrayRestrictionComponent() { }
 
     @Override
-    public void copy(StrayRestrictionComponent other) {
+    public void copyFrom(StrayRestrictionComponent other) {
         this.allowedRegion.set(other.allowedRegion);
 
     }

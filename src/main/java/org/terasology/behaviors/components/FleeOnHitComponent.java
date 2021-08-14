@@ -17,7 +17,7 @@ public class FleeOnHitComponent implements Component<FleeOnHitComponent> {
     public float speedMultiplier = 1.2f;
 
     @Override
-    public void copy(FleeOnHitComponent other) {
+    public void copyFrom(FleeOnHitComponent other) {
         this.minDistance = other.minDistance;
         this.speedMultiplier = other.speedMultiplier;
     }

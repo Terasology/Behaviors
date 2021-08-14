@@ -11,7 +11,7 @@ public class BuildWallComponent implements Component<BuildWallComponent> {
     public String blockType;
 
     @Override
-    public void copy(BuildWallComponent other) {
+    public void copyFrom(BuildWallComponent other) {
         this.blockType = other.blockType;
     }
 }

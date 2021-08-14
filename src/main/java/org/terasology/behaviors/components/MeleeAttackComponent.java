@@ -20,7 +20,7 @@ public class MeleeAttackComponent implements Component<MeleeAttackComponent> {
     public List<MeshAnimation> animationPool = Lists.newArrayList();
 
     @Override
-    public void copy(MeleeAttackComponent other) {
+    public void copyFrom(MeleeAttackComponent other) {
         this.animationPool = Lists.newArrayList(animationPool);
     }
 }

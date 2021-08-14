@@ -31,7 +31,7 @@ public class MinionMoveComponent implements Component<MinionMoveComponent> {
     public transient float jumpCooldown;
 
     @Override
-    public void copy(MinionMoveComponent other) {
+    public void copyFrom(MinionMoveComponent other) {
         this.type = other.type;
         this.target = new Vector3f(other.target);
         this.targetReached = other.targetReached;

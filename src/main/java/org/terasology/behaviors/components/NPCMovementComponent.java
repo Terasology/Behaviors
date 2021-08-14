@@ -24,7 +24,7 @@ public class NPCMovementComponent implements Component<NPCMovementComponent> {
     public transient Vector3f targetPosition;
 
     @Override
-    public void copy(NPCMovementComponent other) {
+    public void copyFrom(NPCMovementComponent other) {
         this.yaw = other.yaw;
         this.targetPosition = new Vector3f(other.targetPosition);
     }

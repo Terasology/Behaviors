@@ -14,7 +14,7 @@ public class AttackOnHitComponent implements Component<AttackOnHitComponent> {
     public long timeWhenHit;
 
     @Override
-    public void copy(AttackOnHitComponent other) {
+    public void copyFrom(AttackOnHitComponent other) {
         this.maxDistance = other.maxDistance;
         this.speedMultiplier = other.speedMultiplier;
         this.instigator = other.instigator;

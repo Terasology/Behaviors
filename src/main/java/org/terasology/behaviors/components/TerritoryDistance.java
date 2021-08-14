@@ -10,7 +10,7 @@ public class TerritoryDistance implements Component<TerritoryDistance> {
     public Vector3f location;
 
     @Override
-    public void copy(TerritoryDistance other) {
+    public void copyFrom(TerritoryDistance other) {
         this.distanceSquared = other.distanceSquared;
         this.location = new Vector3f(other.location);
     }

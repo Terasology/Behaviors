@@ -22,7 +22,7 @@ public class MinionWorkComponent implements Component<MinionWorkComponent> {
     }
 
     @Override
-    public void copy(MinionWorkComponent other) {
+    public void copyFrom(MinionWorkComponent other) {
         this.currentWork = other.currentWork;
         this.target = new Vector3i(other.target);
         this.cooldown = other.cooldown;

@@ -21,7 +21,7 @@ public class FindNearbyPlayersComponent implements Component<FindNearbyPlayersCo
     public EntityRef closestCharacter;
 
     @Override
-    public void copy(FindNearbyPlayersComponent other) {
+    public void copyFrom(FindNearbyPlayersComponent other) {
         this.searchRadius = other.searchRadius;
         this.charactersWithinRange = Lists.newArrayList(other.charactersWithinRange);
         this.closestCharacter = other.closestCharacter;

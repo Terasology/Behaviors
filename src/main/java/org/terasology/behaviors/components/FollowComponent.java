@@ -13,7 +13,7 @@ public class FollowComponent implements Component<FollowComponent> {
     public EntityRef entityToFollow = EntityRef.NULL;
 
     @Override
-    public void copy(FollowComponent other) {
+    public void copyFrom(FollowComponent other) {
         this.entityToFollow = other.entityToFollow;
     }
 }
