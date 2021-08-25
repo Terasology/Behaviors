@@ -4,7 +4,7 @@
     "name": "Build Wall"
   },
   "Item": {
-    "icon": "scissors",
+    "icon": "engine:items#scissors",
     "usage": "ON_BLOCK"
   },
   "PlaySoundAction": {
