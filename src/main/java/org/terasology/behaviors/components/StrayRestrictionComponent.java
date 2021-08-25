@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.behaviors.components;
 
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.world.block.BlockArea;
 import org.terasology.engine.world.block.BlockAreac;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 /**
  * Attached to characters that use the {@link org.terasology.behaviors.actions.NearbyBlockRestricted} behavior, which
  * defines the world region that the character is allowed to stray in.
  */
-public class StrayRestrictionComponent implements Component {
+public class StrayRestrictionComponent implements Component<StrayRestrictionComponent> {
 
     /**
      * The region that this character is allowed to stray in. Defines an x&z area in world space.
@@ -23,4 +23,9 @@ public class StrayRestrictionComponent implements Component {
 
     public StrayRestrictionComponent() { }
 
+    @Override
+    public void copyFrom(StrayRestrictionComponent other) {
+        this.allowedRegion.set(other.allowedRegion);
+
+    }
 }
