@@ -1,14 +1,14 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work;
 
 import org.terasology.engine.core.SimpleUri;
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 /**
  *
  */
-public class WorkComponent implements Component {
+public class WorkComponent implements Component<WorkComponent> {
     public String workType;
     public transient SimpleUri uri;
 
@@ -19,4 +19,9 @@ public class WorkComponent implements Component {
         return uri;
     }
 
+    @Override
+    public void copyFrom(WorkComponent other) {
+        this.workType = other.workType;
+        this.uri = other.uri;
+    }
 }
