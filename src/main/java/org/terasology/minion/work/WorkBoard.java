@@ -3,12 +3,11 @@
 package org.terasology.minion.work;
 
 import com.google.common.collect.Maps;
-import io.reactivex.rxjava3.core.Observable;
 import org.joml.Vector3i;
 import org.joml.Vector3ic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.engine.core.GameThread;
+import org.terasology.engine.core.GameScheduler;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
@@ -30,6 +29,7 @@ import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.navgraph.NavGraphChanged;
 import org.terasology.navgraph.WalkableBlock;
+import reactor.core.publisher.Flux;
 
 import java.util.Map;
 
@@ -69,9 +69,8 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
 
     @ReceiveEvent
     public void onNavGraph(NavGraphChanged event, EntityRef entityRef) {
-        Observable.just(entityManager.getEntitiesWith(WorkTargetComponent.class))
-                .subscribeOn(GameThread.computation())
-                .flatMapIterable(entityRefs -> entityRefs)
+        Flux.fromIterable(entityManager.getEntitiesWith(WorkTargetComponent.class))
+                .subscribeOn(GameScheduler.parallel())
                 .subscribe(this::updateTarget);
     }
 
@@ -117,17 +116,17 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
         if (workTarget == null) {
             return;
         }
-        Observable.just(entityRef).subscribeOn(GameThread.computation()).subscribe(this::updateTarget);
+        Flux.just(entityRef).subscribeOn(GameScheduler.parallel()).subscribe(this::updateTarget);
     }
 
     @ReceiveEvent
     public void onRemove(BeforeRemoveComponent event, EntityRef entityRef, WorkTargetComponent workTarget) {
-        Observable.just(entityRef).subscribeOn(GameThread.computation()).subscribe(this::removeTarget);
+        Flux.just(entityRef).subscribeOn(GameScheduler.parallel()).subscribe(this::updateTarget);
     }
 
     @ReceiveEvent
     public void onChange(OnChangedComponent event, EntityRef entityRef, WorkTargetComponent workTarget) {
-        Observable.just(entityRef).subscribeOn(GameThread.computation()).subscribe(this::updateTarget);
+        Flux.just(entityRef).subscribeOn(GameScheduler.parallel()).subscribe(this::updateTarget);
     }
 
     @ReceiveEvent
@@ -135,7 +134,7 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
         if (workTarget == null) {
             return;
         }
-        Observable.just(entityRef).subscribeOn(GameThread.computation()).subscribe(this::updateTarget);
+        Flux.just(entityRef).subscribeOn(GameScheduler.parallel()).subscribe(this::updateTarget);
     }
 
     public void getWork(EntityRef entity, Work filter, WorkBoardCallback callback) {
@@ -143,7 +142,8 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
             return;
         }
         WorkType workType = getWorkType(filter);
-        Observable.just(new WorkTask(entity, workType, callback)).subscribe(this::findWork);
+
+        Flux.just(new WorkTask(entity, workType, callback)).subscribeOn(GameScheduler.parallel()).subscribe(this::findWork);
     }
 
     @ReceiveEvent(components = {LocationComponent.class, CharacterComponent.class})
@@ -198,5 +198,4 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
             this.callback = callback;
         }
     }
-
 }
