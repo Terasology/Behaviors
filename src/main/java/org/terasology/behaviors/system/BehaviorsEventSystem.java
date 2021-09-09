@@ -13,8 +13,8 @@ import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.characters.CharacterMovementComponent;
-import org.terasology.module.health.events.OnDamagedEvent;
 import org.terasology.engine.registry.In;
+import org.terasology.module.health.events.OnDamagedEvent;
 
 
 /*
