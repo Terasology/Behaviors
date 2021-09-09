@@ -13,7 +13,6 @@ import org.terasology.engine.entitySystem.entity.lifecycleEvents.BeforeRemoveCom
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnAddedComponent;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnChangedComponent;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
@@ -26,6 +25,7 @@ import org.terasology.engine.utilities.concurrency.Task;
 import org.terasology.engine.utilities.concurrency.TaskMaster;
 import org.terasology.engine.world.BlockEntityRegistry;
 import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.minion.work.kmeans.Cluster;
 import org.terasology.navgraph.NavGraphChanged;
