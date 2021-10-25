@@ -4,9 +4,6 @@ package org.terasology.minion;
 
 import org.terasology.gestalt.entitysystem.component.Component;
 
-/**
- *
- */
 public class BuildWallComponent implements Component<BuildWallComponent> {
     public String blockType;
 

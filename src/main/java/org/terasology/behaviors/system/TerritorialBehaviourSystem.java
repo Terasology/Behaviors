@@ -23,11 +23,14 @@ import java.util.Random;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class TerritorialBehaviourSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+    
+    private static Logger logger = LoggerFactory.getLogger(TerritorialBehaviourSystem.class);
+
     @In
     public EntityManager entityManager;
     private List<Vector3f> territories = new ArrayList<Vector3f>();
     private Random random = new Random();
-    private static Logger logger = LoggerFactory.getLogger(TerritorialBehaviourSystem.class);
+    
 
     @Override
     public void initialise() {
@@ -44,12 +47,13 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
     public void update(float delta) {
         for (EntityRef entity : entityManager.getEntitiesWith(TerritoryDistance.class, LocationComponent.class)) {
             TerritoryDistance territoryDistance = entity.getComponent(TerritoryDistance.class);
-            territoryDistance.distanceSquared = territoryDistance.location.distanceSquared(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
+            territoryDistance.distanceSquared = territoryDistance.location.distanceSquared(
+                entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
             entity.saveComponent(territoryDistance);
         }
     }
 
-    @ReceiveEvent(components = {TerritoryDistance.class})
+    @ReceiveEvent(components = TerritoryDistance.class)
     public void onCreatureSpawned(OnActivatedComponent event, EntityRef creature) {
         TerritoryDistance territoryDistance = creature.getComponent(TerritoryDistance.class);
         territoryDistance.location = creature.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());

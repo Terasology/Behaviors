@@ -23,9 +23,6 @@ import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 
 import java.util.List;
 
-/**
- *
- */
 @RegisterSystem
 public class BuildBlock extends BaseComponentSystem implements Work, ComponentSystem {
     private static final int[][] DIRECT_NEIGHBORS = new int[][]{
@@ -128,12 +125,12 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
     /**
      * Set the block type that this behavior will use to build
      *
-     * @param uri The name of the block to use. Uses "CoreAssets:Dirt" by default.
+     * @param blockUri The name (URI) of the block to use. Uses "CoreAssets:Dirt" by default.
      * @return True if block exists or intentionally set to null. False if block not found.
      */
-    public boolean setBlock(String uri) {
-        Block tempBlock = blockManager.getBlock(uri);
-        if (tempBlock == null && uri != null) {
+    public boolean setBlock(String blockUri) {
+        Block tempBlock = blockManager.getBlock(blockUri);
+        if (tempBlock == null && blockUri != null) {
             return false;
         }
         blockType = tempBlock;

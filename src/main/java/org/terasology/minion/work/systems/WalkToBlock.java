@@ -21,9 +21,6 @@ import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 
 import java.util.List;
 
-/**
- *
- */
 @RegisterSystem
 public class WalkToBlock extends BaseComponentSystem implements Work, ComponentSystem {
     private static final Logger logger = LoggerFactory.getLogger(WalkToBlock.class);

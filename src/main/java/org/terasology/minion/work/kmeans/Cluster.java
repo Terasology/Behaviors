@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-/**
- *
- */
 public class Cluster {
     private Map<Vector3i, Distance> distances = Maps.newHashMap();
     private List<Cluster> children = Lists.newArrayList();

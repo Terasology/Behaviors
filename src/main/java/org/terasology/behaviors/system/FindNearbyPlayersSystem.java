@@ -72,8 +72,7 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
                 continue;
             }
 
-            List<EntityRef> charactersWithinRange =
-            	inRange.stream().map(clientLocationMap::get).collect(Collectors.toList());
+            List<EntityRef> charactersWithinRange = inRange.stream().map(clientLocationMap::get).collect(Collectors.toList());
 
             if (!isEqual(charactersWithinRange, findNearbyPlayersComponent.charactersWithinRange)) {
                 findNearbyPlayersComponent.charactersWithinRange = charactersWithinRange;

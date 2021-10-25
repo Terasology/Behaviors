@@ -55,7 +55,8 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
                 currentBlock = existingNeighbors.get(random.nextInt(existingNeighbors.size()));
             }
         }
-        logger.debug(String.format("Looking for a block: my block is %s, found destination %s", startBlock.getBlockPosition(), currentBlock.getBlockPosition()));
+        logger.debug(String.format("Looking for a block: my block is %s, found destination %s", 
+            startBlock.getBlockPosition(), currentBlock.getBlockPosition()));
         return currentBlock;
     }
 

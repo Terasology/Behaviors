@@ -31,7 +31,6 @@ public class JumpNode extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        return actor.getComponent(CharacterMovementComponent.class).grounded ? BehaviorState.SUCCESS :
-            BehaviorState.RUNNING;
+        return actor.getComponent(CharacterMovementComponent.class).grounded ? BehaviorState.SUCCESS : BehaviorState.RUNNING;
     }
 }

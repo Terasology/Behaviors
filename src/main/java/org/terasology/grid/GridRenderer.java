@@ -34,9 +34,6 @@ import org.terasology.nui.events.NUIMouseReleaseEvent;
 import org.terasology.nui.events.NUIMouseWheelEvent;
 import org.terasology.nui.layouts.ZoomableLayout;
 
-/**
- *
- */
 public class GridRenderer extends ZoomableLayout {
     private static final Logger logger = LoggerFactory.getLogger(GridRenderer.class);
 
@@ -66,8 +63,8 @@ public class GridRenderer extends ZoomableLayout {
             Work work = CoreRegistry.get(WorkFactory.class).getWork("pathfinding:walkToBlock");
             WorkComponent workComponent = new WorkComponent();
             workComponent.uri = work.getUri();
-            EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(workComponent, new LocationComponent()
-                , new CharacterComponent());
+            EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(workComponent, new LocationComponent(), 
+                new CharacterComponent());
 
             Vector2f start = screenToWorld(startDrag);
             Vector2f end = screenToWorld(endDrag);
@@ -110,7 +107,8 @@ public class GridRenderer extends ZoomableLayout {
 
         canvas.addInteractionRegion(listener);
 
-        Vector3f playerPosition = CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+        Vector3f playerPosition = CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocationComponent.class).getWorldPosition(
+            new Vector3f());
         Vector2f windowSize = getWindowSize();
         Vector2f topLeft = new Vector2f(playerPosition.x - windowSize.x / 2, playerPosition.z - windowSize.y / 2);
         setWindowPosition(topLeft);

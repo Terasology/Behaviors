@@ -13,9 +13,6 @@ import org.terasology.navgraph.WalkableBlock;
 import java.util.Map;
 import java.util.Set;
 
-/**
- *
- */
 public class WorkType {
     private final Work work;
     private final Set<EntityRef> openWork = Sets.newHashSet();
