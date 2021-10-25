@@ -51,9 +51,8 @@ public class DefaultBlockRenderer extends BaseComponentSystem implements BlockRe
                 canvas.drawTextureRaw(terrainTex, screenRegion, color, ScaleMode.SCALE_FILL,
                         textureAtlasPos.x(), textureAtlasPos.y(), relativeTileSize, relativeTileSize);
                 break;
-            } else {
-                // TODO alpha blocks
-            }
+            } // TODO alpha blocks: else { }
+            
             blockPos.y--;
             depth++;
             if (depth >= max) {
