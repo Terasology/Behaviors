@@ -27,12 +27,12 @@ import static java.lang.Integer.min;
 @BehaviorAction(name = "set_target_nearby_block_away_from_instigator")
 public class SetTargetToNearbyBlockAwayFromInstigatorAction extends BaseAction {
 
+    private static final Logger logger = LoggerFactory.getLogger(SetTargetToNearbyBlockAwayFromInstigatorAction.class);
+    private static final int RANDOM_BLOCK_ITERATIONS = 10;
+
     @In
     private PathfinderSystem pathfinderSystem;
-
-    private static final Logger logger = LoggerFactory.getLogger(SetTargetToNearbyBlockAwayFromInstigatorAction.class);
-
-    private static final int RANDOM_BLOCK_ITERATIONS = 10;
+    
     private Random random = new Random();
 
     @Override
@@ -51,7 +51,9 @@ public class SetTargetToNearbyBlockAwayFromInstigatorAction extends BaseAction {
     private WalkableBlock findRandomNearbyBlockAwayFromPlayer(WalkableBlock startBlock, Actor actor) {
         WalkableBlock currentBlock = startBlock;
         FleeingComponent fleeingComponent = actor.getComponent(FleeingComponent.class);
-        Vector3i playerPosition = new Vector3i(fleeingComponent.instigator.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()), RoundingMode.FLOOR);
+        Vector3i playerPosition = new Vector3i(
+            fleeingComponent.instigator.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()), 
+            RoundingMode.FLOOR);
         for (int i = 0; i < RANDOM_BLOCK_ITERATIONS; i++) {
             WalkableBlock[] neighbors = currentBlock.neighbors;
             List<WalkableBlock> existingNeighbors = Lists.newArrayList();

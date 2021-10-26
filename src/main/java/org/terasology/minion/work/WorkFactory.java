@@ -21,9 +21,6 @@ import org.terasology.nui.properties.OneOfProviderFactory;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- */
 @RegisterSystem
 @Share(value = WorkFactory.class)
 public class WorkFactory extends BaseComponentSystem {

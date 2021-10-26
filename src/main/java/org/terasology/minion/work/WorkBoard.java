@@ -33,9 +33,6 @@ import org.terasology.navgraph.WalkableBlock;
 
 import java.util.Map;
 
-/**
- *
- */
 @RegisterSystem
 @Share(value = WorkBoard.class)
 public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSystem {

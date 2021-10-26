@@ -5,9 +5,6 @@ package org.terasology.minion.work;
 import org.terasology.engine.core.SimpleUri;
 import org.terasology.gestalt.entitysystem.component.Component;
 
-/**
- *
- */
 public class WorkComponent implements Component<WorkComponent> {
     public String workType;
     public transient SimpleUri uri;

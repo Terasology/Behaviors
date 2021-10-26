@@ -24,9 +24,6 @@ import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 
 import java.util.List;
 
-/**
- *
- */
 @RegisterSystem
 public class RemoveBlock extends BaseComponentSystem implements Work, ComponentSystem {
     private static final int[][] NEIGHBORS = new int[][]{

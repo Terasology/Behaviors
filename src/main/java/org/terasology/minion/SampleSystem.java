@@ -15,9 +15,6 @@ import org.terasology.engine.world.WorldProvider;
 import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
 
-/**
- *
- */
 @RegisterSystem
 public class SampleSystem extends BaseComponentSystem {
     @In

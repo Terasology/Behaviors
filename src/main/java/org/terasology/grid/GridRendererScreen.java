@@ -4,9 +4,6 @@ package org.terasology.grid;
 
 import org.terasology.engine.rendering.nui.CoreScreenLayer;
 
-/**
- *
- */
 public class GridRendererScreen extends CoreScreenLayer {
     @Override
     public void initialise() {
