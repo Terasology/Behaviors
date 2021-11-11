@@ -21,10 +21,6 @@
             "minVersion": "1.1.0"
         },
         {
-            "id": "Pathfinding",
-            "minVersion": "1.0.0"
-        },
-        {
             "id": "ModuleTestingEnvironment",
             "minVersion": "0.3.0",
             "optional": true
