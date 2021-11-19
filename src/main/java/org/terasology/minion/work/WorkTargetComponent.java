@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.minion.work;
 
+import org.joml.Vector3ic;
 import org.terasology.engine.core.SimpleUri;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.world.block.ForceBlockActive;
 import org.terasology.gestalt.entitysystem.component.Component;
-import org.terasology.navgraph.WalkableBlock;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class WorkTargetComponent implements Component<WorkTargetComponent>, Work
     }
 
     @Override
-    public List<WalkableBlock> getTargetPositions(EntityRef block) {
+    public List<Vector3ic> getTargetPositions(EntityRef block) {
         return getWork().getTargetPositions(block);
     }
 

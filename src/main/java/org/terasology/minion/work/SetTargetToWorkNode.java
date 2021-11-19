@@ -3,13 +3,13 @@
 package org.terasology.minion.work;
 
 import org.joml.Vector3f;
+import org.joml.Vector3ic;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.minion.move.MinionMoveComponent;
-import org.terasology.navgraph.WalkableBlock;
 
 import java.util.List;
 
@@ -28,11 +28,11 @@ public class SetTargetToWorkNode extends BaseAction {
         EntityRef work = actor.getComponent(MinionWorkComponent.class).currentWork;
         if (work != null) {
             WorkTargetComponent workTargetComponent = work.getComponent(WorkTargetComponent.class);
-            List<WalkableBlock> targetPositions = workTargetComponent.getWork().getTargetPositions(work);
+            List<Vector3ic> targetPositions = workTargetComponent.getWork().getTargetPositions(work);
             if (targetPositions.size() > 0) {
-                WalkableBlock block = targetPositions.get(0);
+                Vector3ic block = targetPositions.get(0);
                 MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
-                moveComponent.target = new Vector3f(block.getBlockPosition());
+                moveComponent.target = new Vector3f(block);
                 actor.save(moveComponent);
                 return BehaviorState.SUCCESS;
             }

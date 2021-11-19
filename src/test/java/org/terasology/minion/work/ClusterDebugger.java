@@ -4,6 +4,7 @@ package org.terasology.minion.work;
 
 import com.google.common.collect.Sets;
 import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.terasology.core.world.generator.AbstractBaseWorldGenerator;
 import org.terasology.engine.WorldProvidingHeadlessEnvironment;
 import org.terasology.engine.core.ComponentSystemManager;
@@ -52,7 +53,7 @@ public class ClusterDebugger extends JFrame {
     private EntityManager entityManager;
     private EngineEntityManager engineEntityManager;
     private WalkToBlock walkToBlock;
-    private Vector3i nearest;
+    private Vector3ic nearest;
     private Vector3i target;
     private final WorkBoard workBoard;
     private List<Cluster> leafCluster;
@@ -298,7 +299,7 @@ public class ClusterDebugger extends JFrame {
                 }
             }
             if (nearest != null) {
-                drawBlock(g, nearest.x, nearest.z, "O", Color.white);
+                drawBlock(g, nearest.x(), nearest.z(), "O", Color.white);
             }
             if (target != null) {
                 drawBlock(g, target.x, target.z, "X", Color.white);
@@ -306,11 +307,11 @@ public class ClusterDebugger extends JFrame {
         }
 
         private void drawCluster(Graphics g, Cluster parent, float color) {
-            Map<Vector3i, Cluster.Distance> distances = parent.getDistances();
+            Map<Vector3ic, Cluster.Distance> distances = parent.getDistances();
             Color col = new Color(color, color, color);
-            for (Map.Entry<Vector3i, Cluster.Distance> entry : distances.entrySet()) {
-                Vector3i position = entry.getKey();
-                drawBlock(g, position.x, position.z, "", col);
+            for (Map.Entry<Vector3ic, Cluster.Distance> entry : distances.entrySet()) {
+                Vector3ic position = entry.getKey();
+                drawBlock(g, position.x(), position.z(), "", col);
             }
         }
 

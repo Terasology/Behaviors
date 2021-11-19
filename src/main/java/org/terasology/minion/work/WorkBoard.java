@@ -147,7 +147,7 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
     }
 
     public interface WorkBoardCallback {
-        boolean workReady(Cluster cluster, Vector3i position, EntityRef work);
+        boolean workReady(Cluster cluster, Vector3ic position, EntityRef work);
     }
 
     public interface WorkBoardTask extends Task, Comparable<WorkBoardTask> {
@@ -297,7 +297,7 @@ public class WorkBoard extends BaseComponentSystem implements UpdateSubscriberSy
             Vector3i currentPosition = block.getBlockPosition();
             Cluster nearestCluster = workType.getCluster().findNearestCluster(currentPosition);
             if (nearestCluster != null) {
-                Vector3i nearestTarget = nearestCluster.findNearest(currentPosition);
+                Vector3ic nearestTarget = nearestCluster.findNearest(currentPosition);
                 if (nearestTarget != null) {
                     EntityRef work = workType.getWorkForTarget(nearestTarget);
                     if (callback.workReady(nearestCluster, nearestTarget, work)) {
