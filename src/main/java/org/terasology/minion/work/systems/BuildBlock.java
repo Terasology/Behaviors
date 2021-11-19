@@ -60,8 +60,8 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
         return uri;
     }
 
-    public List<WalkableBlock> getTargetPositions(EntityRef block) {
-        List<WalkableBlock> targetPositions = Lists.newArrayList();
+    public List<Vector3ic> getTargetPositions(EntityRef block) {
+        List<Vector3ic> targetPositions = Lists.newArrayList();
         if (block == null || !block.hasComponent(BlockComponent.class) || blockType == null) {
             return targetPositions;
         }
@@ -69,7 +69,7 @@ public class BuildBlock extends BaseComponentSystem implements Work, ComponentSy
         position.y--;
         WalkableBlock walkableBlock = pathfinderSystem.getBlock(position);
         if (walkableBlock != null) {
-            targetPositions.add(walkableBlock);
+            targetPositions.add(walkableBlock.getBlockPosition());
         }
 
         return targetPositions;
