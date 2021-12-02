@@ -28,7 +28,7 @@ public class BehaviorsEventSystem extends BaseComponentSystem {
     /**
      * Make an entity with the a {@link FleeOnHitComponent} flee from the instigator when being damaged.
      *
-     * @param event
+     * @param event the {@link OnDamageEvent} notifying about the entity having taken damage
      * @param entity the entity being damaged
      * @param fleeOnHitComponent only entities with this component flee if they take damage
      * @param characterMovementComponent a fleeing entity needs a character movement component to allow it to actually flee from the
