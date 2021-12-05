@@ -11,9 +11,6 @@ import org.terasology.engine.rendering.nui.NUIManager;
 import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 import org.terasology.input.ButtonState;
 
-/**
- *
- */
 @RegisterSystem
 public class GridRenderSystem extends BaseComponentSystem {
     @In

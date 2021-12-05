@@ -24,9 +24,6 @@ import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 
 import java.util.List;
 
-/**
- *
- */
 @RegisterSystem
 public class RemoveBlock extends BaseComponentSystem implements Work, ComponentSystem {
     private static final int[][] NEIGHBORS = new int[][]{
@@ -68,8 +65,8 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
     }
 
     @Override
-    public List<WalkableBlock> getTargetPositions(EntityRef block) {
-        List<WalkableBlock> result = Lists.newArrayList();
+    public List<Vector3ic> getTargetPositions(EntityRef block) {
+        List<Vector3ic> result = Lists.newArrayList();
 
         Vector3i worldPos = block.getComponent(BlockComponent.class).getPosition(new Vector3i());
         WalkableBlock walkableBlock;
@@ -78,7 +75,7 @@ public class RemoveBlock extends BaseComponentSystem implements Work, ComponentS
             pos.set(worldPos.x + neighbor[0], worldPos.y + neighbor[1], worldPos.z + neighbor[2]);
             walkableBlock = pathfinderSystem.getBlock(pos);
             if (walkableBlock != null) {
-                result.add(walkableBlock);
+                result.add(walkableBlock.getBlockPosition());
             }
         }
         return result;

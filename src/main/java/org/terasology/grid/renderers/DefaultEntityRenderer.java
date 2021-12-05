@@ -15,9 +15,6 @@ import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
 
-/**
- *
- */
 @RegisterSystem
 @Share(value = EntityRenderer.class)
 public class DefaultEntityRenderer extends BaseComponentSystem implements EntityRenderer {

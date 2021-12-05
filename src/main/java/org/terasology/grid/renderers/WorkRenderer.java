@@ -15,9 +15,6 @@ import org.terasology.minion.work.WorkTargetComponent;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
 
-/**
- *
- */
 @RegisterSystem
 @Share(value = WorkRenderer.class)
 public class WorkRenderer extends BaseComponentSystem implements BlockRenderer {

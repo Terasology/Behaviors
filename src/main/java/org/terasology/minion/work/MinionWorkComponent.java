@@ -13,7 +13,7 @@ import org.terasology.gestalt.entitysystem.component.Component;
 
 public class MinionWorkComponent implements Component<MinionWorkComponent> {
     public transient EntityRef currentWork;
-    public transient Vector3i target;
+    public final transient Vector3i target = new Vector3i();
     public transient float cooldown;
     public transient Work filter;
     public transient boolean workSearchDone;
@@ -24,7 +24,7 @@ public class MinionWorkComponent implements Component<MinionWorkComponent> {
     @Override
     public void copyFrom(MinionWorkComponent other) {
         this.currentWork = other.currentWork;
-        this.target = new Vector3i(other.target);
+        this.target.set(other.target);
         this.cooldown = other.cooldown;
         this.filter = other.filter;
         this.workSearchDone = other.workSearchDone;

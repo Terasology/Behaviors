@@ -5,29 +5,26 @@ package org.terasology.minion.work;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.joml.Vector3f;
-import org.joml.Vector3i;
+import org.joml.Vector3fc;
+import org.joml.Vector3ic;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.minion.work.kmeans.Cluster;
-import org.terasology.navgraph.WalkableBlock;
 
 import java.util.Map;
 import java.util.Set;
 
-/**
- *
- */
 public class WorkType {
     private final Work work;
     private final Set<EntityRef> openWork = Sets.newHashSet();
     private final Set<EntityRef> requestableWork = Sets.newHashSet();
-    private final Map<Vector3i, EntityRef> mapping = Maps.newHashMap();
+    private final Map<Vector3ic, EntityRef> mapping = Maps.newHashMap();
     private Cluster cluster;
 
     public WorkType(Work work) {
         this.work = work;
         cluster = new Cluster(8, 4, 1, new Cluster.DistanceFunction() {
             @Override
-            public float distance(Vector3i element, Vector3i target) {
+            public float distance(Vector3ic element, Vector3ic target) {
                 EntityRef workEntity = mapping.get(element);
                 if (workEntity != null && requestableWork.contains(workEntity)) {
                     return (float) element.distance(target);
@@ -36,7 +33,7 @@ public class WorkType {
             }
 
             @Override
-            public float distance(Vector3i element, Vector3f target) {
+            public float distance(Vector3ic element, Vector3fc target) {
                 Vector3f diff = new Vector3f(element);
                 diff.sub(target);
                 return diff.length();
@@ -65,9 +62,9 @@ public class WorkType {
             openWork.add(workEntity);
             if (workComponent.assignedMinion == null && workComponent.isRequestable(workEntity)) {
                 requestableWork.add(workEntity);
-                for (WalkableBlock block : work.getTargetPositions(workEntity)) {
-                    cluster.add(block.getBlockPosition());
-                    mapping.put(block.getBlockPosition(), workEntity);
+                for (Vector3ic block : work.getTargetPositions(workEntity)) {
+                    cluster.add(block);
+                    mapping.put(block, workEntity);
                 }
             } else {
                 remove(workEntity);
@@ -77,11 +74,11 @@ public class WorkType {
         }
     }
 
-    public Vector3i findNearestTarget(Vector3i position) {
+    public Vector3ic findNearestTarget(Vector3ic position) {
         return cluster.findNearest(position);
     }
 
-    public EntityRef getWorkForTarget(Vector3i position) {
+    public EntityRef getWorkForTarget(Vector3ic position) {
         return mapping.get(position);
     }
 
@@ -89,9 +86,9 @@ public class WorkType {
         if (workEntity != null) {
             openWork.remove(workEntity);
             requestableWork.remove(workEntity);
-            for (WalkableBlock block : work.getTargetPositions(workEntity)) {
-                cluster.remove(block.getBlockPosition());
-                mapping.remove(block.getBlockPosition());
+            for (Vector3ic block : work.getTargetPositions(workEntity)) {
+                cluster.remove(block);
+                mapping.remove(block);
             }
         }
     }
@@ -105,13 +102,13 @@ public class WorkType {
             return;
         }
         requestableWork.remove(workEntity);
-        for (WalkableBlock block : work.getTargetPositions(workEntity)) {
-            cluster.remove(block.getBlockPosition());
-            mapping.remove(block.getBlockPosition());
+        for (Vector3ic block : work.getTargetPositions(workEntity)) {
+            cluster.remove(block);
+            mapping.remove(block);
         }
     }
 
-    public Cluster findNearestCluster(Vector3i position) {
+    public Cluster findNearestCluster(Vector3ic position) {
         return cluster.findNearestCluster(position);
     }
 }

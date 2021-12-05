@@ -24,7 +24,8 @@ public class StopMovingAction extends BaseAction {
 
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
 
-        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, 0, new Vector3f(), false, false, false, (long) (actor.getDelta() * 1000));
+        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, 0, new Vector3f(), false, false, false, 
+            (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
     }
 }

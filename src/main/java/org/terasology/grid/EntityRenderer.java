@@ -6,9 +6,6 @@ import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.joml.geom.Rectanglei;
 import org.terasology.nui.Canvas;
 
-/**
- *
- */
 public interface EntityRenderer {
     void renderBlock(Canvas canvas, EntityRef entity, Rectanglei screenRegion);
 }

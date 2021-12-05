@@ -15,9 +15,6 @@ import org.terasology.engine.world.block.BlockManager;
 import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 import org.terasology.module.inventory.components.InventoryComponent;
 
-/**
- *
- */
 @RegisterSystem
 public class SampleSystem extends BaseComponentSystem {
     @In

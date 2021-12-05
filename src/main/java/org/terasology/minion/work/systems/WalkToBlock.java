@@ -4,6 +4,7 @@ package org.terasology.minion.work.systems;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.engine.core.SimpleUri;
@@ -21,9 +22,6 @@ import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 
 import java.util.List;
 
-/**
- *
- */
 @RegisterSystem
 public class WalkToBlock extends BaseComponentSystem implements Work, ComponentSystem {
     private static final Logger logger = LoggerFactory.getLogger(WalkToBlock.class);
@@ -52,14 +50,14 @@ public class WalkToBlock extends BaseComponentSystem implements Work, ComponentS
         return uri;
     }
 
-    public List<WalkableBlock> getTargetPositions(EntityRef block) {
-        List<WalkableBlock> targetPositions = Lists.newArrayList();
+    public List<Vector3ic> getTargetPositions(EntityRef block) {
+        List<Vector3ic> targetPositions = Lists.newArrayList();
         if (block == null || !block.hasComponent(BlockComponent.class)) {
             return targetPositions;
         }
         WalkableBlock walkableBlock = pathfinderSystem.getBlock(block.getComponent(BlockComponent.class).getPosition(new Vector3i()));
         if (walkableBlock != null) {
-            targetPositions.add(walkableBlock);
+            targetPositions.add(walkableBlock.getBlockPosition());
         }
 
         return targetPositions;

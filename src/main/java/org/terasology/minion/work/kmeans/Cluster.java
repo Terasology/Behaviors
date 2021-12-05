@@ -5,7 +5,8 @@ package org.terasology.minion.work.kmeans;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.joml.Vector3f;
-import org.joml.Vector3i;
+import org.joml.Vector3fc;
+import org.joml.Vector3ic;
 import org.terasology.engine.utilities.random.MersenneRandom;
 import org.terasology.engine.utilities.random.Random;
 
@@ -14,11 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-/**
- *
- */
 public class Cluster {
-    private Map<Vector3i, Distance> distances = Maps.newHashMap();
+    private Map<Vector3ic, Distance> distances = Maps.newHashMap();
     private List<Cluster> children = Lists.newArrayList();
     private Vector3f position = new Vector3f();
     private DistanceFunction distanceFunction;
@@ -39,17 +37,17 @@ public class Cluster {
         return new Cluster(maxDistanceBeforeSplit, splitCount, depth + 1, distanceFunction);
     }
 
-    public void add(Vector3i element) {
+    public void add(Vector3ic element) {
         distances.put(element, new Distance(Float.MAX_VALUE));
         dirty = true;
     }
 
-    public void add(Vector3i element, Distance distance) {
+    public void add(Vector3ic element, Distance distance) {
         distances.put(element, distance);
         dirty = true;
     }
 
-    public void remove(Vector3i element) {
+    public void remove(Vector3ic element) {
         if (distances.remove(element) != null) {
             for (Cluster cluster : children) {
                 cluster.remove(element);
@@ -58,11 +56,11 @@ public class Cluster {
         dirty = true;
     }
 
-    public Vector3i findNearest(Vector3i target) {
+    public Vector3ic findNearest(Vector3ic target) {
         float minDist = Float.MAX_VALUE;
-        Vector3i nearest = null;
-        for (Map.Entry<Vector3i, Distance> entry : distances.entrySet()) {
-            Vector3i element = entry.getKey();
+        Vector3ic nearest = null;
+        for (Map.Entry<Vector3ic, Distance> entry : distances.entrySet()) {
+            Vector3ic element = entry.getKey();
             float distance = distanceFunction.distance(element, new Vector3f(target));
             if (distance < minDist) {
                 nearest = element;
@@ -75,7 +73,7 @@ public class Cluster {
         return null;
     }
 
-    public Cluster findNearestCluster(Vector3i target) {
+    public Cluster findNearestCluster(Vector3ic target) {
         hkMean();
 
         if (children.size() == 0 || distances.size() == 0) {
@@ -111,7 +109,7 @@ public class Cluster {
         while (!stack.isEmpty()) {
             Cluster current = stack.pop();
             float maxDistance = 0;
-            for (Map.Entry<Vector3i, Distance> entry : current.distances.entrySet()) {
+            for (Map.Entry<Vector3ic, Distance> entry : current.distances.entrySet()) {
                 float distance = entry.getValue().getDistance();
                 if (distance > maxDistance) {
                     maxDistance = distance;
@@ -169,10 +167,10 @@ public class Cluster {
         float totalDistChange = 0;
 
         clearChildren();
-        for (Map.Entry<Vector3i, Distance> entry : distances.entrySet()) {
+        for (Map.Entry<Vector3ic, Distance> entry : distances.entrySet()) {
             float minDist = Float.MAX_VALUE;
             Cluster nearestCluster = null;
-            Vector3i element = entry.getKey();
+            Vector3ic element = entry.getKey();
             Distance distance = entry.getValue();
 
             for (Cluster cluster : children) {
@@ -223,7 +221,7 @@ public class Cluster {
 
     public void updateCluster() {
         position = new Vector3f();
-        for (Vector3i element : distances.keySet()) {
+        for (Vector3ic element : distances.keySet()) {
             position.add(new Vector3f(element));
         }
         position.mul(1.f / distances.size());
@@ -241,7 +239,7 @@ public class Cluster {
         this.position = position;
     }
 
-    public Map<Vector3i, Distance> getDistances() {
+    public Map<Vector3ic, Distance> getDistances() {
         return distances;
     }
 
@@ -269,8 +267,8 @@ public class Cluster {
     }
 
     public interface DistanceFunction {
-        float distance(Vector3i element, Vector3f target);
+        float distance(Vector3ic element, Vector3fc target);
 
-        float distance(Vector3i element, Vector3i target);
+        float distance(Vector3ic element, Vector3ic target);
     }
 }

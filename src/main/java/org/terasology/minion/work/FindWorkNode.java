@@ -60,7 +60,7 @@ public class FindWorkNode extends BaseAction {
             workBoard.getWork(actor.getEntity(), actorWork.filter, (cluster, position, work) -> {
                 actorWork.workSearchDone = true;
                 actorWork.currentWork = work;
-                actorWork.target = position;
+                actorWork.target.set(position);
                 actor.save(actorWork);
                 return true;
             });
