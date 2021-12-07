@@ -8,12 +8,12 @@ import org.terasology.behaviors.components.FleeingComponent;
 import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.engine.core.Time;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.characters.CharacterMovementComponent;
 import org.terasology.engine.registry.In;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 import org.terasology.module.health.events.OnDamagedEvent;
 
 /*
@@ -28,7 +28,7 @@ public class BehaviorsEventSystem extends BaseComponentSystem {
     /**
      * Make an entity with the a {@link FleeOnHitComponent} flee from the instigator when being damaged.
      *
-     * @param event the {@link OnDamageEvent} notifying about the entity having taken damage
+     * @param event the {@link OnDamagedEvent} notifying about the entity having taken damage
      * @param entity the entity being damaged
      * @param fleeOnHitComponent only entities with this component flee if they take damage
      * @param characterMovementComponent a fleeing entity needs a character movement component to allow it to actually flee from the
