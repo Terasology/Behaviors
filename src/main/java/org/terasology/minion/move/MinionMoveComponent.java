@@ -26,8 +26,11 @@ public class MinionMoveComponent implements Component<MinionMoveComponent> {
     public int currentIndex;
 
     public transient WalkableBlock currentBlock;
+    /** Whether the actor encountered a {@link org.terasology.engine.logic.characters.events.HorizontalCollisionEvent HorizontalCollisionEvent} recently. */
     public transient boolean horizontalCollision;
+    /** Whether the actor movement is supposed to be jumping. */
     public transient boolean jumpMode;
+    /** Time frame in which the actor is supposed to enter {@link #jumpMode} (if greater 0). */
     public transient float jumpCooldown;
 
     @Override
