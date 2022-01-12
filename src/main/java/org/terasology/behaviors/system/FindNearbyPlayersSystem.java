@@ -26,9 +26,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Update all {@link FindNearbyPlayersComponent}s on active entities with information about alive players within range and which of them is closest to the entity.
+ * <br>
+ * The update frequency is once per game tick.
+ */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class FindNearbyPlayersSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
-
 
     private static final Logger logger = LoggerFactory.getLogger(FindNearbyPlayersSystem.class);
 
@@ -37,20 +41,23 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
 
     @Override
     public void update(float delta) {
-        Iterable<EntityRef> clients = entityManager.getEntitiesWith(ClientComponent.class);
+        //TODO: Update with lower frequency.
+        //      Updating the nearby entities every 200ms should be enough from a gameplay perspective and we can safe some
+        //      computing cycles every tick that way.
+        
         Map<Vector3f, EntityRef> clientLocationMap = new HashMap<>();
 
-        for (EntityRef client : clients) {
+        for (EntityRef client : entityManager.getEntitiesWith(ClientComponent.class)) {
             ClientComponent clientComponent = client.getComponent(ClientComponent.class);
             EntityRef character = clientComponent.character;
-            AliveCharacterComponent aliveCharacterComponent = character.getComponent(AliveCharacterComponent.class);
-            if (aliveCharacterComponent == null) {
+            if (!character.hasComponent(AliveCharacterComponent.class)) {
                 continue;
             }
             LocationComponent locationComponent = character.getComponent(LocationComponent.class);
             if (locationComponent == null) {
                 continue;
             }
+
             clientLocationMap.put(locationComponent.getWorldPosition(new Vector3f()), character);
         }
         Set<Vector3f> locationSet = clientLocationMap.keySet();
@@ -61,6 +68,8 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
             float maxDistance = findNearbyPlayersComponent.searchRadius;
             float maxDistanceSquared = maxDistance * maxDistance;
 
+            //TODO: Use a (shortest) path distance to determine "nearest" player instead of beeline distance.
+            //      At least make it configurable via the FindNearbyPlayersComponent whether to use path or beeline.
             List<Vector3f> inRange = locationSet.stream()
                     .filter(loc -> loc.distanceSquared(actorPosition) <= maxDistanceSquared)
                     .sorted(Comparator.comparingDouble(v3f -> v3f.distanceSquared(actorPosition)))
@@ -74,6 +83,8 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
 
             List<EntityRef> charactersWithinRange = inRange.stream().map(clientLocationMap::get).collect(Collectors.toList());
 
+            //TODO: If the order of entities in the list has a meaning (e.g., closest to farthest) we should not check for set equality here.
+            //      If the order is not important, we should just store the nearby entities as set in the component directly.
             if (!isEqual(charactersWithinRange, findNearbyPlayersComponent.charactersWithinRange)) {
                 findNearbyPlayersComponent.charactersWithinRange = charactersWithinRange;
                 findNearbyPlayersComponent.closestCharacter = charactersWithinRange.get(0);
@@ -82,6 +93,9 @@ public class FindNearbyPlayersSystem extends BaseComponentSystem implements Upda
         }
     }
 
+    /**
+     * Compares two lists of entities with set-equality, i.e., whether they contain the same entities (in any order).
+     */
     private boolean isEqual(List<EntityRef> one, List<EntityRef> two) {
         if ((one == null && two != null) || (one != null && two == null)) {
             return false;

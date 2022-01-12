@@ -15,9 +15,11 @@ import java.util.List;
 public class FindNearbyPlayersComponent implements Component<FindNearbyPlayersComponent> {
     /* Search radius for finding nearby players */
     public float searchRadius = 10f;
+
     /* List of player entities nearby */
     public List<EntityRef> charactersWithinRange;
-    /* The player entity closest to the actor */
+
+    /* The player entity closest to the entity */
     public EntityRef closestCharacter;
 
     @Override

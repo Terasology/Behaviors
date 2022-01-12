@@ -22,6 +22,7 @@ public class SetupContinuousMoveNode extends BaseAction {
     public BehaviorState modify(Actor actor, BehaviorState result) {
 
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
+        //TODO: log something in case expected components or properties are missing
         if (moveComponent != null && moveComponent.path != null && moveComponent.path != Path.INVALID) {
             moveComponent.currentIndex = 0;
             WalkableBlock block = moveComponent.path.get(moveComponent.currentIndex);
