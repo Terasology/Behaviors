@@ -1,0 +1,38 @@
+{
+    sequence: [
+        {
+            animation : {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            set_speed : {
+                speedMultiplier: 0.4
+            }
+        },
+        {
+            loop: {
+                child: {
+                    sequence: [
+                        flex_set_target_to_followed_entity,
+                        find_path,
+                        setup_continuous_pathfinding,
+                        {
+                            timeout: {
+                                time: 3,
+                                child: {
+                                    move_along_path_continuous: {
+                                        child: {
+                                           flex_move_to: {}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

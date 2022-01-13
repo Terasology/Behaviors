@@ -1,0 +1,37 @@
+{
+    sequence : [
+        {
+            set_speed : { speedMultiplier: 0.3 }
+        },
+        {
+            animation : {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            sequence : [
+                {
+                    flex_set_target_nearby_block_restricted : { moveProbability: 65 }
+                },
+                {
+                   flex_move_to: { distance:  2}
+                }
+            ]
+        },
+        {
+            animation : {
+                play: "engine:Stand.animationPool",
+                loop: "engine:Stand.animationPool"
+            }
+        },
+        {
+            set_speed : { speedMultiplier: 0 }
+        },
+        {
+            sleep : {
+                time : 3
+            }
+        }
+    ]
+}

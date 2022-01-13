@@ -1,0 +1,9 @@
+{
+  sequence : [
+  {
+    flex_set_target_nearby_block : { moveProbability: 65 }
+  },
+   flex_move_to
+  ]
+}
+

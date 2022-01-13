@@ -1,0 +1,6 @@
+{
+  "parent": "FlexibleMovement:testcharacter",
+  "FlexibleMovement": {
+    "movementTypes": ["walking", "leaping", "swimming"]
+  }
+}

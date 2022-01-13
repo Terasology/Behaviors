@@ -1,0 +1,31 @@
+{
+    sequence: [
+        {
+            animation : {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            set_speed : {
+                speedMultiplier: 0.4
+            }
+        },
+        {
+            loop: {
+                child: {
+                    sequence: [
+                        find_path,
+                        {
+                            move_along_path: {
+                                child: {
+                                   flex_move_to: {}
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+  sequence : [
+  {log: {message: "moveto 1"}},
+    flex_set_target_work,
+    {
+      animation : {
+        play: "engine:Walk.animationPool",
+        loop: "engine:Walk.animationPool"
+      }
+    },
+    {log: {message: "moveto 2"}},
+    {
+      flex_move_to : {
+        distance : 0.6
+      }
+    },
+    {
+      animation : {
+        play: "engine:Stand.animationPool",
+        loop: "engine:Stand.animationPool"
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "engine:iconItem",
+  "DebugMoveTo": {},
+  "DisplayName": {
+    "name": "Path to"
+  },
+  "Item" : {
+    "name" : "Walk to block",
+    "icon" : "engine:items#walkToJob",
+    "usage" : "ON_BLOCK"
+  }
+}

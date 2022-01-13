@@ -1,0 +1,38 @@
+{
+  "FlexibleMovement": {
+    "movementTypes": ["walking", "leaping"]
+  },
+  "NameTag": { "text": "testcharacter" },
+  "Behavior" : {
+    "tree" : "naiveMoveTo"
+  },
+  "persisted" : true,
+  "location" : {},
+  "Character": {},
+  "CharacterHeldItem" : { },
+  "Network" :{},
+  "Health" : {
+    "maxHealth": 1,
+    "currentHealth": 1,
+    "excessSpeedDamageMultiplier": 0,
+    "destroyEntityOnNoHealth" : true
+  },
+  "Trigger" : {
+    "detectGroups" : ["engine:debris", "engine:sensor"]
+  },
+  "CreatureNameGenerator" : {
+    "genderRatio" : 0.5,
+    "nobility" : 0.5,
+    "theme": "DWARF"
+  },
+  "AliveCharacter": {},
+  "CharacterMovement" : {
+    "groundFriction" : 16,
+    "speedMultiplier" : 0.3,
+    "distanceBetweenFootsteps" : 0.2,
+    "distanceBetweenSwimStrokes" : 2.5,
+    "height" : 0.9,
+    "radius" : 0.3,
+    "jumpSpeed" : 12
+  }
+}

@@ -1,0 +1,15 @@
+{
+  sequence : [
+    {
+      selector : [
+        flex_find_path
+      ]
+    },
+    { flex_move_along_path: {
+      child : {
+        flex_move_to: {}
+      }
+     }
+    }
+  ]
+}

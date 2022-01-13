@@ -1,0 +1,24 @@
+{
+  selector : [
+    {
+      sequence : [
+      {log: {message: "WalkTo "}},
+        {
+          timeout : {
+            time : 1,
+            child : find_work
+          }
+        },
+        {log: {message: "second part"}},
+        {
+          lookup: {
+            tree: "FlexibleMovement:moveToWork"
+          }
+        },
+        {log: {message: "third part"}},
+        finish_work
+      ]
+    },
+    finish_work
+  ]
+}

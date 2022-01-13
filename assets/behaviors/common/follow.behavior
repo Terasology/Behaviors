@@ -1,0 +1,38 @@
+{
+  sequence:[
+    {
+      continue_following_check: {
+        minDistance: 4
+      }
+    },
+    {
+      animation : {
+        play: "engine:Walk.animationPool",
+        loop: "engine:Walk.animationPool"
+      }
+    },
+    {
+      set_speed : {
+        speedMultiplier: 0.4
+      }
+    },
+    {
+      parallel: [
+        {
+          loop: {
+            child: {
+              sequence: [
+                flex_set_target_to_followed_entity,
+                { sleep: {time: 0.2}}
+              ]
+            }
+          }
+        },
+       flex_move_to
+      ]
+    },
+    {
+      set_speed : { speedMultiplier: 0 }
+    }
+  ]
+}
