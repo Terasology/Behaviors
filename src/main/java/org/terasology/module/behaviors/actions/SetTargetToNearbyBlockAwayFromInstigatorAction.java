@@ -17,7 +17,6 @@ import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.block.Blocks;
-import org.terasology.flexiblemovement.components.MinionMoveComponent;
 import org.terasology.flexiblepathfinding.plugins.JPSPlugin;
 import org.terasology.module.behaviors.components.FleeingComponent;
 import org.terasology.module.behaviors.components.MinionMoveComponent;

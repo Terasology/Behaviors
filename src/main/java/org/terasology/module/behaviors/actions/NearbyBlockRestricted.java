@@ -19,8 +19,6 @@ import org.terasology.engine.world.block.BlockArea;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.block.BlockRegionc;
 import org.terasology.engine.world.block.Blocks;
-import org.terasology.flexiblemovement.components.MinionMoveComponent;
-import org.terasology.flexiblemovement.systems.PluginSystem;
 import org.terasology.flexiblepathfinding.plugins.JPSPlugin;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.module.behaviors.components.StrayRestrictionComponent;

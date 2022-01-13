@@ -11,7 +11,7 @@ import org.terasology.engine.registry.In;
 import org.terasology.flexiblepathfinding.PathfinderSystem;
 import org.terasology.flexiblepathfinding.plugins.JPSPlugin;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
-import org.terasology.module.behaviors.systems.FlexibleMovementSystem;
+import org.terasology.module.behaviors.systems.MinionMoveSystem;
 import org.terasology.module.behaviors.systems.PluginSystem;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class ValidatePath extends BaseAction {
     @In
     private PluginSystem pluginSystem;
     @In
-    private FlexibleMovementSystem flexibleMovementSystem;
+    private MinionMoveSystem flexibleMovementSystem;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {

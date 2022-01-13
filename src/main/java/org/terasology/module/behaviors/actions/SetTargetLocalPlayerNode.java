@@ -9,9 +9,9 @@ import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.players.LocalPlayer;
 import org.terasology.engine.registry.In;
+import org.terasology.flexiblepathfinding.PathfinderSystem;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.navgraph.WalkableBlock;
-import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 
 /**
  * Set <b>MinionMoveComponent.target</b> to the block below local player.<br/>
