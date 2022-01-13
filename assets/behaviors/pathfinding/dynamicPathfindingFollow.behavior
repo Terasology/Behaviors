@@ -24,7 +24,7 @@
                                 child: {
                                     move_along_path_continuous: {
                                         child: {
-                                            move_to: {}
+                                           move_to: {}
                                         }
                                     }
                                 }

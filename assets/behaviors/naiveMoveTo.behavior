@@ -1,0 +1,15 @@
+{
+  sequence : [
+    {
+      selector : [
+        find_path
+      ]
+    },
+    { move_along_path: {
+      child : {
+        move_to: {}
+      }
+     }
+    }
+  ]
+}

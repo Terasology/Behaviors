@@ -1,7 +1,7 @@
 {
   sequence: [
     {
-      move_to: {
+     move_to: {
         distance: 0.7
       }
     },
