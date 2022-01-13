@@ -3,13 +3,13 @@
 package org.terasology.behaviors.system;
 
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.registry.Share;
 import org.terasology.engine.world.sun.OnDawnEvent;
 import org.terasology.engine.world.sun.OnDuskEvent;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 
 /**
  * Tracks the current night status for time-based behavior trees.

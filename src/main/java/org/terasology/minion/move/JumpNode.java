@@ -3,13 +3,13 @@
 package org.terasology.minion.move;
 
 import org.joml.Vector3f;
-import org.terasology.engine.entitySystem.event.Event;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.characters.CharacterMoveInputEvent;
 import org.terasology.engine.logic.characters.CharacterMovementComponent;
+import org.terasology.gestalt.entitysystem.event.Event;
 
 /**
  * Trigger a single jump into the air.<br/>
