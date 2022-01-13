@@ -1,4 +1,4 @@
-// Copyright 2022 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.actions;
 
@@ -20,12 +20,12 @@ public class StopMovingAction extends BaseAction {
         LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         Vector3f worldPos = locationComponent.getWorldPosition(new Vector3f());
-        Vector3f targetDirection = moveComponent.target.sub(worldPos, new Vector3f());
+        Vector3f targetDirection = new Vector3f(moveComponent.target).sub(worldPos);
 
         float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
 
-        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, 0, new Vector3f(), false, false, false, 
-            (long) (actor.getDelta() * 1000));
+        CharacterMoveInputEvent wantedInput = new CharacterMoveInputEvent(0, 0, yaw, new Vector3f(), false, false, false,
+                (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
     }
 }

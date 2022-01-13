@@ -13,16 +13,16 @@
             "because": "tests/ClusterDebugger"
         },
         {
+            "id": "FlexiblePathfinding",
+            "minVersion": "1.0.0"
+        },
+        {
             "id": "Health",
             "minVersion": "2.0.0-SNAPSHOT"
         },
         {
             "id": "Inventory",
             "minVersion": "1.1.0"
-        },
-        {
-            "id": "Pathfinding",
-            "minVersion": "1.0.0"
         },
         {
             "id": "ModuleTestingEnvironment",
