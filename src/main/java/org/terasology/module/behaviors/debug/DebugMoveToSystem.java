@@ -29,7 +29,7 @@ public class DebugMoveToSystem extends BaseComponentSystem {
         for (EntityRef entity : entityManager.getEntitiesWith(MinionMoveComponent.class, BehaviorComponent.class)) {
             MinionMoveComponent component = entity.getComponent(MinionMoveComponent.class);
             BehaviorComponent behaviorComponent = entity.getComponent(BehaviorComponent.class);
-            behaviorComponent.tree = assetManager.getAsset("FlexibleMovement:reliableMoveTo", BehaviorTree.class).get();
+            behaviorComponent.tree = assetManager.getAsset("Behaviors:reliableMoveTo", BehaviorTree.class).get();
 
             component.setPathGoal(Blocks.toBlockPos(event.getHitPosition()));
             component.resetPath();

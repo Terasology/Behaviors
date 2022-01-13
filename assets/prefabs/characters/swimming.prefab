@@ -1,6 +1,6 @@
 {
-  "parent": "FlexibleMovement:testcharacter",
-  "FlexibleMovement": {
+  "parent": "Behaviors:testcharacter",
+  "MinionMove": {
     "movementTypes": [
       "swimming"
     ]

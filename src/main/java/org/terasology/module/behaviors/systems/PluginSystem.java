@@ -53,7 +53,7 @@ public class PluginSystem extends BaseComponentSystem {
     public void registerMovementPlugin(String name, Function<EntityRef, MovementPlugin> supplier) {
         SimpleUri uri = new SimpleUri(name);
         if (uri.getModuleName().isEmpty()) {
-            uri = new SimpleUri("FlexibleMovement", name);
+            uri = new SimpleUri("Behaviors", name);
         }
 
         if (!uri.isValid()) {
@@ -76,7 +76,7 @@ public class PluginSystem extends BaseComponentSystem {
             // if the module name is omitted, assume it's from the base module
             SimpleUri uri = new SimpleUri(movementType);
             if (uri.getModuleName().isEmpty()) {
-                uri = new SimpleUri("FlexibleMovement", movementType);
+                uri = new SimpleUri("Behaviors", movementType);
             }
 
             if (!uri.isValid() || !registeredPlugins.containsKey(uri)) {

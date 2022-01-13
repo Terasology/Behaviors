@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 
 @ExtendWith(MTEExtension.class)
-@Dependencies("FlexibleMovement")
+@Dependencies("Behaviors")
 @Tag("MteTest")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BehaviourTests {

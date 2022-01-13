@@ -1,5 +1,5 @@
 {
-  "FlexibleMovement": {
+  "MinionMove": {
     "movementTypes": ["walking", "leaping"]
   },
   "NameTag": { "text": "testcharacter" },

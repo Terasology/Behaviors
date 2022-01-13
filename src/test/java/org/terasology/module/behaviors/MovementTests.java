@@ -37,7 +37,7 @@ import org.terasology.moduletestingenvironment.extension.Dependencies;
 
 import java.util.stream.Stream;
 
-@Dependencies("FlexibleMovement")
+@Dependencies("Behaviors")
 @Tag("MteTest")
 @ExtendWith(MTEExtension.class)
 public class MovementTests {
@@ -325,7 +325,7 @@ public class MovementTests {
     }
 
     private EntityRef createMovingCharacter(float height, float radius, Vector3i start, Vector3i stop, String... movementTypes) {
-        EntityRef entity = entityManager.create("flexiblemovement:testcharacter");
+        EntityRef entity = entityManager.create("Behaviors:testcharacter");
         entity.send(new CharacterTeleportEvent(new Vector3f(start)));
 
         MinionMoveComponent flexibleMovementComponent = entity.getComponent(MinionMoveComponent.class);

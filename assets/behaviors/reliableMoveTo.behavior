@@ -7,7 +7,7 @@
               "time": 0.7,
               "child": {
                 lookup: {
-                  tree: "FlexibleMovement:naiveMoveTo"
+                  tree: "Behaviors:naiveMoveTo"
                 }
               }
             }
