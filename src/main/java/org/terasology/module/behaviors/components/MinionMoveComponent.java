@@ -41,6 +41,8 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
     // current index along path above
     private int pathIndex = 0;
 
+    public boolean running = false;
+
 
     public void setPathGoal(EntityRef entity) {
         pathGoalEntity = entity;

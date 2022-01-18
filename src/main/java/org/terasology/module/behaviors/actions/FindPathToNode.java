@@ -3,7 +3,6 @@
 package org.terasology.module.behaviors.actions;
 
 import org.joml.Vector3f;
-import org.joml.Vector3i;
 import org.joml.Vector3ic;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
@@ -14,12 +13,9 @@ import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.Blocks;
 import org.terasology.flexiblepathfinding.JPSConfig;
-import org.terasology.flexiblepathfinding.PathfinderCallback;
 import org.terasology.flexiblepathfinding.PathfinderSystem;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.module.behaviors.systems.PluginSystem;
-
-import java.util.List;
 
 /**
  * Finds a path to the pathGoalPosition of the Actor, stores it in FlexibileMovementComponent.path
@@ -49,6 +45,7 @@ public class FindPathToNode extends BaseAction {
         }
 
         MinionMoveComponent flexibleMovementComponent = actor.getComponent(MinionMoveComponent.class);
+        flexibleMovementComponent.running = true;
         Vector3ic start = Blocks.toBlockPos(actor.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
         Vector3ic goal = actor.getComponent(MinionMoveComponent.class).getPathGoal();
 
@@ -60,26 +57,32 @@ public class FindPathToNode extends BaseAction {
         config.goalDistance = flexibleMovementComponent.pathGoalDistance;
         config.plugin = pluginSystem.getMovementPlugin(actor.getEntity()).getJpsPlugin(actor.getEntity());
 
-        int id = pathfinderSystem.requestPath(config, new PathfinderCallback() {
-            @Override
-            public void pathReady(List<Vector3i> path, Vector3i target) {
-                if (path == null || path.size() == 0) {
-                    return;
-                }
-                path.remove(0);
-                MinionMoveComponent flexibleMovementComponent = actor.getComponent(MinionMoveComponent.class);
-                flexibleMovementComponent.setPath(path);
-                actor.save(flexibleMovementComponent);
+        int id = pathfinderSystem.requestPath(config, (path, target) -> {
+            MinionMoveComponent flexibleMovementComponent1 = actor.getComponent(MinionMoveComponent.class);
+            flexibleMovementComponent1.running = false;
+            if (path == null || path.size() == 0) {
+                actor.save(flexibleMovementComponent1);
+                return;
             }
+            path.remove(0);
+
+            flexibleMovementComponent1.setPath(path);
+
+            actor.save(flexibleMovementComponent1);
         });
     }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
+        // this an action node, so it will always be called with BehaviorState.UNDEFINED
         if (result == BehaviorState.RUNNING) {
+            // this can never happen o.O
             return result;
         }
         MinionMoveComponent flexibleMovementComponent = actor.getComponent(MinionMoveComponent.class);
+        if (flexibleMovementComponent.running) {
+            return BehaviorState.RUNNING;
+        }
         return flexibleMovementComponent.getPath().isEmpty() ? BehaviorState.FAILURE : BehaviorState.SUCCESS;
     }
 }
