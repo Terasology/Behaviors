@@ -23,9 +23,9 @@ import org.terasology.module.behaviors.plugin.WalkingMovementPlugin;
 import org.terasology.module.behaviors.systems.PluginSystem;
 
 /**
- * Uses an actor's MovementPlugin to move it to FlexibleMovementComponent.target
+ * Uses an actor's MovementPlugin to move it to {@link MinionMoveComponent#target}
  * <p>
- * SUCCESS: When the actor reaches FlexibleMovementComponent.target
+ * SUCCESS: When the actor reaches {@link MinionMoveComponent#target}
  * <p>
  * FAILURE: When the actor believes it is unable to reach its immediate target
  */
@@ -48,42 +48,42 @@ public class MoveToAction extends BaseAction {
         if (pluginSystem == null) {
             pluginSystem = CoreRegistry.get(PluginSystem.class);
         }
-        MinionMoveComponent flexibleMovementComponent = actor.getComponent(MinionMoveComponent.class);
-        flexibleMovementComponent.sequenceNumber = 0;
-        actor.save(flexibleMovementComponent);
+        MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
+        minionMoveComponent.sequenceNumber = 0;
+        actor.save(minionMoveComponent);
     }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState prevResult) {
         LocationComponent location = actor.getComponent(LocationComponent.class);
-        MinionMoveComponent flexibleMovementComponent = actor.getComponent(MinionMoveComponent.class);
+        MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
         CharacterMovementComponent characterMovementComponent = actor.getComponent(CharacterMovementComponent.class);
 
         // we need to translate the movement target to an expected real world position
         // in practice we just need to adjust the Y so that it's resting on top of the block at the right height
-        Vector3f adjustedMoveTarget = new Vector3f(flexibleMovementComponent.target);
+        Vector3f adjustedMoveTarget = new Vector3f(minionMoveComponent.target);
 
         // this is the result of experimentation and some penwork
         //    float adjustedY = (float) Math.ceil(adjustedMoveTarget.y - halfHeight) + halfHeight - 0.5f;
         //      adjustedMoveTarget.setY(adjustedY);
 
         Vector3f position = location.getWorldPosition(new Vector3f());
-        if (Blocks.toBlockPos(position).equals(flexibleMovementComponent.target)) {
+        if (Blocks.toBlockPos(position).equals(minionMoveComponent.target)) {
             return BehaviorState.SUCCESS;
         }
         // Cannot find path too long;
-        if (flexibleMovementComponent.sequenceNumber > 200) {
-            flexibleMovementComponent.resetPath();
-            actor.save(flexibleMovementComponent);
+        if (minionMoveComponent.sequenceNumber > 200) {
+            minionMoveComponent.resetPath();
+            actor.save(minionMoveComponent);
             return BehaviorState.FAILURE;
         }
 
-        flexibleMovementComponent.sequenceNumber++;
+        minionMoveComponent.sequenceNumber++;
         MovementPlugin plugin = pluginSystem.getMovementPlugin(actor.getEntity());
         CharacterMoveInputEvent result = plugin.move(
                 actor.getEntity(),
                 adjustedMoveTarget,
-                flexibleMovementComponent.sequenceNumber
+                minionMoveComponent.sequenceNumber
         );
 
         if (result == null) {
@@ -98,14 +98,14 @@ public class MoveToAction extends BaseAction {
             result = fallbackPlugin.move(
                     actor.getEntity(),
                     adjustedMoveTarget,
-                    flexibleMovementComponent.sequenceNumber
+                    minionMoveComponent.sequenceNumber
             );
         }
 
         actor.getEntity().send(result);
-        flexibleMovementComponent.lastInput = time.getGameTimeInMs();
-        flexibleMovementComponent.collidedHorizontally = false;
-        actor.save(flexibleMovementComponent);
+        minionMoveComponent.lastInput = time.getGameTimeInMs();
+        minionMoveComponent.collidedHorizontally = false;
+        actor.save(minionMoveComponent);
 
         return BehaviorState.RUNNING;
     }

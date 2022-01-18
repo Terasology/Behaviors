@@ -44,8 +44,8 @@ public class FindPathToNode extends BaseAction {
             pluginSystem = CoreRegistry.get(PluginSystem.class);
         }
 
-        MinionMoveComponent flexibleMovementComponent = actor.getComponent(MinionMoveComponent.class);
-        flexibleMovementComponent.running = true;
+        MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
+        minionMoveComponent.running = true;
         Vector3ic start = Blocks.toBlockPos(actor.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
         Vector3ic goal = actor.getComponent(MinionMoveComponent.class).getPathGoal();
 
@@ -54,21 +54,21 @@ public class FindPathToNode extends BaseAction {
         config.requester = actor.getEntity();
         config.maxTime = 10f;
         config.maxDepth = 150;
-        config.goalDistance = flexibleMovementComponent.pathGoalDistance;
+        config.goalDistance = minionMoveComponent.pathGoalDistance;
         config.plugin = pluginSystem.getMovementPlugin(actor.getEntity()).getJpsPlugin(actor.getEntity());
 
         int id = pathfinderSystem.requestPath(config, (path, target) -> {
-            MinionMoveComponent flexibleMovementComponent1 = actor.getComponent(MinionMoveComponent.class);
-            flexibleMovementComponent1.running = false;
+            MinionMoveComponent minionMoveComponent1 = actor.getComponent(MinionMoveComponent.class);
+            minionMoveComponent1.running = false;
             if (path == null || path.size() == 0) {
-                actor.save(flexibleMovementComponent1);
+                actor.save(minionMoveComponent1);
                 return;
             }
             path.remove(0);
 
-            flexibleMovementComponent1.setPath(path);
+            minionMoveComponent1.setPath(path);
 
-            actor.save(flexibleMovementComponent1);
+            actor.save(minionMoveComponent1);
         });
     }
 
@@ -79,10 +79,10 @@ public class FindPathToNode extends BaseAction {
             // this can never happen o.O
             return result;
         }
-        MinionMoveComponent flexibleMovementComponent = actor.getComponent(MinionMoveComponent.class);
-        if (flexibleMovementComponent.running) {
+        MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
+        if (minionMoveComponent.running) {
             return BehaviorState.RUNNING;
         }
-        return flexibleMovementComponent.getPath().isEmpty() ? BehaviorState.FAILURE : BehaviorState.SUCCESS;
+        return minionMoveComponent.getPath().isEmpty() ? BehaviorState.FAILURE : BehaviorState.SUCCESS;
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2021 The Terasology Foundation
+// Copyright 2022 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.debug;
 
@@ -9,7 +9,7 @@ public class FlexibleMovementDebugLayout extends FlowLayout {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        for(EntityRef entity : CoreRegistry.get(EntityManager.class).getEntitiesWith(FlexibleMovementComponent.class)) {
+//        for(EntityRef entity : CoreRegistry.get(EntityManager.class).getEntitiesWith(MinionMoveComponent.class)) {
 //            Matrix4f matrix = new Matrix4f();
 //            Vector3f position = entity.getComponent(LocationComponent.class).getWorldPosition();
 //            matrix.set(new Quat4d(position.x, position.y, position.z, 1.0));

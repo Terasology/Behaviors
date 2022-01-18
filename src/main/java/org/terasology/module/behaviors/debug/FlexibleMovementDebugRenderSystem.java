@@ -1,4 +1,4 @@
-// Copyright 2021 The Terasology Foundation
+// Copyright 2022 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.debug;
 
@@ -32,8 +32,8 @@ public class FlexibleMovementDebugRenderSystem extends BaseComponentSystem imple
     public void renderOverlay() {
         selectionRenderer.beginRenderOverlay();
         for (EntityRef entity : entityManager.getEntitiesWith(MinionMoveComponent.class)) {
-            MinionMoveComponent flexibleMovementComponent = entity.getComponent(MinionMoveComponent.class);
-            for (Vector3ic pos : flexibleMovementComponent.getPath()) {
+            MinionMoveComponent minionMoveComponent = entity.getComponent(MinionMoveComponent.class);
+            for (Vector3ic pos : minionMoveComponent.getPath()) {
                 selectionRenderer.renderMark2(pos);
             }
         }

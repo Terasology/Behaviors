@@ -38,12 +38,12 @@ public class ValidatePath extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
 
-        MinionMoveComponent flexibleMovementComponent = actor.getComponent(MinionMoveComponent.class);
+        MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
         JPSPlugin pathfindingPlugin = pluginSystem.getMovementPlugin(actor.getEntity()).getJpsPlugin(actor.getEntity());
-        if (flexibleMovementComponent == null || pathfindingPlugin == null) {
+        if (minionMoveComponent == null || pathfindingPlugin == null) {
             return BehaviorState.FAILURE;
         }
-//            for(Vector3i pos : actor().getComponent(FlexibleMovementComponent.class).getPath()) {
+//            for(Vector3i pos : actor().getComponent(MinionMoveComponent.class).getPath()) {
 //                if(!pathfindingPlugin.isWalkable(pos)) {
 //                    return Status.FAILURE;
 //                }

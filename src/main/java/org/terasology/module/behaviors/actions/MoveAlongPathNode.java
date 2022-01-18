@@ -9,9 +9,9 @@ import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 
 /**
- * Performs a child node along the FlexibleMovementComponent.path
+ * Performs a child node along the {@link MinionMoveComponent#getPath()}
  * <p>
- * 1. Sets the FlexibleMovementComponent.target
+ * 1. Sets the {@link MinionMoveComponent#target}
  * <p>
  * 2. Runs the child node until SUCCESS/FAILURE
  * <p>

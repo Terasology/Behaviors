@@ -1,4 +1,4 @@
-// Copyright 2021 The Terasology Foundation
+// Copyright 2022 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.systems;
 
@@ -38,12 +38,12 @@ public class MinionMoveSystem extends BaseComponentSystem implements UpdateSubsc
 
     @ReceiveEvent
     public void markHorizontalCollision(HorizontalCollisionEvent event, EntityRef entity,
-                                        MinionMoveComponent flexibleMovementComponent) {
-        if (flexibleMovementComponent == null) {
+                                        MinionMoveComponent minionMoveComponent) {
+        if (minionMoveComponent == null) {
             return;
         }
 
-        flexibleMovementComponent.collidedHorizontally = true;
+        minionMoveComponent.collidedHorizontally = true;
     }
 
     public void enqueue(EntityRef entity, CharacterMoveInputEvent event) {
