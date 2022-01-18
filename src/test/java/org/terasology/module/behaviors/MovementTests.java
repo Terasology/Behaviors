@@ -1,4 +1,4 @@
-// Copyright 2021 The Terasology Foundation
+// Copyright 2022 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors;
 
@@ -57,236 +57,236 @@ public class MovementTests {
 
     public static Stream<Arguments> parameters() {
         return Stream.of(
-                Arguments.of(
-                        "simple wall",
-                        new String[]{
-                                "XXX|XXX|XXX",
-                                "   |   |XXX",
-                                "XXX|XXX|XXX",
-                        }, new String[]{
-                                "?  |   |   ",
-                                "   |   |   ",
-                                "  !|   |   "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"flying"}
-                ),
-                Arguments.of(
-                        "large leaping - steps",
-                        new String[]{
-                                "XXX XXX|XXX XXX|XXX XXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX",
-                                "XXX XXX|XXX XXX|XXX XXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX"
-                        }, new String[]{
-                                "       |       |       ",
-                                "       | ?   ! |       ",
-                                "       |       |       ",
-                                "       |       |       ",
-                                "       |       |       ",
-                                "       |       |       "
-                        },
-                        2.7f,
-                        1.2f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "leap",
-                        new String[]{
-                                "~  |~~~|~~~",
-                                "~  |~~~|~~~",
-                                "~~~|~~~|~~~",
-                        }, new String[]{
-                                "?  |123|~~~",
-                                "   |  !|~~~",
-                                "   |   |~~~"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
-                ),
-                Arguments.of(
-                        "diagonal",
-                        new String[]{
-                                "~  |~  ",
-                                "~  |~  ",
-                                "~~~|~~~"
-                        }, new String[]{
-                                "?  |   ",
-                                "1  |   ",
-                                "23!|   "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
-                ),
+//                Arguments.of(
+//                        "simple wall",
+//                        new String[]{
+//                                "XXX|XXX|XXX",
+//                                "   |   |XXX",
+//                                "XXX|XXX|XXX",
+//                        }, new String[]{
+//                                "?  |   |   ",
+//                                "   |   |   ",
+//                                "  !|   |   "
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"flying"}
+//                ),
+//                Arguments.of(
+//                        "large leaping - steps",
+//                        new String[]{
+//                                "XXX XXX|XXX XXX|XXX XXX",
+//                                "XXXXXXX|XXXXXXX|XXXXXXX",
+//                                "XXX XXX|XXX XXX|XXX XXX",
+//                                "XXXXXXX|XXXXXXX|XXXXXXX",
+//                                "XXXXXXX|XXXXXXX|XXXXXXX",
+//                                "XXXXXXX|XXXXXXX|XXXXXXX"
+//                        }, new String[]{
+//                                "       |       |       ",
+//                                "       | ?   ! |       ",
+//                                "       |       |       ",
+//                                "       |       |       ",
+//                                "       |       |       ",
+//                                "       |       |       "
+//                        },
+//                        2.7f,
+//                        1.2f,
+//                        new String[]{"walking", "leaping"}
+//                ),
+//                Arguments.of(
+//                        "leap",
+//                        new String[]{
+//                                "~  |~~~|~~~",
+//                                "~  |~~~|~~~",
+//                                "~~~|~~~|~~~",
+//                        }, new String[]{
+//                                "?  |123|~~~",
+//                                "   |  !|~~~",
+//                                "   |   |~~~"
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"swimming"}
+//                ),
+//                Arguments.of(
+//                        "diagonal",
+//                        new String[]{
+//                                "~  |~  ",
+//                                "~  |~  ",
+//                                "~~~|~~~"
+//                        }, new String[]{
+//                                "?  |   ",
+//                                "1  |   ",
+//                                "23!|   "
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"swimming"}
+//                ),
+//                Arguments.of(
+//                        "straight",
+//                        new String[]{
+//                                "~  ",
+//                                "~  ",
+//                                "~~~",
+//                        }, new String[]{
+//                                "?  ",
+//                                "1  ",
+//                                "!  "
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"swimming"}
+//                ),
+//                Arguments.of(
+//                        "corridor",
+//                        new String[]{
+//                                "~~~~~~~~~~~~~~~",
+//                                "~            ~~",
+//                                "~ ~~~~~~~~~~~~~",
+//                                "~~~            ",
+//                                "               ",
+//                        }, new String[]{
+//                                "?123456789abcd ",
+//                                "             e ",
+//                                "  qponmlkjihgf ",
+//                                "  !            ",
+//                                "               ",
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"swimming"}
+//                ),
+//                Arguments.of(
+//                        "three dimensional moves",
+//                        new String[]{
+//                                "~~~|~~ |   ",
+//                                "~ ~|~~~| ~~",
+//                                "~~~| ~ | ~~"
+//                        }, new String[]{
+//                                "?  |   |   ",
+//                                "   | 1 |   ",
+//                                "   |   |  !"
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"swimming"}
+//                ),
+//                Arguments.of(
+//                        "leap",
+//                        new String[]{
+//                                "~  |   ",
+//                                "~  |XXX"
+//                        }, new String[]{
+//                                "?  |   ",
+//                                "1  |23!"
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"walking", "leaping", "swimming"}
+//                ),
+//                Arguments.of(
+//                        "three dimensional moves",
+//                        new String[]{
+//                                "~~~|~~ |   ",
+//                                "~ ~|~~~| XX",
+//                                "~~~| ~ | XX"
+//                        }, new String[]{
+//                                "?  |   |   ",
+//                                "   | 1 |   ",
+//                                "   |   |  !"
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"walking", "leaping", "swimming"}
+//                ),
                 Arguments.of(
                         "straight",
                         new String[]{
-                                "~  ",
-                                "~  ",
-                                "~~~",
+                                "X",
+                                "X",
+                                "X",
                         }, new String[]{
-                                "?  ",
-                                "1  ",
-                                "!  "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
-                ),
-                Arguments.of(
-                        "corridor",
-                        new String[]{
-                                "~~~~~~~~~~~~~~~",
-                                "~            ~~",
-                                "~ ~~~~~~~~~~~~~",
-                                "~~~            ",
-                                "               ",
-                        }, new String[]{
-                                "?123456789abcd ",
-                                "             e ",
-                                "  qponmlkjihgf ",
-                                "  !            ",
-                                "               ",
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
-                ),
-                Arguments.of(
-                        "three dimensional moves",
-                        new String[]{
-                                "~~~|~~ |   ",
-                                "~ ~|~~~| ~~",
-                                "~~~| ~ | ~~"
-                        }, new String[]{
-                                "?  |   |   ",
-                                "   | 1 |   ",
-                                "   |   |  !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
-                ),
-                Arguments.of(
-                        "leap",
-                        new String[]{
-                                "~  |   ",
-                                "~  |XXX"
-                        }, new String[]{
-                                "?  |   ",
-                                "1  |23!"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping", "swimming"}
-                ),
-                Arguments.of(
-                        "three dimensional moves",
-                        new String[]{
-                                "~~~|~~ |   ",
-                                "~ ~|~~~| XX",
-                                "~~~| ~ | XX"
-                        }, new String[]{
-                                "?  |   |   ",
-                                "   | 1 |   ",
-                                "   |   |  !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping", "swimming"}
-                ),
-                Arguments.of(
-                        "straight",
-                        new String[]{
-                                "X  ",
-                                "X  ",
-                                "XXX",
-                        }, new String[]{
-                                "?  ",
-                                "1  ",
-                                "!  "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "leap",
-                        new String[]{
-                                "X  |XXX|XXX|XXX",
-                                "X  |XXX|XXX|XXX",
-                        }, new String[]{
-                                "?  |123|XXX|XXX",
-                                "   |  !|XXX|XXX",
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ), Arguments.of(
-                        "diagonal",
-                        new String[]{
-                                "X  |X  ",
-                                "X  |X  ",
-                                "XXX|XXX"
-                        }, new String[]{
-                                "?  |   ",
-                                "1  |   ",
-                                "23!|   "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ), Arguments.of(
-                        "corridor",
-                        new String[]{
-                                "XXXXXXXXXXXXXXX",
-                                "X            XX",
-                                "X XXXXXXXXXXXXX",
-                                "XXX            ",
-                                "               ",
-                        }, new String[]{
-                                "?123456789abcd ",
-                                "             e ",
-                                "  qponmlkjihgf ",
-                                "  !            ",
-                                "               ",
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "three dimensional moves",
-                        new String[]{
-                                "XXX|XX |   ",
-                                "X X|XXX| XX",
-                                "XXX| X | XX"
-                        }, new String[]{
-                                "?  |   |   ",
-                                "   | 1 |   ",
-                                "   |   |  !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "jump over",
-                        new String[]{
-                                "X X|XXX|XXX|XXX"
-                        }, new String[]{
-                                "? !|123|   |   "
+                                "?",
+                                "1",
+                                "!"
                         },
                         0.9f,
                         0.3f,
                         new String[]{"walking", "leaping"}
                 )
-
+//                Arguments.of(
+//                        "leap",
+//                        new String[]{
+//                                "X  |XXX|XXX|XXX",
+//                                "X  |XXX|XXX|XXX",
+//                        }, new String[]{
+//                                "?  |123|XXX|XXX",
+//                                "   |  !|XXX|XXX",
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"walking", "leaping"}
+//                ), Arguments.of(
+//                        "diagonal",
+//                        new String[]{
+//                                "X  |X  ",
+//                                "X  |X  ",
+//                                "XXX|XXX"
+//                        }, new String[]{
+//                                "?  |   ",
+//                                "1  |   ",
+//                                "23!|   "
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"walking", "leaping"}
+//                ), Arguments.of(
+//                        "corridor",
+//                        new String[]{
+//                                "XXXXXXXXXXXXXXX",
+//                                "X            XX",
+//                                "X XXXXXXXXXXXXX",
+//                                "XXX            ",
+//                                "               ",
+//                        }, new String[]{
+//                                "?123456789abcd ",
+//                                "             e ",
+//                                "  qponmlkjihgf ",
+//                                "  !            ",
+//                                "               ",
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"walking", "leaping"}
+//                ),
+//                Arguments.of(
+//                        "three dimensional moves",
+//                        new String[]{
+//                                "XXX|XX |   ",
+//                                "X X|XXX| XX",
+//                                "XXX| X | XX"
+//                        }, new String[]{
+//                                "?  |   |   ",
+//                                "   | 1 |   ",
+//                                "   |   |  !"
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"walking", "leaping"}
+//                ),
+//                Arguments.of(
+//                        "jump over",
+//                        new String[]{
+//                                "X X|XXX|XXX|XXX"
+//                        }, new String[]{
+//                                "? !|123|   |   "
+//                        },
+//                        0.9f,
+//                        0.3f,
+//                        new String[]{"walking", "leaping"}
+//                )
+//
         );
     }
 
@@ -308,12 +308,12 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean result = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.warn("pos: {}", pos);
+            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
-        Assertions.assertFalse(result, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                 Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                 stop
                 ));
@@ -348,7 +348,7 @@ public class MovementTests {
      * Detect path for entity at map {@code path}
      * @param path map with path
      * @param airHeight air height for world
-     * @param start (!) ref parameter - set start point
+     * @param start (?) ref parameter - set start point
      * @param stop  (!) ref parameter - set end point
      */
     private void detectPath(String[] path, int airHeight, Vector3i start, Vector3i stop) {
