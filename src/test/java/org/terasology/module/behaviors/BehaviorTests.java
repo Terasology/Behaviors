@@ -1,4 +1,4 @@
-// Copyright 2021 The Terasology Foundation
+// Copyright 2022 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 
 package org.terasology.module.behaviors;
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 @Dependencies("Behaviors")
 @Tag("MteTest")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class BehaviourTests {
+public class BehaviorTests {
 
     @In
     AssetManager assetManager;
@@ -54,11 +54,11 @@ public class BehaviourTests {
     @MethodSource("behaviors")
     void behaviorsTest(ResourceUrn urn) {
         Optional<BehaviorTree> tree = Assertions.assertDoesNotThrow(() ->
-                assetManager.getAsset(urn, BehaviorTree.class));
+                assetManager.getAsset(urn, BehaviorTree.class), "Asset manager should be able to load behavior tree asset '" + urn + "'.");
 
-        Assertions.assertTrue(tree.isPresent());
-        Assertions.assertNotNull(tree.get().getData());
-        Assertions.assertNotNull(tree.get().getRoot());
+        Assertions.assertTrue(tree.isPresent(), "Loaded behavior tree asset '" + urn + "' should not be empty.");
+        Assertions.assertNotNull(tree.get().getData(), "Behavior '" + urn + "' should have non-null data field.");
+        Assertions.assertNotNull(tree.get().getRoot(), "Behavior '" + urn + "' should have non-null roo node.");
     }
 
     @ParameterizedTest
@@ -67,9 +67,10 @@ public class BehaviourTests {
         Optional<Prefab> prefab = Assertions.assertDoesNotThrow(() ->
                 assetManager.getAsset(urn, Prefab.class));
         Assertions.assertTrue(prefab.isPresent());
+
         if (prefab.get().hasComponent(BehaviorComponent.class)) {
             BehaviorComponent component = prefab.get().getComponent(BehaviorComponent.class);
-            Assertions.assertNotNull(component.tree);
+            Assertions.assertNotNull(component.tree, "Prefab '" + urn + "' with BehaviorComponent references valid behavior tree.");
             EntityRef ref = entityManager.create(prefab.get());
 
         } else {
