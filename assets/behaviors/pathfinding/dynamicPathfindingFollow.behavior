@@ -17,12 +17,11 @@
                     sequence: [
                         set_target_to_followed_entity,
                         find_path,
-                        setup_continuous_pathfinding,
                         {
                             timeout: {
                                 time: 3,
                                 child: {
-                                    move_along_path_continuous: {
+                                    move_along_path: {
                                         child: {
                                            move_to: {}
                                         }
