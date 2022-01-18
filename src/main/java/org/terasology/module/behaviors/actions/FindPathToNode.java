@@ -45,7 +45,6 @@ public class FindPathToNode extends BaseAction {
         }
 
         MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
-        minionMoveComponent.running = true;
         Vector3ic start = Blocks.toBlockPos(actor.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
         Vector3ic goal = actor.getComponent(MinionMoveComponent.class).getPathGoal();
 
@@ -58,16 +57,13 @@ public class FindPathToNode extends BaseAction {
         config.plugin = pluginSystem.getMovementPlugin(actor.getEntity()).getJpsPlugin(actor.getEntity());
 
         int id = pathfinderSystem.requestPath(config, (path, target) -> {
-            MinionMoveComponent minionMoveComponent1 = actor.getComponent(MinionMoveComponent.class);
-            minionMoveComponent1.running = false;
             if (path == null || path.size() == 0) {
-                actor.save(minionMoveComponent1);
                 return;
             }
             path.remove(0);
 
+            MinionMoveComponent minionMoveComponent1 = actor.getComponent(MinionMoveComponent.class);
             minionMoveComponent1.setPath(path);
-
             actor.save(minionMoveComponent1);
         });
     }
@@ -80,9 +76,6 @@ public class FindPathToNode extends BaseAction {
             return result;
         }
         MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
-        if (minionMoveComponent.running) {
-            return BehaviorState.RUNNING;
-        }
         return minionMoveComponent.getPath().isEmpty() ? BehaviorState.FAILURE : BehaviorState.SUCCESS;
     }
 }
