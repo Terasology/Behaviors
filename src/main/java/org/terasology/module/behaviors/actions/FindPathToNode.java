@@ -29,10 +29,10 @@ import org.terasology.module.behaviors.systems.PluginSystem;
 public class FindPathToNode extends BaseAction {
 
     @In
-    PathfinderSystem pathfinderSystem;
+    transient PathfinderSystem pathfinderSystem;
 
     @In
-    PluginSystem pluginSystem;
+    transient PluginSystem pluginSystem;
 
 
     @Override
