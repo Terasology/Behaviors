@@ -33,7 +33,7 @@ public class ValidatePath extends BaseAction {
     @In
     private PluginSystem pluginSystem;
     @In
-    private MinionMoveSystem flexibleMovementSystem;
+    private MinionMoveSystem minionMoveSystem;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
