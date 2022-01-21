@@ -18,7 +18,7 @@ import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.module.behaviors.systems.PluginSystem;
 
 /**
- * Finds a path to the pathGoalPosition of the Actor, stores it in FlexibileMovementComponent.path
+ * Finds a path to the pathGoalPosition of the Actor, stores it in {@link MinionMoveComponent#getPath()}.
  * <p/>
  * SUCCESS: When the pathfinder returns a valid path
  * <p/>
