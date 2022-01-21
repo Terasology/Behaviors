@@ -1,0 +1,6 @@
+{
+  "parent": "Behaviors:testcharacter",
+  "MinionMove": {
+    "movementTypes": ["flying"]
+  }
+}

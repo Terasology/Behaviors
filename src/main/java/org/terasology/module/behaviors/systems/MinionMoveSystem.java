@@ -2,81 +2,51 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.systems;
 
-import com.google.common.collect.Sets;
-import org.joml.Vector3f;
+import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.entitySystem.entity.lifecycleEvents.BeforeDeactivateComponent;
-import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.characters.CharacterMoveInputEvent;
 import org.terasology.engine.logic.characters.events.HorizontalCollisionEvent;
-import org.terasology.engine.logic.characters.events.OnEnterBlockEvent;
-import org.terasology.engine.logic.location.LocationComponent;
-import org.terasology.engine.registry.In;
+import org.terasology.engine.registry.Share;
 import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
-import org.terasology.navgraph.NavGraphChanged;
-import org.terasology.navgraph.WalkableBlock;
-import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 
-import java.util.Set;
+import java.util.Map;
 
+
+@Share(MinionMoveSystem.class)
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class MinionMoveSystem extends BaseComponentSystem {
-    @In
-    private PathfinderSystem pathfinderSystem;
+public class MinionMoveSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+    private static final Logger logger = LoggerFactory.getLogger(MinionMoveSystem.class);
 
-    private Set<EntityRef> entities = Sets.newHashSet();
-
-    @ReceiveEvent
-    public void worldChanged(NavGraphChanged event, EntityRef entityRef) {
-        for (EntityRef entity : entities) {
-            setupEntity(entity);
-        }
-    }
-
-    @ReceiveEvent
-    public void onCollision(HorizontalCollisionEvent event, EntityRef minion, MinionMoveComponent movementComponent) {
-        movementComponent.horizontalCollision = true;
-        minion.saveComponent(movementComponent);
-    }
-
-    @ReceiveEvent
-    public void onMinionEntersBlock(OnEnterBlockEvent event, EntityRef minion, 
-        LocationComponent locationComponent, MinionMoveComponent moveComponent) {
-        setupEntity(minion);
-    }
-
-    @ReceiveEvent
-    public void onMinionActivation(OnActivatedComponent event, EntityRef minion, 
-        LocationComponent locationComponent, MinionMoveComponent moveComponent) {
-        setupEntity(minion);
-        entities.add(minion);
-    }
-
-    @ReceiveEvent
-    public void onMinionDeactivation(BeforeDeactivateComponent event, EntityRef minion, 
-        LocationComponent locationComponent, MinionMoveComponent moveComponent) {
-        entities.remove(minion);
-    }
-
-    private void setupEntity(EntityRef minion) {
-        MinionMoveComponent moveComponent = minion.getComponent(MinionMoveComponent.class);
-        WalkableBlock block = pathfinderSystem.getBlock(minion);
-        moveComponent.currentBlock = block;
-        if (block != null && moveComponent.target == null) {
-            moveComponent.target = new Vector3f(block.getBlockPosition());
-        }
-        minion.saveComponent(moveComponent);
-    }
+    private final Map<EntityRef, CharacterMoveInputEvent> eventQueue = Maps.newHashMap();
 
     @Override
-    public void initialise() {
+    public void update(float delta) {
+        for (Map.Entry<EntityRef, CharacterMoveInputEvent> entry : eventQueue.entrySet()) {
+            if (entry.getKey() != null && entry.getKey().exists()) {
+                entry.getKey().send(entry.getValue());
+            }
+        }
+        eventQueue.clear();
     }
 
-    @Override
-    public void shutdown() {
+    @ReceiveEvent
+    public void markHorizontalCollision(HorizontalCollisionEvent event, EntityRef entity,
+                                        MinionMoveComponent minionMoveComponent) {
+        if (minionMoveComponent == null) {
+            return;
+        }
 
+        minionMoveComponent.collidedHorizontally = true;
+    }
+
+    public void enqueue(EntityRef entity, CharacterMoveInputEvent event) {
+        eventQueue.put(entity, event);
     }
 }

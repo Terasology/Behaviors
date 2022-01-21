@@ -1,0 +1,11 @@
+{
+  "BehaviorNode": {
+    "type": "ValidatePathNode",
+    "name": "Validate Path",
+    "category": "movement",
+    "shape": "rect",
+    "description": "Validate that this entity can traverse its current path",
+    "color": [180, 180, 180, 255],
+    "textColor": [0, 0, 0, 255]
+  }
+}

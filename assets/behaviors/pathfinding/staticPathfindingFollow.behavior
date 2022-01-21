@@ -20,7 +20,7 @@
                         {
                             move_along_path: {
                                 child: {
-                                    move_to: {}
+                                   move_to: {}
                                 }
                             }
                         }

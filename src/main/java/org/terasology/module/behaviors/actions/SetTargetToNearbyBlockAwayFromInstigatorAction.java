@@ -1,25 +1,28 @@
-// Copyright 2022 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.actions;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Iterators;
 import org.joml.RoundingMode;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.module.behaviors.components.FleeingComponent;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.engine.world.block.Blocks;
+import org.terasology.flexiblepathfinding.plugins.JPSPlugin;
+import org.terasology.module.behaviors.components.FleeingComponent;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
-import org.terasology.navgraph.WalkableBlock;
-import org.terasology.pathfinding.componentSystem.PathfinderSystem;
+import org.terasology.module.behaviors.systems.PluginSystem;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Random;
 
 import static java.lang.Integer.min;
@@ -29,18 +32,19 @@ public class SetTargetToNearbyBlockAwayFromInstigatorAction extends BaseAction {
 
     private static final Logger logger = LoggerFactory.getLogger(SetTargetToNearbyBlockAwayFromInstigatorAction.class);
     private static final int RANDOM_BLOCK_ITERATIONS = 10;
-
+    private final Random random = new Random();
     @In
-    private PathfinderSystem pathfinderSystem;
-    
-    private Random random = new Random();
+    private PluginSystem movementPluginSystem;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState state) {
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
-        if (moveComponent.currentBlock != null) {
-            WalkableBlock target = findRandomNearbyBlockAwayFromPlayer(moveComponent.currentBlock, actor);
-            moveComponent.target = new Vector3f(target.getBlockPosition());
+        LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
+
+        if (locationComponent != null && moveComponent != null) {
+            Vector3i currentBlock = Blocks.toBlockPos(locationComponent.getWorldPosition(new Vector3f()));
+
+            moveComponent.target = findRandomNearbyBlockAwayFromPlayer(currentBlock, actor);
             actor.save(moveComponent);
         } else {
             return BehaviorState.FAILURE;
@@ -48,31 +52,30 @@ public class SetTargetToNearbyBlockAwayFromInstigatorAction extends BaseAction {
         return BehaviorState.SUCCESS;
     }
 
-    private WalkableBlock findRandomNearbyBlockAwayFromPlayer(WalkableBlock startBlock, Actor actor) {
-        WalkableBlock currentBlock = startBlock;
+    private Vector3i findRandomNearbyBlockAwayFromPlayer(Vector3ic startBlock, Actor actor) {
+        Vector3i currentBlock = new Vector3i(startBlock);
         FleeingComponent fleeingComponent = actor.getComponent(FleeingComponent.class);
         Vector3i playerPosition = new Vector3i(
-            fleeingComponent.instigator.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()), 
-            RoundingMode.FLOOR);
+                fleeingComponent.instigator.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()),
+                RoundingMode.FLOOR);
+        JPSPlugin plugin = movementPluginSystem.getMovementPlugin(actor.getEntity())
+                .getJpsPlugin(actor.getEntity());
+
         for (int i = 0; i < RANDOM_BLOCK_ITERATIONS; i++) {
-            WalkableBlock[] neighbors = currentBlock.neighbors;
-            List<WalkableBlock> existingNeighbors = Lists.newArrayList();
-            for (WalkableBlock neighbor : neighbors) {
-                if (neighbor != null) {
-                    existingNeighbors.add(neighbor);
-                }
-            }
-            if (existingNeighbors.size() > 0) {
-                // Sorting the list of neighboring blocks based on distance from player (farthest first)
-                existingNeighbors.sort((one, two) -> {
-                    double a = one.getBlockPosition().distanceSquared(playerPosition);
-                    double b = two.getBlockPosition().distanceSquared(playerPosition);
-                    return a > b ? -1
-                        : a < b ? 1
-                        : 0;
+            BlockRegion region = new BlockRegion(currentBlock);
+            Vector3ic[] allowedBlocks = Iterators.toArray(
+                    Iterators.transform(Iterators.filter(region.expand(1, 1, 1).iterator(),
+                                    (candidate) -> plugin.isReachable(currentBlock, candidate)),
+                            Vector3i::new),
+                    Vector3ic.class);
+
+            if (allowedBlocks.length > 0) {
+                Arrays.sort(allowedBlocks, (one, two) -> {
+                    double a = one.distanceSquared(playerPosition);
+                    double b = two.distanceSquared(playerPosition);
+                    return Double.compare(b, a);
                 });
-                // Select any of the first 4 neighboring blocks to make path random and not linear
-                currentBlock = existingNeighbors.get(random.nextInt(min(4, existingNeighbors.size())));
+                currentBlock.set(allowedBlocks[random.nextInt(min(4, allowedBlocks.length))]);
             }
         }
         return currentBlock;
