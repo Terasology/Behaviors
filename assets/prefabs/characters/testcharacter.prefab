@@ -1,7 +1,4 @@
 {
-  "MinionMove": {
-    "movementTypes": ["walking", "leaping"]
-  },
   "Behavior" : {
     "tree" : "naiveMoveTo"
   },

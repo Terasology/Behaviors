@@ -328,11 +328,10 @@ public class MovementTests {
         EntityRef entity = entityManager.create("Behaviors:testcharacter");
         entity.send(new CharacterTeleportEvent(new Vector3f(start)));
 
-        MinionMoveComponent minionMoveComponent = entity.getComponent(MinionMoveComponent.class);
+        MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
         minionMoveComponent.setPathGoal(stop);
-        minionMoveComponent.movementTypes.clear();
         minionMoveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
-        entity.saveComponent(minionMoveComponent);
+        entity.addOrSaveComponent(minionMoveComponent);
 
         CharacterMovementComponent charMovementComponent = entity.getComponent(CharacterMovementComponent.class);
         charMovementComponent.height = height;
