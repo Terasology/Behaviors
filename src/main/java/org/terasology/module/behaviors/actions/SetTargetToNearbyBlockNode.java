@@ -55,6 +55,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
                         Blocks.toBlockPos(locationComponent.getWorldPosition(new Vector3f())),
                         plugin);
                 moveComponent.target.set(target);
+                moveComponent.setPathGoal(new Vector3i(target));
                 actor.save(moveComponent);
                 logger.debug("... new target: {}", target);
             } else {
