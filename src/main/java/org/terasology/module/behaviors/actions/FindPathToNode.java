@@ -60,7 +60,7 @@ public class FindPathToNode extends BaseAction {
         config.requester = actor.getEntity();
         config.maxTime = 10f;
         config.maxDepth = 150;
-        config.goalDistance = minionMoveComponent.pathGoalDistance;
+        config.goalDistance = minionMoveComponent.goalTolerance;
         config.plugin = pluginSystem.getMovementPlugin(actor.getEntity()).getJpsPlugin(actor.getEntity());
 
         int id = pathfinderSystem.requestPath(config, (path, target) -> {
