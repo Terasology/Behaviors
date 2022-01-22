@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2022 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.actions;
 
@@ -13,6 +13,7 @@ import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.block.BlockRegionc;
@@ -27,6 +28,7 @@ import java.util.Random;
 @BehaviorAction(name = "set_target_nearby_block")
 public class SetTargetToNearbyBlockNode extends BaseAction {
     private static final Logger logger = LoggerFactory.getLogger(SetTargetToNearbyBlockNode.class);
+
     private int moveProbability = 100;
     private transient Random random = new Random();
 
@@ -34,8 +36,16 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
     private PluginSystem movementPluginSystem;
 
     @Override
+    public void construct(Actor actor) {
+        if (movementPluginSystem == null) {
+            movementPluginSystem = CoreRegistry.get(PluginSystem.class);
+        }
+    }
+
+    @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
         if (random.nextInt(100) > (99 - moveProbability)) {
+            logger.debug("Setting 'MinionMoveComponent#target' to a random nearby block ...");
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
             JPSPlugin plugin = movementPluginSystem.getMovementPlugin(actor.getEntity())
@@ -46,7 +56,9 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
                         plugin);
                 moveComponent.target.set(target);
                 actor.save(moveComponent);
+                logger.debug("... new target: {}", target);
             } else {
+                logger.debug("... failed");
                 return BehaviorState.FAILURE;
             }
         }
