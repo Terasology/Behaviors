@@ -1,5 +1,5 @@
 {
-  dynamic: [
+  selector: [
     {
       guard: {
         componentPresent: "Behaviors:Fleeing",
