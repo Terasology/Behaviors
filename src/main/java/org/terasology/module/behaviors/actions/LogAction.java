@@ -17,8 +17,7 @@ import org.terasology.nui.properties.TextField;
 @API
 @BehaviorAction(name = "log")
 public class LogAction extends BaseAction {
-    public static final Logger logger = LoggerFactory.getLogger(LogAction.class
-    );
+    public static final Logger logger = LoggerFactory.getLogger(LogAction.class);
 
     @TextField
     public String message;
