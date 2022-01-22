@@ -34,6 +34,13 @@ public class FindPathToNode extends BaseAction {
     @In
     transient PluginSystem pluginSystem;
 
+    // TODO: how do we want to remember state in actions?
+    // 1. action field as used here
+    // 2. actor.setValue, actor.getValue as used in SleepAction
+    // 3. write to, read from component
+    // 4. ...
+    private boolean pathfindingFinished = false;
+
 
     @Override
     public void construct(Actor actor) {
@@ -58,6 +65,7 @@ public class FindPathToNode extends BaseAction {
 
         int id = pathfinderSystem.requestPath(config, (path, target) -> {
             if (path == null || path.size() == 0) {
+                pathfindingFinished = true;
                 return;
             }
             path.remove(0);
@@ -65,6 +73,7 @@ public class FindPathToNode extends BaseAction {
             MinionMoveComponent minionMoveComponent1 = actor.getComponent(MinionMoveComponent.class);
             minionMoveComponent1.setPath(path);
             actor.save(minionMoveComponent1);
+            pathfindingFinished = true;
         });
     }
 
@@ -74,6 +83,9 @@ public class FindPathToNode extends BaseAction {
         if (result == BehaviorState.RUNNING) {
             // this can never happen o.O
             return result;
+        }
+        if (!pathfindingFinished) {
+            return BehaviorState.RUNNING;
         }
         MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
         return minionMoveComponent.getPath().isEmpty() ? BehaviorState.FAILURE : BehaviorState.SUCCESS;
