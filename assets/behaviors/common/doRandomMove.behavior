@@ -3,7 +3,9 @@
     {
       set_target_nearby_block : { moveProbability: 65 }
     },
-    move_to
+    {
+      lookup: { tree: "Behaviors:naiveMoveTo" }
+    }
   ]
 }
 
