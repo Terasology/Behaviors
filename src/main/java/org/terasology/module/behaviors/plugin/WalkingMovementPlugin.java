@@ -1,4 +1,4 @@
-// Copyright 2021 The Terasology Foundation
+// Copyright 2022 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.plugin;
 
@@ -34,6 +34,6 @@ public class WalkingMovementPlugin extends MovementPlugin {
         long dt = getTime().getGameDeltaInMs();
 
         CharacterMovementComponent movement = entity.getComponent(CharacterMovementComponent.class);
-        return new CharacterMoveInputEvent(sequence, 0, yaw, delta, false, false, dt);
+        return new CharacterMoveInputEvent(sequence, 0, yaw, delta, false, false, false, dt);
     }
 }
