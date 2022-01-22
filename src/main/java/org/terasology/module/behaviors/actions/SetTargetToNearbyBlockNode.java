@@ -45,27 +45,44 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
         if (random.nextInt(100) > (99 - moveProbability)) {
-            logger.debug("Setting 'MinionMoveComponent#target' to a random nearby block ...");
+            logger.debug("Setting 'MinionMoveComponent#target' to a random nearby block for {}", actor.getEntity());
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
             JPSPlugin plugin = movementPluginSystem.getMovementPlugin(actor.getEntity())
                     .getJpsPlugin(actor.getEntity());
             if (locationComponent != null) {
+                Vector3i startBlock = Blocks.toBlockPos(locationComponent.getWorldPosition(new Vector3f()));
+                logger.debug("... [{}] searching reachable block in reach of {}", actor.getEntity().getId(), startBlock);
                 Vector3ic target = findRandomNearbyBlock(
-                        Blocks.toBlockPos(locationComponent.getWorldPosition(new Vector3f())),
+                        startBlock,
                         plugin);
                 moveComponent.target.set(target);
                 moveComponent.setPathGoal(new Vector3i(target));
                 actor.save(moveComponent);
-                logger.debug("... new target: {}", target);
+                logger.debug("... [{}] new target: {}", actor.getEntity().getId(), target);
             } else {
-                logger.debug("... failed");
+                logger.debug("... [{}] failed", actor.getEntity().getId());
                 return BehaviorState.FAILURE;
             }
         }
         return BehaviorState.SUCCESS;
     }
 
+    /**
+     * TODO: make sure the block is on the ground, i.e., the actor is able to stay at at that location
+     *       obviously, this depends on the entities movement modes, a flying entity can obviously just hover a round...
+     *       => the question now is how a plugin can contribute to the path, but should be excluded from finding a target ...
+     *
+     * TODO: can this be solved using different sets of plugins?
+     *          movementTypes: ["walking", "leaping"]
+     *          idleTypes: ["walking"]
+     *       ideally, we can instantiate all plugins once an re-use them in different contexts (but that might prove difficult due to
+     *       concurrency when building up caches?)
+     *
+     * @param startBlock
+     * @param plugin
+     * @return
+     */
     private Vector3ic findRandomNearbyBlock(Vector3ic startBlock, JPSPlugin plugin) {
         Vector3i currentBlock = new Vector3i(startBlock);
         for (int i = 0; i < random.nextInt(10) + 3; i++) {
@@ -79,8 +96,6 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
                 currentBlock.set(allowedBlocks[random.nextInt(allowedBlocks.length)]);
             }
         }
-        logger.debug(String.format("Looking for a block: my block is %s, found destination %s",
-                startBlock, currentBlock));
         return currentBlock;
     }
 

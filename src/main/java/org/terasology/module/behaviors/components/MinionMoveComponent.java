@@ -41,6 +41,16 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
     // current index along path above
     private int pathIndex = 0;
 
+    //TODO: pathfinding related fields
+    //        goalPosition      : final target position
+    //        goalTolerance     : maximum distance from 'goalPosition'
+    //        target            : next waypoint to move to (from 'path', eventually 'goalPosition'
+    //        targetTolerance   : maximum distance from 'target'
+    //        path              : list of waypoints to reach 'goal'
+    //        pathIndex         : current position (or next target position?)
+
+    //TODO: don't mention `pathIndex` in docstrings as they should be an internal detail?
+
     public void setPathGoal(EntityRef entity) {
         pathGoalEntity = entity;
         resetPath();
@@ -61,11 +71,19 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
         return pathGoalPosition;
     }
 
+    /**
+     * Clear the stored {@link #path} and reset the {@link #pathIndex} to 0.
+     */
     public void resetPath() {
         path.clear();
         pathIndex = 0;
     }
 
+    /**
+     * Increment the {@link #pathIndex} by one set the next {@link #target}, if it exists.
+     *
+     * TODO: should this just include whether the path is finished check?
+     */
     public void advancePath() {
         pathIndex += 1;
         if (pathIndex < path.size()) {
@@ -73,10 +91,23 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
         }
     }
 
+    /**
+     * Whether the entity reached the end of the {@link #path}.
+     *
+     * Note: finishing the path does not necessarily mean that the entity reached the goal position!
+     */
     public boolean isPathFinished() {
         return pathIndex >= path.size();
     }
 
+    /**
+     * Store given path and reset {@link #pathIndex} pointer.
+     * Also set {@link #target} to the first waypoint if the given path is not empty.
+     *
+     * TODO: Why reset pathIndex, but not the overall pathGoal? Or at least ensure that the given path leads to pathGoal?
+     *
+     * @param path the new path the entity should move along.
+     */
     public void setPath(List<Vector3i> path) {
         resetPath();
         this.path.addAll(path);

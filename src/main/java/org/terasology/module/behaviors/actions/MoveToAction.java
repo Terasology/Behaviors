@@ -71,7 +71,7 @@ public class MoveToAction extends BaseAction {
         if (Blocks.toBlockPos(position).equals(minionMoveComponent.target)) {
             return BehaviorState.SUCCESS;
         }
-        // Cannot find path too long;
+        // Could not reach target with 200 movements - abort action;
         if (minionMoveComponent.sequenceNumber > 200) {
             minionMoveComponent.resetPath();
             actor.save(minionMoveComponent);
@@ -93,7 +93,7 @@ public class MoveToAction extends BaseAction {
             // path is no longer valid. However, we instead fall back to a default movement plugin in the hopes
             // that a gentle nudge in a probably-correct direction will at least make the physics reconcile the
             // intersection, and hopefully return to properly penetrable blocks.
-            logger.debug("Movement plugin returned null");
+            logger.debug("Movement plugin for entity id {} returned null - falling back to WalkingMovementPlugin", actor.getEntity().getId());
             MovementPlugin fallbackPlugin = new WalkingMovementPlugin(world, time);
             result = fallbackPlugin.move(
                     actor.getEntity(),
