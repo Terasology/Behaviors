@@ -59,7 +59,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
                 moveComponent.target.set(target);
                 moveComponent.setPathGoal(new Vector3i(target));
                 actor.save(moveComponent);
-                logger.debug("... [{}] new target: {}", actor.getEntity().getId(), target);
+                logger.debug("... [{}] new target: {} - distance: {}", actor.getEntity().getId(), target, target.sub(startBlock, new Vector3i()).length());
             } else {
                 logger.debug("... [{}] failed", actor.getEntity().getId());
                 return BehaviorState.FAILURE;
