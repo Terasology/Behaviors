@@ -55,6 +55,7 @@ public class MoveToAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState prevResult) {
+        logger.debug("Actor {}: in move_to Action", actor.getEntity().getId());
         LocationComponent location = actor.getComponent(LocationComponent.class);
         MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
         CharacterMovementComponent characterMovementComponent = actor.getComponent(CharacterMovementComponent.class);
@@ -93,7 +94,7 @@ public class MoveToAction extends BaseAction {
             // path is no longer valid. However, we instead fall back to a default movement plugin in the hopes
             // that a gentle nudge in a probably-correct direction will at least make the physics reconcile the
             // intersection, and hopefully return to properly penetrable blocks.
-            logger.debug("Movement plugin for entity id {} returned null - falling back to WalkingMovementPlugin", actor.getEntity().getId());
+            logger.debug("... [{}]: Movement plugin returned null - falling back to WalkingMovementPlugin", actor.getEntity().getId());
             MovementPlugin fallbackPlugin = new WalkingMovementPlugin(world, time);
             result = fallbackPlugin.move(
                     actor.getEntity(),

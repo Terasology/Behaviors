@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
@@ -24,12 +26,17 @@ import org.terasology.module.behaviors.components.MinionMoveComponent;
 @BehaviorAction(name = "move_along_path", isDecorator = true)
 public class MoveAlongPathNode extends BaseAction {
 
+    private static final Logger logger = LoggerFactory.getLogger(MoveAlongPathNode.class);
+
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
+        logger.debug("Actor {}: in move_along_path Action", actor.getEntity().getId());
         MinionMoveComponent movement = actor.getComponent(MinionMoveComponent.class);
         if (result == BehaviorState.SUCCESS) {
+            logger.debug("... [{}]: advance path", actor.getEntity().getId());
             movement.advancePath();
             if (movement.isPathFinished()) {
+                logger.debug("... [{}]: finished", actor.getEntity().getId());
                 movement.resetPath();
                 actor.save(movement);
                 return BehaviorState.SUCCESS;

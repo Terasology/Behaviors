@@ -44,22 +44,22 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
+        logger.debug("Actor {}: in set_target_nearby_block Action", actor.getEntity().getId());
         if (random.nextInt(100) > (99 - moveProbability)) {
-            logger.debug("Setting 'MinionMoveComponent#target' to a random nearby block for {}", actor.getEntity());
             MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
             LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
             JPSPlugin plugin = movementPluginSystem.getMovementPlugin(actor.getEntity())
                     .getJpsPlugin(actor.getEntity());
             if (locationComponent != null) {
                 Vector3i startBlock = Blocks.toBlockPos(locationComponent.getWorldPosition(new Vector3f()));
-                logger.debug("... [{}] searching reachable block in reach of {}", actor.getEntity().getId(), startBlock);
+                logger.debug("... [{}]  start position: {}", actor.getEntity().getId(), startBlock);
                 Vector3ic target = findRandomNearbyBlock(
                         startBlock,
                         plugin);
                 moveComponent.target.set(target);
                 moveComponent.setPathGoal(new Vector3i(target));
                 actor.save(moveComponent);
-                logger.debug("... [{}] new target: {} - distance: {}", actor.getEntity().getId(), target, target.sub(startBlock, new Vector3i()).length());
+                logger.debug("... [{}] target position: {} - distance: {}", actor.getEntity().getId(), target, target.sub(startBlock, new Vector3i()).length());
             } else {
                 logger.debug("... [{}] failed", actor.getEntity().getId());
                 return BehaviorState.FAILURE;
