@@ -1,10 +1,7 @@
 {
   sequence : [
-    {
-      selector : [
-        find_path
-      ]
-    },
+    { log: { message: "in naiveMoveTo Behavior"} },
+    find_path,
     { move_along_path: {
       child : {
         move_to: {}

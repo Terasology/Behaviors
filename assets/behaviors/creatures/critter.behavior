@@ -1,16 +1,21 @@
 {
-  selector: [
+  sequence: [
+    { log: { message: "---- critter ----"} },
     {
-      guard: {
-        componentPresent: "Behaviors:Fleeing",
-        child: {
-          sequence: [
-            check_flee_stop,
-            { lookup: { tree: "Behaviors:flee" } }
-          ]
-        }
-      }
-    },
-    { lookup: { tree: "Behaviors:stray" } }
+      selector: [
+        {
+          guard: {
+            componentPresent: "Behaviors:Fleeing",
+            child: {
+              sequence: [
+                check_flee_stop,
+                { lookup: { tree: "Behaviors:flee" } }
+              ]
+            }
+          }
+        },
+        { lookup: { tree: "Behaviors:stray" } }
+      ]
+    }
   ]
 }
