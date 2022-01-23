@@ -3,6 +3,7 @@
 package org.terasology.module.behaviors.debug;
 
 import org.joml.Vector3ic;
+import org.terasology.engine.config.Config;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
@@ -23,6 +24,9 @@ public class FlexibleMovementDebugRenderSystem extends BaseComponentSystem imple
     @In
     private EntityManager entityManager;
 
+    @In
+    private Config config;
+
     @Override
     public void initialise() {
         selectionRenderer = new BlockSelectionRenderer(Assets.getTexture("engine:selection").get());
@@ -30,13 +34,19 @@ public class FlexibleMovementDebugRenderSystem extends BaseComponentSystem imple
 
     @Override
     public void renderOverlay() {
-        selectionRenderer.beginRenderOverlay();
-        for (EntityRef entity : entityManager.getEntitiesWith(MinionMoveComponent.class)) {
-            MinionMoveComponent minionMoveComponent = entity.getComponent(MinionMoveComponent.class);
-            for (Vector3ic pos : minionMoveComponent.getPath()) {
-                selectionRenderer.renderMark2(pos);
+        // Only render the path debug overlay if the debug mode is enabled.
+        //TODO: The RenderingDebugConfig holds more specific flags which debug modes are enabled, but that config is not extensible.
+        //      How would we register new debug modes like this one for pathfinding? Should this be tied to debug mode in general, or
+        //      should it be possible to toggle the debug rendering via console command, similar to RenderingDebugCommands?
+        if (config.getRendering().getDebug().isEnabled()) {
+            selectionRenderer.beginRenderOverlay();
+            for (EntityRef entity : entityManager.getEntitiesWith(MinionMoveComponent.class)) {
+                MinionMoveComponent minionMoveComponent = entity.getComponent(MinionMoveComponent.class);
+                for (Vector3ic pos : minionMoveComponent.getPath()) {
+                    selectionRenderer.renderMark2(pos);
+                }
             }
+            selectionRenderer.endRenderOverlay();
         }
-        selectionRenderer.endRenderOverlay();
     }
 }
