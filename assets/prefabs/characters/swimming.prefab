@@ -1,8 +1,0 @@
-{
-  "parent": "Behaviors:testcharacter",
-  "MinionMove": {
-    "movementTypes": [
-      "swimming"
-    ]
-  }
-}
