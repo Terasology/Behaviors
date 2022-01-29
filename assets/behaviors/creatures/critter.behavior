@@ -2,7 +2,7 @@
   sequence: [
     { log: { message: "---- critter ----"} },
     {
-      selector: [
+      dynamic: [
         {
           guard: {
             componentPresent: "Behaviors:Fleeing",
