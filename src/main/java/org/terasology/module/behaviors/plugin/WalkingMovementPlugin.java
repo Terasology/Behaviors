@@ -4,17 +4,23 @@ package org.terasology.module.behaviors.plugin;
 
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.engine.core.Time;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.logic.characters.CharacterMoveInputEvent;
 import org.terasology.engine.logic.characters.CharacterMovementComponent;
 import org.terasology.engine.logic.characters.MovementMode;
 import org.terasology.engine.logic.characters.events.SetMovementModeEvent;
+import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.world.WorldProvider;
 import org.terasology.flexiblepathfinding.plugins.JPSPlugin;
 import org.terasology.flexiblepathfinding.plugins.basic.WalkingPlugin;
 
 public class WalkingMovementPlugin extends MovementPlugin {
+
+    private static final Logger logger = LoggerFactory.getLogger(WalkingMovementPlugin.class);
+
     public WalkingMovementPlugin(WorldProvider world, Time time) {
         super(world, time);
     }
@@ -31,6 +37,15 @@ public class WalkingMovementPlugin extends MovementPlugin {
 
     @Override
     public CharacterMoveInputEvent move(EntityRef entity, Vector3fc dest, int sequence) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("--> [{}] {} move: {} - current: {} - destination: {}",
+                    entity.getId(),
+                    String.format("%03d", sequence),
+                    "walking",
+                    entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()),
+                    dest);
+        }
+
         CharacterMovementComponent movement = entity.getComponent(CharacterMovementComponent.class);
         // The underlying WalkingPlugin assumes that entities are not affected by gravity.
         // To simulate this, we'll use the FLYING movement mode for all entities when moving them with this plugin.
