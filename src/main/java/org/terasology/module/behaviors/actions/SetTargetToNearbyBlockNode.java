@@ -53,9 +53,11 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
             if (locationComponent != null) {
                 Vector3i startBlock = Blocks.toBlockPos(locationComponent.getWorldPosition(new Vector3f()));
                 logger.debug("... [{}]  start position: {}", actor.getEntity().getId(), startBlock);
-                Vector3ic target = findRandomNearbyBlock(
-                        startBlock,
-                        plugin);
+                Vector3ic target = findRandomNearbyBlock(startBlock, plugin);
+                if (!plugin.isWalkable(target)) {
+                    logger.debug("... [{}] target position: {} not walkable", actor.getEntity().getId(), target);
+                    return BehaviorState.FAILURE;
+                }
                 moveComponent.target.set(target);
                 moveComponent.setPathGoal(new Vector3i(target));
                 actor.save(moveComponent);
@@ -85,6 +87,9 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
      */
     private Vector3ic findRandomNearbyBlock(Vector3ic startBlock, JPSPlugin plugin) {
         Vector3i currentBlock = new Vector3i(startBlock);
+        //TODO: disallow starting block (and all blocks that have been a candidate before?)
+        //      alternatively, make sure each candidate steps further away from the startBlock than before?
+        //      general distance to startBlock is defined by number of steps (currently at least 3, at max 13)
         for (int i = 0; i < random.nextInt(10) + 3; i++) {
             BlockRegionc neighbors = new BlockRegion(currentBlock).expand(1, 1, 1);
             Vector3ic[] allowedBlocks = Iterators.toArray(
@@ -96,6 +101,8 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
                 currentBlock.set(allowedBlocks[random.nextInt(allowedBlocks.length)]);
             }
         }
+
+        // TODO: keep history of steps and trace back in case final bock is not walkable
         return currentBlock;
     }
 
