@@ -87,14 +87,14 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
      */
     private Vector3ic findRandomNearbyBlock(Vector3ic startBlock, JPSPlugin plugin) {
         Vector3i currentBlock = new Vector3i(startBlock);
-        //TODO: disallow starting block (and all blocks that have been a candidate before?)
-        //      alternatively, make sure each candidate steps further away from the startBlock than before?
-        //      general distance to startBlock is defined by number of steps (currently at least 3, at max 13)
+        //TODO: general distance to startBlock is defined by number of steps (currently at least 3, at max 13)
+        long currentDistance = 0;
         for (int i = 0; i < random.nextInt(10) + 3; i++) {
             BlockRegionc neighbors = new BlockRegion(currentBlock).expand(1, 1, 1);
             Vector3ic[] allowedBlocks = Iterators.toArray(
                     Iterators.transform(Iterators.filter(neighbors.iterator(),
-                                    (candidate) -> plugin.isReachable(currentBlock, candidate)),
+                                    (candidate) -> candidate.distanceSquared(startBlock) > currentDistance
+                                            && plugin.isReachable(currentBlock, candidate)),
                             Vector3i::new),
                     Vector3ic.class);
             if (allowedBlocks.length > 0) {
