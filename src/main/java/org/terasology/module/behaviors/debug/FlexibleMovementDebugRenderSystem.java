@@ -38,7 +38,7 @@ public class FlexibleMovementDebugRenderSystem extends BaseComponentSystem imple
         //TODO: The RenderingDebugConfig holds more specific flags which debug modes are enabled, but that config is not extensible.
         //      How would we register new debug modes like this one for pathfinding? Should this be tied to debug mode in general, or
         //      should it be possible to toggle the debug rendering via console command, similar to RenderingDebugCommands?
-        if (config.getRendering().getDebug().isEnabled()) {
+        //if (config.getRendering().getDebug().isEnabled()) {
             selectionRenderer.beginRenderOverlay();
             for (EntityRef entity : entityManager.getEntitiesWith(MinionMoveComponent.class)) {
                 MinionMoveComponent minionMoveComponent = entity.getComponent(MinionMoveComponent.class);
@@ -47,6 +47,6 @@ public class FlexibleMovementDebugRenderSystem extends BaseComponentSystem imple
                 }
             }
             selectionRenderer.endRenderOverlay();
-        }
+        //}
     }
 }
