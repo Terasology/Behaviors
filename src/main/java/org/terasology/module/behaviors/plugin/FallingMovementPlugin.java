@@ -54,8 +54,10 @@ public class FallingMovementPlugin extends MovementPlugin {
             entity.send(new SetMovementModeEvent(MovementMode.WALKING));
         }
         //TODO: ensure that 'dest' is below the entity's location? What should we do in case we missed the 'dest'?
+        Vector3f delta = getDelta(entity, dest);
+        float yaw = getYaw(delta);
         long dt = getTime().getGameDeltaInMs();
 
-        return new CharacterMoveInputEvent(sequence, 0, 0, new Vector3f(), false, false, false, dt);
+        return new CharacterMoveInputEvent(sequence, 0, yaw, delta, false, false, false, dt);
     }
 }
