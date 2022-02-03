@@ -16,7 +16,8 @@ import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.WorldProvider;
-import org.terasology.engine.world.block.Blocks;
+import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.joml.geom.AABBf;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.module.behaviors.plugin.MovementPlugin;
 import org.terasology.module.behaviors.plugin.WalkingMovementPlugin;
@@ -72,8 +73,13 @@ public class MoveToAction extends BaseAction {
         if (Blocks.toBlockPos(position).equals(minionMoveComponent.target)) {
             return BehaviorState.SUCCESS;
         }
-        // Could not reach target with 200 movements - abort action;
-        if (minionMoveComponent.sequenceNumber > 200) {
+        // Could not reach target with _n_ movements - abort action;
+        //
+        // As we scale the movement with the tick rate (the game time delta) just counting the
+        // sequence number might be a bad measure for long-running/slow movements.
+        // With about 200fps this would allow for just 1 second of consecutive movement with an
+        // upper bound of 200 cycles. Therefore, increasing this number to have a bit more margin.
+        if (minionMoveComponent.sequenceNumber > 1000) {
             minionMoveComponent.resetPath();
             actor.save(minionMoveComponent);
             return BehaviorState.FAILURE;
