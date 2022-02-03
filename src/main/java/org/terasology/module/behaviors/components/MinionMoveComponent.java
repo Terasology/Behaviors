@@ -40,7 +40,7 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
     /**
      * The maximum distance from a target before it is considered to be reached
      */
-    public float targetTolerance = 0.2f;
+    public float targetTolerance = 0.1f;
 
     // last known goal position
     private Vector3i goalPosition = new Vector3i();

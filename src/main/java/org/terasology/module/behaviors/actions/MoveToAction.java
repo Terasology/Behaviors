@@ -70,7 +70,14 @@ public class MoveToAction extends BaseAction {
         //      adjustedMoveTarget.setY(adjustedY);
 
         Vector3f position = location.getWorldPosition(new Vector3f());
-        if (Blocks.toBlockPos(position).equals(minionMoveComponent.target)) {
+        //if (Blocks.toBlockPos(position).equals(minionMoveComponent.target)) {
+        // Make the target area a bit smaller than the actual block to ensure that the entity
+        // is well within the block boundaries before moving on.
+        float tolerance = minionMoveComponent.targetTolerance;
+        AABBf targetArea = new BlockRegion(minionMoveComponent.target)
+                .getBounds(new AABBf())
+                .expand(-tolerance, -tolerance, -tolerance);
+        if (targetArea.containsPoint(position)) {
             return BehaviorState.SUCCESS;
         }
         // Could not reach target with _n_ movements - abort action;
