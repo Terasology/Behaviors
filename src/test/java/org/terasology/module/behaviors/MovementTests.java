@@ -212,6 +212,38 @@ public class MovementTests {
         );
     }
 
+    // Falling movements are purely vertical and require additional horizontal walking movements
+    public static Stream<Arguments> fallingMovementParameters() {
+        return Stream.of(
+                Arguments.of(
+                        "diagonally late down",
+                        new String[]{
+                                "  |XX",
+                                "X |XX"
+                        }, new String[]{
+                                "  | ?",
+                                "! |  "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "falling"}
+                ),
+                Arguments.of(
+                        "diagonally early down",
+                        new String[]{
+                                "X |XX",
+                                "XX|XX"
+                        }, new String[]{
+                                "  | ?",
+                                "! |  "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "falling"}
+                )
+        );
+    }
+
     public static Stream<Arguments> flyingMovementParameters() {
         return Stream.of(
                 Arguments.of(
@@ -382,6 +414,35 @@ public class MovementTests {
     @ParameterizedTest(name = "{5}: {0}")
     @DisplayName("Test movement plugin for leaping (requires walking)")
     void testLeapingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+        int airHeight = 41;
+
+        setupWorld(world, airHeight);
+
+        // find start and goal positions from path data
+        Vector3i start = new Vector3i();
+        Vector3i stop = new Vector3i();
+        detectPath(path, airHeight, start, stop);
+
+        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+
+        helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
+                .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
+
+        boolean timedOut = helper.runWhile(() -> {
+            Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+            logger.info("pos: {}", pos);
+            return Blocks.toBlockPos(pos).distance(stop) > 0;
+        });
+        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                stop
+        ));
+    }
+
+    @MethodSource("fallingMovementParameters")
+    @ParameterizedTest(name = "{5}: {0}")
+    @DisplayName("Test movement plugin for falling (requires walking)")
+    void testFallingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
