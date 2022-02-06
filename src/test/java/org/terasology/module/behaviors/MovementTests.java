@@ -295,7 +295,7 @@ public class MovementTests {
         );
     }
 
-    // Leaping movements are purely vertical and require additional horizontal walking movements
+    // Leaping movements are purely vertical (up) and require additional horizontal walking movements
     public static Stream<Arguments> leapingMovementParameters() {
         return Stream.of(
                 Arguments.of(
@@ -348,17 +348,6 @@ public class MovementTests {
                         new String[]{"walking", "leaping"}
                 ),
                 Arguments.of(
-                        "jump over",
-                        new String[]{
-                                "X X|XXX|XXX|XXX"
-                        }, new String[]{
-                                "? !|123|   |   "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
                         "diagonally early up",
                         new String[]{
                                 "  |XX",
@@ -387,7 +376,7 @@ public class MovementTests {
         );
     }
 
-    // Falling movements are purely vertical and require additional horizontal walking movements
+    // Falling movements are purely vertical (down) and require additional horizontal walking movements
     public static Stream<Arguments> fallingMovementParameters() {
         return Stream.of(
                 Arguments.of(
@@ -559,6 +548,17 @@ public class MovementTests {
                                 "X    X|XX XX|XXXXX"
                         }, new String[]{
                                 "?    !|     |     "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
+                Arguments.of(
+                        "jump over",
+                        new String[]{
+                                "X X|XXX|XXX|XXX"
+                        }, new String[]{
+                                "? !|123|   |   "
                         },
                         0.9f,
                         0.3f,
