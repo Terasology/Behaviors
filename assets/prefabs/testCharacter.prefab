@@ -3,7 +3,7 @@
     "tree" : "naiveMoveTo"
   },
   "persisted" : true,
-  "location" : {},
+  "Location" : {},
   "Network" :{},
   "Trigger" : {
     "detectGroups" : ["engine:debris", "engine:sensor"]
