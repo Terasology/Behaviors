@@ -280,6 +280,17 @@ public class MovementTests {
                         0.9f,
                         0.3f,
                         new String[]{"walking"}
+                ),
+                Arguments.of(
+                        "gap",
+                        new String[]{
+                                " X |XXX"
+                        }, new String[]{
+                                "   |? !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking"}
                 )
         );
     }
