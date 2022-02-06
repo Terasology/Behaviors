@@ -230,6 +230,60 @@ public class MovementTests {
     @In
     private ChunkProvider chunkProvider;
 
+    public static Stream<Arguments> walkingMovementParameters() {
+        return Stream.of(
+                Arguments.of(
+                        "straight",
+                        new String[]{
+                                "X",
+                                "X",
+                                "X",
+                        }, new String[]{
+                                "?",
+                                "1",
+                                "!"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking"}
+                ),
+                Arguments.of(
+                        "diagonal",
+                        new String[]{
+                                "X  |X  ",
+                                "X  |X  ",
+                                "XXX|XXX"
+                        }, new String[]{
+                                "?  |   ",
+                                "1  |   ",
+                                "23!|   "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking"}
+                ),
+                Arguments.of(
+                        "corridor",
+                        new String[]{
+                                "XXXXXXXXXXXXXXX",
+                                "X            XX",
+                                "X XXXXXXXXXXXXX",
+                                "XXX            ",
+                                "               ",
+                        }, new String[]{
+                                "?123456789abcd ",
+                                "             e ",
+                                "  qponmlkjihgf ",
+                                "  !            ",
+                                "               ",
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking"}
+                )
+        );
+    }
+
     // Leaping movements are purely vertical and require additional horizontal walking movements
     public static Stream<Arguments> leapingMovementParameters() {
         return Stream.of(
@@ -252,55 +306,6 @@ public class MovementTests {
                         },
                         2.7f,
                         1.2f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "straight",
-                        new String[]{
-                                "X",
-                                "X",
-                                "X",
-                        }, new String[]{
-                                "?",
-                                "1",
-                                "!"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "diagonal",
-                        new String[]{
-                                "X  |X  ",
-                                "X  |X  ",
-                                "XXX|XXX"
-                        }, new String[]{
-                                "?  |   ",
-                                "1  |   ",
-                                "23!|   "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "corridor",
-                        new String[]{
-                                "XXXXXXXXXXXXXXX",
-                                "X            XX",
-                                "X XXXXXXXXXXXXX",
-                                "XXX            ",
-                                "               ",
-                        }, new String[]{
-                                "?123456789abcd ",
-                                "             e ",
-                                "  qponmlkjihgf ",
-                                "  !            ",
-                                "               ",
-                        },
-                        0.9f,
-                        0.3f,
                         new String[]{"walking", "leaping"}
                 ),
                 Arguments.of(
@@ -480,6 +485,35 @@ public class MovementTests {
                         new String[]{"walking", "leaping", "swimming"}
                 )
         );
+    }
+
+    @MethodSource("walkingMovementParameters")
+    @ParameterizedTest(name = "{5}: {0}")
+    @DisplayName("Test movement plugin for walking")
+    void testWalkingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+        int airHeight = 41;
+
+        setupWorld(world, airHeight);
+
+        // find start and goal positions from path data
+        Vector3i start = new Vector3i();
+        Vector3i stop = new Vector3i();
+        detectPath(path, airHeight, start, stop);
+
+        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+
+        helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
+                .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
+
+        boolean timedOut = helper.runWhile(() -> {
+            Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+            logger.info("pos: {}", pos);
+            return Blocks.toBlockPos(pos).distance(stop) > 0;
+        });
+        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                stop
+        ));
     }
 
     @MethodSource("leapingMovementParameters")
