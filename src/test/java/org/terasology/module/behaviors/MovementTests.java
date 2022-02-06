@@ -357,6 +357,32 @@ public class MovementTests {
                         0.9f,
                         0.3f,
                         new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "diagonally early up",
+                        new String[]{
+                                "  |XX",
+                                "X |XX"
+                        }, new String[]{
+                                "  | !",
+                                "? |  "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "diagonally late up",
+                        new String[]{
+                                "X |XX",
+                                "XX|XX"
+                        }, new String[]{
+                                "  | !",
+                                "? |  "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
                 )
         );
     }
