@@ -230,23 +230,9 @@ public class MovementTests {
     @In
     private ChunkProvider chunkProvider;
 
-    public static Stream<Arguments> parameters() {
+    // Leaping movements are purely vertical and require additional horizontal walking movements
+    public static Stream<Arguments> leapingMovementParameters() {
         return Stream.of(
-                Arguments.of(
-                        "simple wall",
-                        new String[]{
-                                "XXX|XXX|XXX",
-                                "   |   |XXX",
-                                "XXX|XXX|XXX",
-                        }, new String[]{
-                                "?  |   |   ",
-                                "   |   |   ",
-                                "  !|   |   "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"flying"}
-                ),
                 Arguments.of(
                         "large leaping - steps",
                         new String[]{
@@ -268,6 +254,119 @@ public class MovementTests {
                         1.2f,
                         new String[]{"walking", "leaping"}
                 ),
+                Arguments.of(
+                        "straight",
+                        new String[]{
+                                "X",
+                                "X",
+                                "X",
+                        }, new String[]{
+                                "?",
+                                "1",
+                                "!"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "diagonal",
+                        new String[]{
+                                "X  |X  ",
+                                "X  |X  ",
+                                "XXX|XXX"
+                        }, new String[]{
+                                "?  |   ",
+                                "1  |   ",
+                                "23!|   "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "corridor",
+                        new String[]{
+                                "XXXXXXXXXXXXXXX",
+                                "X            XX",
+                                "X XXXXXXXXXXXXX",
+                                "XXX            ",
+                                "               ",
+                        }, new String[]{
+                                "?123456789abcd ",
+                                "             e ",
+                                "  qponmlkjihgf ",
+                                "  !            ",
+                                "               ",
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "leap",
+                        new String[]{
+                                "X  |XXX|XXX|XXX",
+                                "X  |XXX|XXX|XXX",
+                        }, new String[]{
+                                "?  |123|XXX|XXX",
+                                "   |  !|XXX|XXX",
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "three dimensional moves",
+                        new String[]{
+                                "XXX|XX |   ",
+                                "X X|XXX| XX",
+                                "XXX| X | XX"
+                        }, new String[]{
+                                "?  |   |   ",
+                                "   | 1 |   ",
+                                "   |   |  !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "jump over",
+                        new String[]{
+                                "X X|XXX|XXX|XXX"
+                        }, new String[]{
+                                "? !|123|   |   "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                )
+        );
+    }
+
+    public static Stream<Arguments> flyingMovementParameters() {
+        return Stream.of(
+                Arguments.of(
+                        "simple wall",
+                        new String[]{
+                                "XXX|XXX|XXX",
+                                "   |   |XXX",
+                                "XXX|XXX|XXX",
+                        }, new String[]{
+                                "?  |   |   ",
+                                "   |   |   ",
+                                "  !|   |   "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"flying"}
+                )
+        );
+    }
+
+    public static Stream<Arguments> swimmingMovementParameters() {
+        return Stream.of(
                 Arguments.of(
                         "leap",
                         new String[]{
@@ -346,20 +445,12 @@ public class MovementTests {
                         0.9f,
                         0.3f,
                         new String[]{"swimming"}
-                ),
-                Arguments.of(
-                        "leap",
-                        new String[]{
-                                "~  |   ",
-                                "~  |XXX"
-                        }, new String[]{
-                                "?  |   ",
-                                "1  |23!"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping", "swimming"}
-                ),
+                )
+        );
+    }
+
+    public static Stream<Arguments> combinedMovementParameters() {
+        return Stream.of(
                 Arguments.of(
                         "three dimensional moves",
                         new String[]{
@@ -376,99 +467,25 @@ public class MovementTests {
                         new String[]{"walking", "leaping", "swimming"}
                 ),
                 Arguments.of(
-                        "straight",
-                        new String[]{
-                                "X",
-                                "X",
-                                "X",
-                        }, new String[]{
-                                "?",
-                                "1",
-                                "!"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
                         "leap",
                         new String[]{
-                                "X  |XXX|XXX|XXX",
-                                "X  |XXX|XXX|XXX",
-                        }, new String[]{
-                                "?  |123|XXX|XXX",
-                                "   |  !|XXX|XXX",
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ), Arguments.of(
-                        "diagonal",
-                        new String[]{
-                                "X  |X  ",
-                                "X  |X  ",
-                                "XXX|XXX"
+                                "~  |   ",
+                                "~  |XXX"
                         }, new String[]{
                                 "?  |   ",
-                                "1  |   ",
-                                "23!|   "
+                                "1  |23!"
                         },
                         0.9f,
                         0.3f,
-                        new String[]{"walking", "leaping"}
-                ), Arguments.of(
-                        "corridor",
-                        new String[]{
-                                "XXXXXXXXXXXXXXX",
-                                "X            XX",
-                                "X XXXXXXXXXXXXX",
-                                "XXX            ",
-                                "               ",
-                        }, new String[]{
-                                "?123456789abcd ",
-                                "             e ",
-                                "  qponmlkjihgf ",
-                                "  !            ",
-                                "               ",
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "three dimensional moves",
-                        new String[]{
-                                "XXX|XX |   ",
-                                "X X|XXX| XX",
-                                "XXX| X | XX"
-                        }, new String[]{
-                                "?  |   |   ",
-                                "   | 1 |   ",
-                                "   |   |  !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
+                        new String[]{"walking", "leaping", "swimming"}
                 )
-                // TODO: Re-enable this test and fix the underlying movement behavior
-//                Arguments.of(
-//                        "jump over",
-//                        new String[]{
-//                                "X X|XXX|XXX|XXX"
-//                        }, new String[]{
-//                                "? !|123|   |   "
-//                        },
-//                        0.9f,
-//                        0.3f,
-//                        new String[]{"walking", "leaping"}
-//                )
         );
     }
 
-    @MethodSource("parameters")
+    @MethodSource("leapingMovementParameters")
     @ParameterizedTest(name = "{5}: {0}")
-    @DisplayName("Check Movement plugins")
-    void test(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+    @DisplayName("Test movement plugin for leaping (requires walking)")
+    void testLeapingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -491,7 +508,94 @@ public class MovementTests {
         Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                 Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                 stop
-                ));
+        ));
+    }
+
+    @MethodSource("flyingMovementParameters")
+    @ParameterizedTest(name = "{5}: {0}")
+    @DisplayName("Test movement plugin for flying")
+    void testFlyingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+        int airHeight = 41;
+
+        setupWorld(world, airHeight);
+
+        // find start and goal positions from path data
+        Vector3i start = new Vector3i();
+        Vector3i stop = new Vector3i();
+        detectPath(path, airHeight, start, stop);
+
+        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+
+        helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
+                .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
+
+        boolean timedOut = helper.runWhile(() -> {
+            Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+            logger.info("pos: {}", pos);
+            return Blocks.toBlockPos(pos).distance(stop) > 0;
+        });
+        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                stop
+        ));
+    }
+
+    @MethodSource("swimmingMovementParameters")
+    @ParameterizedTest(name = "{5}: {0}")
+    @DisplayName("Test movement plugin for swimming")
+    void testSwimmingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+        int airHeight = 41;
+
+        setupWorld(world, airHeight);
+
+        // find start and goal positions from path data
+        Vector3i start = new Vector3i();
+        Vector3i stop = new Vector3i();
+        detectPath(path, airHeight, start, stop);
+
+        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+
+        helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
+                .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
+
+        boolean timedOut = helper.runWhile(() -> {
+            Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+            logger.info("pos: {}", pos);
+            return Blocks.toBlockPos(pos).distance(stop) > 0;
+        });
+        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                stop
+        ));
+    }
+
+    @MethodSource("combinedMovementParameters")
+    @ParameterizedTest(name = "{5}: {0}")
+    @DisplayName("Test movement plugin combinations")
+    void testCombinedMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+        int airHeight = 41;
+
+        setupWorld(world, airHeight);
+
+        // find start and goal positions from path data
+        Vector3i start = new Vector3i();
+        Vector3i stop = new Vector3i();
+        detectPath(path, airHeight, start, stop);
+
+        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+
+        helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
+                .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
+
+        boolean timedOut = helper.runWhile(() -> {
+            Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+            logger.info("pos: {}", pos);
+            return Blocks.toBlockPos(pos).distance(stop) > 0;
+        });
+        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                stop
+        ));
     }
 
     @AfterEach
