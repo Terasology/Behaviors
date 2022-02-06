@@ -372,6 +372,17 @@ public class MovementTests {
                         0.9f,
                         0.3f,
                         new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "two times up",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "?  | 1 |  !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
                 )
         );
     }
@@ -400,6 +411,17 @@ public class MovementTests {
                         }, new String[]{
                                 "  | ?",
                                 "! |  "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "falling"}
+                ),
+                Arguments.of(
+                        "two times down",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "!  | 1 |  ?"
                         },
                         0.9f,
                         0.3f,
@@ -631,6 +653,28 @@ public class MovementTests {
                                 " X |XXX"
                         }, new String[]{
                                 "   |? !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
+                Arguments.of(
+                        "two times up",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "?  | 1 |  !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
+                Arguments.of(
+                        "two times down",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "!  | 1 |  ?"
                         },
                         0.9f,
                         0.3f,
