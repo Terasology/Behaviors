@@ -217,6 +217,9 @@ public class MovementTests {
             "   |   "
     };
 
+    private static final float defaultCharHeight = 0.9f;
+    private static final float defaultCharRadius = 0.3f;
+
     @In
     protected ModuleTestingHelper helper;
     @In
@@ -243,8 +246,6 @@ public class MovementTests {
                                 "1",
                                 "!"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking"}
                 ),
@@ -259,8 +260,6 @@ public class MovementTests {
                                 "1  |   ",
                                 "23!|   "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking"}
                 ),
@@ -279,8 +278,6 @@ public class MovementTests {
                                 "  !            ",
                                 "               ",
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking"}
                 ),
@@ -291,8 +288,6 @@ public class MovementTests {
                         }, new String[]{
                                 "   |? !"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking"}
                 )
@@ -309,8 +304,6 @@ public class MovementTests {
                         }, new String[]{
                                 "? | !"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping"}
                 ),
@@ -321,8 +314,6 @@ public class MovementTests {
                         }, new String[]{
                                 "?  | 1 |  !"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping"}
                 ),
@@ -335,8 +326,6 @@ public class MovementTests {
                                 "  | !",
                                 "? |  "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping"}
                 ),
@@ -349,8 +338,6 @@ public class MovementTests {
                                 "  | !",
                                 "? |  "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping"}
                 ),
@@ -363,8 +350,6 @@ public class MovementTests {
                                 "?  |123|XXX|XXX",
                                 "   |  !|XXX|XXX",
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping"}
                 ),
@@ -379,8 +364,6 @@ public class MovementTests {
                                 "   | 1 |   ",
                                 "   |   |  !"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping"}
                 )
@@ -397,8 +380,6 @@ public class MovementTests {
                         }, new String[]{
                                 "! | ?"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "falling"}
                 ),
@@ -409,8 +390,6 @@ public class MovementTests {
                         }, new String[]{
                                 "!  | 1 |  ?"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "falling"}
                 ),
@@ -423,8 +402,6 @@ public class MovementTests {
                                 "  | ?",
                                 "! |  "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "falling"}
                 ),
@@ -437,8 +414,6 @@ public class MovementTests {
                                 "  | ?",
                                 "! |  "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "falling"}
                 )
@@ -458,8 +433,6 @@ public class MovementTests {
                                 "   |   |   ",
                                 "  !|   |   "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"flying"}
                 )
@@ -479,8 +452,6 @@ public class MovementTests {
                                 "1  ",
                                 "!  "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"swimming"}
                 ),
@@ -495,8 +466,6 @@ public class MovementTests {
                                 "1  |   ",
                                 "23!|   "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"swimming"}
                 ),
@@ -515,8 +484,6 @@ public class MovementTests {
                                 "  !            ",
                                 "               ",
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"swimming"}
                 ),
@@ -531,8 +498,6 @@ public class MovementTests {
                                 "   |  !|~~~",
                                 "   |   |~~~"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"swimming"}
                 ),
@@ -547,8 +512,6 @@ public class MovementTests {
                                 "   | 1 |   ",
                                 "   |   |  !"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"swimming"}
                 )
@@ -564,8 +527,6 @@ public class MovementTests {
                         }, new String[]{
                                 "?    !|     |     "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -576,8 +537,6 @@ public class MovementTests {
                         }, new String[]{
                                 "? !|123|   |   "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -590,8 +549,6 @@ public class MovementTests {
                                 "?  |   ",
                                 "1  |23!"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "swimming"}
                 ),
@@ -606,8 +563,6 @@ public class MovementTests {
                                 "   | 1 |   ",
                                 "   |   |  !"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "swimming"}
                 )
@@ -627,8 +582,6 @@ public class MovementTests {
                         }, new String[]{
                                 "? | !"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -639,8 +592,6 @@ public class MovementTests {
                         }, new String[]{
                                 "! | ?"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -651,8 +602,6 @@ public class MovementTests {
                         }, new String[]{
                                 "?  | 1 |  !"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -663,8 +612,6 @@ public class MovementTests {
                         }, new String[]{
                                 "!  | 1 |  ?"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -677,8 +624,6 @@ public class MovementTests {
                                 "  | !",
                                 "? |  "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -691,8 +636,6 @@ public class MovementTests {
                                 "  | !",
                                 "? |  "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -705,8 +648,6 @@ public class MovementTests {
                                 "  | ?",
                                 "! |  "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -719,8 +660,6 @@ public class MovementTests {
                                 "  | ?",
                                 "! |  "
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
@@ -731,8 +670,6 @@ public class MovementTests {
                         }, new String[]{
                                 "   |? !"
                         },
-                        0.9f,
-                        0.3f,
                         false,
                         new String[]{"walking", "leaping", "falling"}
                 )
@@ -742,8 +679,7 @@ public class MovementTests {
     @MethodSource("walkingMovementParameters")
     @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for walking")
-    void testWalkingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
-                             boolean failureExpected, String... movementTypes) {
+    void testWalkingMovement(String name, String[] world, String[] path, boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -753,7 +689,7 @@ public class MovementTests {
         Vector3i stop = new Vector3i();
         detectPath(path, airHeight, start, stop);
 
-        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+        EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
@@ -772,8 +708,7 @@ public class MovementTests {
     @MethodSource("leapingMovementParameters")
     @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for leaping (requires walking)")
-    void testLeapingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
-                             boolean failureExpected, String... movementTypes) {
+    void testLeapingMovement(String name, String[] world, String[] path, boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -783,7 +718,7 @@ public class MovementTests {
         Vector3i stop = new Vector3i();
         detectPath(path, airHeight, start, stop);
 
-        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+        EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
@@ -802,8 +737,7 @@ public class MovementTests {
     @MethodSource("fallingMovementParameters")
     @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for falling (requires walking)")
-    void testFallingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
-                             boolean failureExpected, String... movementTypes) {
+    void testFallingMovement(String name, String[] world, String[] path, boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -813,7 +747,7 @@ public class MovementTests {
         Vector3i stop = new Vector3i();
         detectPath(path, airHeight, start, stop);
 
-        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+        EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
@@ -832,8 +766,7 @@ public class MovementTests {
     @MethodSource("flyingMovementParameters")
     @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for flying")
-    void testFlyingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
-                            boolean failureExpected, String... movementTypes) {
+    void testFlyingMovement(String name, String[] world, String[] path, boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -843,7 +776,7 @@ public class MovementTests {
         Vector3i stop = new Vector3i();
         detectPath(path, airHeight, start, stop);
 
-        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+        EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
@@ -862,8 +795,7 @@ public class MovementTests {
     @MethodSource("swimmingMovementParameters")
     @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for swimming")
-    void testSwimmingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
-                              boolean failureExpected, String... movementTypes) {
+    void testSwimmingMovement(String name, String[] world, String[] path, boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -873,7 +805,7 @@ public class MovementTests {
         Vector3i stop = new Vector3i();
         detectPath(path, airHeight, start, stop);
 
-        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+        EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
@@ -892,8 +824,7 @@ public class MovementTests {
     @MethodSource("combinedMovementParameters")
     @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin combinations")
-    void testCombinedMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
-                              boolean failureExpected, String... movementTypes) {
+    void testCombinedMovement(String name, String[] world, String[] path, boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -903,7 +834,7 @@ public class MovementTests {
         Vector3i stop = new Vector3i();
         detectPath(path, airHeight, start, stop);
 
-        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+        EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
@@ -922,8 +853,7 @@ public class MovementTests {
     @MethodSource("defaultPluginCombinationParameters")
     @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test default movement plugin combinations for comparison")
-    void testDefaultMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
-                             boolean failureExpected, String... movementTypes) {
+    void testDefaultMovement(String name, String[] world, String[] path, boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -933,7 +863,7 @@ public class MovementTests {
         Vector3i stop = new Vector3i();
         detectPath(path, airHeight, start, stop);
 
-        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+        EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
