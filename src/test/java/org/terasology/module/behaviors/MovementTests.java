@@ -1138,7 +1138,7 @@ public class MovementTests {
     }
 
     @MethodSource("combinedMovementParameters")
-    @ParameterizedTest(name = "{6}: {0}")
+    @ParameterizedTest(name = "{4}: {0}")
     @DisplayName("Test movement plugin combinations")
     void testCombinedMovement(String name, String[]world, String[]path, boolean successExpected, String...movementTypes) {
         int airHeight = 41;
