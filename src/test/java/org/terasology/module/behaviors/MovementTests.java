@@ -35,8 +35,6 @@ import org.terasology.moduletestingenvironment.MTEExtension;
 import org.terasology.moduletestingenvironment.ModuleTestingHelper;
 import org.terasology.moduletestingenvironment.extension.Dependencies;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Dependencies({"Behaviors", "CoreAssets"})
@@ -48,7 +46,193 @@ public class MovementTests {
     private static final float defaultCharHeight = 0.9f;
     private static final float defaultCharRadius = 0.3f;
 
-    private static final String[] defaultMovementModes = { "walking", "leaping", "falling" };
+    private static final String[] defaultMovementModes = {"walking", "leaping", "falling"};
+
+    private static final String[] twoBlockVerticalFlatWorld = {
+            "X",
+            "X"
+    };
+
+    private static final String[] twoBlockHorizontalFlatWorld = {
+            "XX"
+    };
+
+    private static final String[] twoTimesTwoBlockFlatWorld = {
+            "XX",
+            "XX"
+    };
+
+    private static final String[] twoBlockVerticalAscendingNorthWorld = {
+            " |X",
+            "X|X"
+    };
+
+    private static final String[] twoBlockVerticalAscendingSouthWorld = {
+            "X|X",
+            " |X"
+    };
+
+    private static final String[] twoBlockHorizontalAscendingWestWorld = {
+            " X|XX"
+    };
+
+    private static final String[] twoBlockHorizontalAscendingEastWorld = {
+            "X |XX"
+    };
+
+    private static final String[] twoTimesTwoBlockAscendingNorthWestWorld = {
+            " X|XX",
+            "XX|XX"
+    };
+
+    private static final String[] twoTimesTwoBlockAscendingNorthEastWorld = {
+            "X |XX",
+            "XX|XX"
+    };
+
+    private static final String[] twoTimesTwoBlockAscendingSouthWestWorld = {
+            "XX|XX",
+            " X|XX"
+    };
+
+    private static final String[] twoTimesTwoBlockAscendingSouthEastWorld = {
+            "XX|XX",
+            "X |XX"
+    };
+
+    private static final String[] twoTimesTwoBlockDescendingNorthWestWorld = {
+            "X |XX",
+            "  |XX"
+    };
+
+    private static final String[] twoTimesTwoBlockDescendingNorthEastWorld = {
+            " X|XX",
+            "  |XX"
+    };
+
+    private static final String[] twoTimesTwoBlockDescendingSouthWestWorld = {
+            "  |XX",
+            "X |XX"
+    };
+
+    private static final String[] twoTimesTwoBlockDescendingSouthEastWorld = {
+            "  |XX",
+            " X|XX"
+    };
+
+    private static final String[] singleFlatStepNorthPath = {
+            "!",
+            "?"
+    };
+
+    private static final String[] singleFlatStepSouthPath = {
+            "?",
+            "!"
+    };
+
+    private static final String[] singleFlatStepWestPath = {
+            "!?"
+    };
+
+    private static final String[] singleFlatStepEastPath = {
+            "?!"
+    };
+
+    private static final String[] diagonalFlatStepNorthWestPath = {
+            "! ",
+            " ?"
+    };
+
+    private static final String[] diagonalFlatStepNorthEastPath = {
+            " !",
+            "? "
+    };
+
+    private static final String[] diagonalFlatStepSouthWestPath = {
+            " ?",
+            "! "
+    };
+
+    private static final String[] diagonalFlatStepSouthEastPath = {
+            "? ",
+            " !"
+    };
+
+    private static final String[] singleAscendingStepNorthPath = {
+            " |!",
+            "?| "
+    };
+
+    private static final String[] singleAscendingStepSouthPath = {
+            "?| ",
+            " |!"
+    };
+
+    private static final String[] singleAscendingStepWestPath = {
+            " ?|! "
+    };
+
+    private static final String[] singleAscendingStepEastPath = {
+            "? | !"
+    };
+
+    private static final String[] diagonalAscendingStepNorthWestPath = {
+            "  |! ",
+            " ?|  "
+    };
+
+    private static final String[] diagonalAscendingStepNorthEastPath = {
+            "  | !",
+            "? |  "
+    };
+
+    private static final String[] diagonalAscendingStepSouthWestPath = {
+            " ?|  ",
+            "  |! "
+    };
+
+    private static final String[] diagonalAscendingStepSouthEastPath = {
+            "? | ",
+            "  | !"
+    };
+
+    private static final String[] singleDescendingStepNorthPath = {
+            "!| ",
+            " |?"
+    };
+
+    private static final String[] singleDescendingStepSouthPath = {
+            " |?",
+            "!| "
+    };
+
+    private static final String[] singleDescendingStepWestPath = {
+            "! | ?"
+    };
+
+    private static final String[] singleDescendingStepEastPath = {
+            " !|? "
+    };
+
+    private static final String[] diagonalDescendingStepNorthWestPath = {
+            "! |  ",
+            "  | ?"
+    };
+
+    private static final String[] diagonalDescendingStepNorthEastPath = {
+            " !|  ",
+            "  |? "
+    };
+
+    private static final String[] diagonalDescendingStepSouthWestPath = {
+            "  | ?",
+            "! |  "
+    };
+
+    private static final String[] diagonalDescendingStepSouthEastPath = {
+            "  |? ",
+            " !|  "
+    };
 
     @In
     protected ModuleTestingHelper helper;
