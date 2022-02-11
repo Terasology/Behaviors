@@ -180,28 +180,6 @@ public class MovementTests {
                         new String[]{"walking", "leaping"}
                 ),
                 Arguments.of(
-                        "large leaping - steps",
-                        new String[]{
-                                "XXX XXX|XXX XXX|XXX XXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX",
-                                "XXX XXX|XXX XXX|XXX XXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX"
-                        }, new String[]{
-                                "       |       |       ",
-                                "       | ?   ! |       ",
-                                "       |       |       ",
-                                "       |       |       ",
-                                "       |       |       ",
-                                "       |       |       "
-                        },
-                        2.7f,
-                        1.2f,
-                        false,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
                         "leap",
                         new String[]{
                                 "X  |XXX|XXX|XXX",
