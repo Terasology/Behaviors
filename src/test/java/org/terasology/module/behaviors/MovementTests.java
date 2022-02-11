@@ -879,7 +879,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
@@ -918,7 +918,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
@@ -957,7 +957,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
@@ -996,7 +996,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
@@ -1035,7 +1035,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
@@ -1074,7 +1074,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
@@ -1113,7 +1113,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
@@ -1152,7 +1152,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
@@ -1193,7 +1193,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
