@@ -889,7 +889,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -927,7 +927,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -965,7 +965,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -1003,7 +1003,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -1041,7 +1041,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -1079,7 +1079,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -1117,7 +1117,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -1155,7 +1155,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -1195,7 +1195,7 @@ public class MovementTests {
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(successExpected ? 3_000 : 5_000, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -1215,12 +1215,7 @@ public class MovementTests {
         entity.destroy();
     }
 
-        @AfterEach
-        void cleanUp () {
-            chunkProvider.purgeWorld();
-        }
-
-        private EntityRef createMovingCharacter ( float height, float radius, Vector3i start, Vector3i stop, String...movementTypes){
+        private EntityRef createMovingCharacter(float height, float radius, Vector3i start, Vector3i stop, String...movementTypes) {
             EntityRef entity = entityManager.create("Behaviors:testCharacter");
 
             MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
@@ -1248,7 +1243,7 @@ public class MovementTests {
          * @param start (?) ref parameter - set start point
          * @param stop  (!) ref parameter - set end point
          */
-        private void detectPath (String[]path,int airHeight, Vector3i start, Vector3i stop){
+        private void detectPath(String[]path, int airHeight, Vector3i start, Vector3i stop) {
             for (int z = 0; z < path.length; z++) {
                 int y = airHeight;
                 String row = path[z];
@@ -1275,7 +1270,7 @@ public class MovementTests {
             }
         }
 
-        private void setupWorld (String[]world,int airHeight){
+        private void setupWorld(String[]world, int airHeight) {
             Block air = blockManager.getBlock("engine:air");
             Block dirt = blockManager.getBlock("CoreAssets:dirt");
             Block water = blockManager.getBlock("CoreAssets:water");
@@ -1319,7 +1314,7 @@ public class MovementTests {
             }
         }
 
-        private BlockRegionc getPaddedExtents (String[]world,int airHeight){
+        private BlockRegionc getPaddedExtents(String[]world, int airHeight) {
             Vector3i minPoint = new Vector3i(0, airHeight, 0);
             Vector3i maxPoint = new Vector3i();
 
