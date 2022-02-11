@@ -891,7 +891,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
@@ -928,7 +927,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
@@ -965,7 +963,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
@@ -1002,7 +999,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
@@ -1039,7 +1035,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
@@ -1076,7 +1071,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
@@ -1113,7 +1107,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
@@ -1150,7 +1143,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
@@ -1189,7 +1181,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(() -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
