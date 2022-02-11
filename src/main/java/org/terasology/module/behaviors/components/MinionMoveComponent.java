@@ -18,7 +18,7 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
     //      would it make sense to modify the walkingPlugin in a way that it allows to "leap" 1 block up by default (without requiring the
     //      leaping plugin?) the fact that we have to "leap" is mostly just due to being a blocky world, but actually we're "walking up the
     //      hill", not "jumping up the hill" (kinda like minecraft's auto-step-up feature, just for mobs).
-    public List<String> movementTypes = Lists.newArrayList("walking", "leaping");
+    public List<String> movementTypes = Lists.newArrayList("walking", "leaping", "falling");
 
     public boolean collidedHorizontally;
     public float lastInput;
