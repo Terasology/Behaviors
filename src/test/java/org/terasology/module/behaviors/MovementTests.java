@@ -219,6 +219,7 @@ public class MovementTests {
             "   |   "
     };
 
+    private static final int defaultAirHeight = 41;
     private static final float defaultCharHeight = 0.9f;
     private static final float defaultCharRadius = 0.3f;
 
@@ -865,14 +866,12 @@ public class MovementTests {
     @ParameterizedTest(name = "walking: {0}")
     @DisplayName("Test movement plugin for walking")
     void testWalkingMovement(String name, String[] world, String[] path, boolean successExpected) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, defaultAirHeight);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, defaultAirHeight, start, stop);
 
         EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, "walking");
 
@@ -904,14 +903,12 @@ public class MovementTests {
     @ParameterizedTest(name = "leaping: {0}")
     @DisplayName("Test movement plugin for leaping (intentionally without walking)")
     void testNonFunctionalLeapingMovement(String name, String[] world, String[] path, boolean successExpected) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, defaultAirHeight);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, defaultAirHeight, start, stop);
 
         EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, "leaping");
 
@@ -943,14 +940,12 @@ public class MovementTests {
     @ParameterizedTest(name = "walking, leaping: {0}")
     @DisplayName("Test movement plugin for leaping (requires walking)")
     void testLeapingMovement(String name, String[] world, String[] path, boolean successExpected) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, defaultAirHeight);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, defaultAirHeight, start, stop);
 
         EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, "walking", "leaping");
 
@@ -982,14 +977,12 @@ public class MovementTests {
     @ParameterizedTest(name = "falling: {0}")
     @DisplayName("Test movement plugin for falling (intentionally without walking)")
     void testNonFunctionalFallingMovement(String name, String[]world, String[]path, boolean successExpected) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, defaultAirHeight);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, defaultAirHeight, start, stop);
 
         EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, "falling");
 
@@ -1021,14 +1014,12 @@ public class MovementTests {
     @ParameterizedTest(name = "walking, falling: {0}")
     @DisplayName("Test movement plugin for falling (requires walking)")
     void testFallingMovement(String name, String[]world, String[]path, boolean successExpected) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, defaultAirHeight);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, defaultAirHeight, start, stop);
 
         EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, "walking", "falling");
 
@@ -1060,14 +1051,12 @@ public class MovementTests {
     @ParameterizedTest(name = "flying: {0}")
     @DisplayName("Test movement plugin for flying")
     void testFlyingMovement(String name, String[]world, String[]path, boolean successExpected) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, defaultAirHeight);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, defaultAirHeight, start, stop);
 
         EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, "flying");
 
@@ -1099,14 +1088,12 @@ public class MovementTests {
     @ParameterizedTest(name = "swimming: {0}")
     @DisplayName("Test movement plugin for swimming")
     void testSwimmingMovement(String name, String[]world, String[]path, boolean successExpected) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, defaultAirHeight);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, defaultAirHeight, start, stop);
 
         EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, "swimming");
 
@@ -1138,14 +1125,12 @@ public class MovementTests {
     @ParameterizedTest(name = "{4}: {0}")
     @DisplayName("Test movement plugin combinations")
     void testCombinedMovement(String name, String[]world, String[]path, boolean successExpected, String...movementTypes) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, defaultAirHeight);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, defaultAirHeight, start, stop);
 
         EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
 
@@ -1177,14 +1162,12 @@ public class MovementTests {
     @ParameterizedTest(name = "default: {0}")
     @DisplayName("Test default movement plugin combinations for comparison")
     void testDefaultMovement(String name, String[]world, String[]path, boolean successExpected) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, defaultAirHeight);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, defaultAirHeight, start, stop);
 
         logger.info("Default movement plugin combination: {}", defaultMovementModes);
 
