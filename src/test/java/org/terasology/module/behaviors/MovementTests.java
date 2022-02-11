@@ -376,7 +376,8 @@ public class MovementTests {
     }
 
     // Leaping movements are purely vertical (up) and require additional horizontal walking movements
-    // The following test cases attempt to verify that the leaping in combination with the walking plugin correctly allows expected movements
+    // The following test cases attempt to verify that the leaping in combination with the walking plugin correctly allows expected
+    // movements
     public static Stream<Arguments> leapingMovementParameters() {
         return Stream.of(
                 Arguments.of("succeed flat north", twoBlockVerticalFlatWorld, singleFlatStepNorthPath, true),
@@ -518,7 +519,8 @@ public class MovementTests {
     }
 
     // Falling movements are purely vertical (down) and require additional horizontal walking movements
-    // The following test cases attempt to verify that the falling in combination with the walking plugin correctly allows expected movements
+    // The following test cases attempt to verify that the falling in combination with the walking plugin correctly allows expected
+    // movements
     public static Stream<Arguments> fallingMovementParameters() {
         return Stream.of(
                 Arguments.of("succeed flat north", twoBlockVerticalFlatWorld, singleFlatStepNorthPath, true),
@@ -872,7 +874,7 @@ public class MovementTests {
     @MethodSource("walkingMovementParameters")
     @ParameterizedTest(name = "walking: {0}")
     @DisplayName("Test movement plugin for walking")
-    void testWalkingMovement(String name, String[] world, String[] path, boolean failureExpected) {
+    void testWalkingMovement(String name, String[] world, String[] path, boolean successExpected) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -893,13 +895,13 @@ public class MovementTests {
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
-        if (failureExpected) {
-            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+        if (successExpected) {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
         } else {
-            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
@@ -909,7 +911,7 @@ public class MovementTests {
     @MethodSource("nonFunctionalLeapingMovementParameters")
     @ParameterizedTest(name = "leaping: {0}")
     @DisplayName("Test movement plugin for leaping (intentionally without walking)")
-    void testNonFunctionalLeapingMovement(String name, String[] world, String[] path, boolean failureExpected) {
+    void testNonFunctionalLeapingMovement(String name, String[] world, String[] path, boolean successExpected) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -930,13 +932,13 @@ public class MovementTests {
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
-        if (failureExpected) {
-            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+        if (successExpected) {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
         } else {
-            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
@@ -946,7 +948,7 @@ public class MovementTests {
     @MethodSource("leapingMovementParameters")
     @ParameterizedTest(name = "walking, leaping: {0}")
     @DisplayName("Test movement plugin for leaping (requires walking)")
-    void testLeapingMovement(String name, String[] world, String[] path, boolean failureExpected) {
+    void testLeapingMovement(String name, String[] world, String[] path, boolean successExpected) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -967,13 +969,13 @@ public class MovementTests {
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
-        if (failureExpected) {
-            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+        if (successExpected) {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
         } else {
-            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
@@ -983,7 +985,7 @@ public class MovementTests {
     @MethodSource("nonFunctionalFallingMovementParameters")
     @ParameterizedTest(name = "falling: {0}")
     @DisplayName("Test movement plugin for falling (intentionally without walking)")
-    void testNonFunctionalFallingMovement(String name, String[] world, String[] path, boolean failureExpected) {
+    void testNonFunctionalFallingMovement(String name, String[]world, String[]path, boolean successExpected) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -1004,13 +1006,13 @@ public class MovementTests {
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
-        if (failureExpected) {
-            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+        if (successExpected) {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
         } else {
-            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
@@ -1020,7 +1022,7 @@ public class MovementTests {
     @MethodSource("fallingMovementParameters")
     @ParameterizedTest(name = "walking, falling: {0}")
     @DisplayName("Test movement plugin for falling (requires walking)")
-    void testFallingMovement(String name, String[] world, String[] path, boolean failureExpected) {
+    void testFallingMovement(String name, String[]world, String[]path, boolean successExpected) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -1041,13 +1043,13 @@ public class MovementTests {
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
-        if (failureExpected) {
-            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+        if (successExpected) {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
         } else {
-            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
@@ -1057,7 +1059,7 @@ public class MovementTests {
     @MethodSource("flyingMovementParameters")
     @ParameterizedTest(name = "flying: {0}")
     @DisplayName("Test movement plugin for flying")
-    void testFlyingMovement(String name, String[] world, String[] path, boolean failureExpected) {
+    void testFlyingMovement(String name, String[]world, String[]path, boolean successExpected) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -1078,13 +1080,13 @@ public class MovementTests {
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
-        if (failureExpected) {
-            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+        if (successExpected) {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
         } else {
-            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
@@ -1094,7 +1096,7 @@ public class MovementTests {
     @MethodSource("swimmingMovementParameters")
     @ParameterizedTest(name = "swimming: {0}")
     @DisplayName("Test movement plugin for swimming")
-    void testSwimmingMovement(String name, String[] world, String[] path, boolean failureExpected) {
+    void testSwimmingMovement(String name, String[]world, String[]path, boolean successExpected) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -1115,13 +1117,13 @@ public class MovementTests {
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
-        if (failureExpected) {
-            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+        if (successExpected) {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
         } else {
-            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
@@ -1131,7 +1133,7 @@ public class MovementTests {
     @MethodSource("combinedMovementParameters")
     @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin combinations")
-    void testCombinedMovement(String name, String[] world, String[] path, boolean failureExpected, String... movementTypes) {
+    void testCombinedMovement(String name, String[]world, String[]path, boolean successExpected, String...movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -1152,13 +1154,13 @@ public class MovementTests {
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
-        if (failureExpected) {
-            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+        if (successExpected) {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
         } else {
-            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
@@ -1168,7 +1170,7 @@ public class MovementTests {
     @MethodSource("defaultPluginCombinationParameters")
     @ParameterizedTest(name = "default: {0}")
     @DisplayName("Test default movement plugin combinations for comparison")
-    void testDefaultMovement(String name, String[] world, String[] path, boolean failureExpected) {
+    void testDefaultMovement(String name, String[]world, String[]path, boolean successExpected) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -1191,152 +1193,152 @@ public class MovementTests {
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
-        if (failureExpected) {
-            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
-                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
-                    stop
-            ));
-        } else {
+        if (successExpected) {
             Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
                     Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
                     stop
             ));
+        } else {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
         }
     }
 
-    @AfterEach
-    void cleanUp() {
-        chunkProvider.purgeWorld();
-    }
+        @AfterEach
+        void cleanUp () {
+            chunkProvider.purgeWorld();
+        }
 
-    private EntityRef createMovingCharacter(float height, float radius, Vector3i start, Vector3i stop, String... movementTypes) {
-        EntityRef entity = entityManager.create("Behaviors:testCharacter");
+        private EntityRef createMovingCharacter ( float height, float radius, Vector3i start, Vector3i stop, String...movementTypes){
+            EntityRef entity = entityManager.create("Behaviors:testCharacter");
 
-        MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
-        minionMoveComponent.setPathGoal(stop);
-        minionMoveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
-        entity.addOrSaveComponent(minionMoveComponent);
+            MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
+            minionMoveComponent.setPathGoal(stop);
+            minionMoveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
+            entity.addOrSaveComponent(minionMoveComponent);
 
-        CharacterMovementComponent charMovementComponent = entity.getComponent(CharacterMovementComponent.class);
-        charMovementComponent.height = height;
-        charMovementComponent.radius = radius;
-        entity.saveComponent(charMovementComponent);
+            CharacterMovementComponent charMovementComponent = entity.getComponent(CharacterMovementComponent.class);
+            charMovementComponent.height = height;
+            charMovementComponent.radius = radius;
+            entity.saveComponent(charMovementComponent);
 
-        physicsEngine.removeCharacterCollider(entity);
-        physicsEngine.getCharacterCollider(entity);
+            physicsEngine.removeCharacterCollider(entity);
+            physicsEngine.getCharacterCollider(entity);
 
-        entity.send(new CharacterTeleportEvent(new Vector3f(start)));
+            entity.send(new CharacterTeleportEvent(new Vector3f(start)));
 
-        return entity;
-    }
+            return entity;
+        }
 
-    /**
-     * Detect path for entity at map {@code path}
-     * @param path map with path
-     * @param airHeight air height for world
-     * @param start (?) ref parameter - set start point
-     * @param stop  (!) ref parameter - set end point
-     */
-    private void detectPath(String[] path, int airHeight, Vector3i start, Vector3i stop) {
-        for (int z = 0; z < path.length; z++) {
-            int y = airHeight;
-            String row = path[z];
-            int x = 0;
-            for (char c : row.toCharArray()) {
-                switch (c) {
-                    case '?':
-                        start.set(x, y, z);
-                        x += 1;
-                        break;
-                    case '!':
-                        stop.set(x, y, z);
-                        x += 1;
-                        break;
-                    case '|':
-                        y += 1;
-                        x = 0;
-                        break;
-                    default:
-                        x += 1;
-                        break;
+        /**
+         * Detect path for entity at map {@code path}
+         * @param path map with path
+         * @param airHeight air height for world
+         * @param start (?) ref parameter - set start point
+         * @param stop  (!) ref parameter - set end point
+         */
+        private void detectPath (String[]path,int airHeight, Vector3i start, Vector3i stop){
+            for (int z = 0; z < path.length; z++) {
+                int y = airHeight;
+                String row = path[z];
+                int x = 0;
+                for (char c : row.toCharArray()) {
+                    switch (c) {
+                        case '?':
+                            start.set(x, y, z);
+                            x += 1;
+                            break;
+                        case '!':
+                            stop.set(x, y, z);
+                            x += 1;
+                            break;
+                        case '|':
+                            y += 1;
+                            x = 0;
+                            break;
+                        default:
+                            x += 1;
+                            break;
+                    }
                 }
             }
         }
-    }
 
-    private void setupWorld(String[] world, int airHeight) {
-        Block air = blockManager.getBlock("engine:air");
-        Block dirt = blockManager.getBlock("CoreAssets:dirt");
-        Block water = blockManager.getBlock("CoreAssets:water");
+        private void setupWorld (String[]world,int airHeight){
+            Block air = blockManager.getBlock("engine:air");
+            Block dirt = blockManager.getBlock("CoreAssets:dirt");
+            Block water = blockManager.getBlock("CoreAssets:water");
 
-        BlockRegionc extents = getPaddedExtents(world, airHeight);
+            BlockRegionc extents = getPaddedExtents(world, airHeight);
 
-        helper.runUntil(helper.makeBlocksRelevant(extents));
+            helper.runUntil(helper.makeBlocksRelevant(extents));
 
-        for (Vector3ic pos : extents) {
-            worldProvider.setBlock(pos, dirt);
-        }
+            for (Vector3ic pos : extents) {
+                worldProvider.setBlock(pos, dirt);
+            }
 
-        // set blocks from world data
-        for (int z = 0; z < world.length; z++) {
-            int y = airHeight;
-            String row = world[z];
-            int x = 0;
-            for (char c : row.toCharArray()) {
-                switch (c) {
-                    case 'X':
-                        worldProvider.setBlock(new Vector3i(x, y, z), air);
-                        x += 1;
-                        break;
-                    case ' ':
-                        worldProvider.setBlock(new Vector3i(x, y, z), dirt);
-                        x += 1;
-                        break;
-                    case '~':
-                        worldProvider.setBlock(new Vector3i(x, y, z), water);
-                        x += 1;
-                        break;
-                    case '|':
-                        y += 1;
-                        x = 0;
-                        break;
-                    default:
-                        x += 1;
-                        break;
+            // set blocks from world data
+            for (int z = 0; z < world.length; z++) {
+                int y = airHeight;
+                String row = world[z];
+                int x = 0;
+                for (char c : row.toCharArray()) {
+                    switch (c) {
+                        case 'X':
+                            worldProvider.setBlock(new Vector3i(x, y, z), air);
+                            x += 1;
+                            break;
+                        case ' ':
+                            worldProvider.setBlock(new Vector3i(x, y, z), dirt);
+                            x += 1;
+                            break;
+                        case '~':
+                            worldProvider.setBlock(new Vector3i(x, y, z), water);
+                            x += 1;
+                            break;
+                        case '|':
+                            y += 1;
+                            x = 0;
+                            break;
+                        default:
+                            x += 1;
+                            break;
+                    }
                 }
             }
         }
-    }
 
-    private BlockRegionc getPaddedExtents(String[] world, int airHeight) {
-        Vector3i minPoint = new Vector3i(0, airHeight, 0);
-        Vector3i maxPoint = new Vector3i();
+        private BlockRegionc getPaddedExtents (String[]world,int airHeight){
+            Vector3i minPoint = new Vector3i(0, airHeight, 0);
+            Vector3i maxPoint = new Vector3i();
 
-        for (int z = 0; z < world.length; z++) {
-            int y = airHeight;
-            String row = world[z];
-            int x = 0;
-            for (char c : row.toCharArray()) {
-                maxPoint.set(x, y, z);
-                switch (c) {
-                    case 'X':
-                        x += 1;
-                        break;
-                    case ' ':
-                        x += 1;
-                        break;
-                    case '|':
-                        y += 1;
-                        x = 0;
-                        break;
-                    default:
-                        x += 1;
-                        break;
+            for (int z = 0; z < world.length; z++) {
+                int y = airHeight;
+                String row = world[z];
+                int x = 0;
+                for (char c : row.toCharArray()) {
+                    maxPoint.set(x, y, z);
+                    switch (c) {
+                        case 'X':
+                            x += 1;
+                            break;
+                        case ' ':
+                            x += 1;
+                            break;
+                        case '|':
+                            y += 1;
+                            x = 0;
+                            break;
+                        default:
+                            x += 1;
+                            break;
+                    }
                 }
             }
+            BlockRegion extents = new BlockRegion(minPoint, maxPoint);
+            extents.expand(1, 1, 1);
+            return extents;
         }
-        BlockRegion extents = new BlockRegion(minPoint, maxPoint);
-        extents.expand(1, 1, 1);
-        return extents;
     }
-}
