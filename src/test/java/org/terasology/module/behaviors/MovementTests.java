@@ -299,6 +299,54 @@ public class MovementTests {
     public static Stream<Arguments> leapingMovementParameters() {
         return Stream.of(
                 Arguments.of(
+                        "one time up",
+                        new String[]{
+                                "X |XX"
+                        }, new String[]{
+                                "? | !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "two times up",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "?  | 1 |  !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "diagonally early up",
+                        new String[]{
+                                "  |XX",
+                                "X |XX"
+                        }, new String[]{
+                                "  | !",
+                                "? |  "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
+                        "diagonally late up",
+                        new String[]{
+                                "X |XX",
+                                "XX|XX"
+                        }, new String[]{
+                                "  | !",
+                                "? |  "
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping"}
+                ),
+                Arguments.of(
                         "large leaping - steps",
                         new String[]{
                                 "XXX XXX|XXX XXX|XXX XXX",
@@ -346,54 +394,6 @@ public class MovementTests {
                         0.9f,
                         0.3f,
                         new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "diagonally early up",
-                        new String[]{
-                                "  |XX",
-                                "X |XX"
-                        }, new String[]{
-                                "  | !",
-                                "? |  "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "diagonally late up",
-                        new String[]{
-                                "X |XX",
-                                "XX|XX"
-                        }, new String[]{
-                                "  | !",
-                                "? |  "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "one time up",
-                        new String[]{
-                                "X |XX"
-                        }, new String[]{
-                                "? | !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "two times up",
-                        new String[]{
-                                "X  |XX |XXX"
-                        }, new String[]{
-                                "?  | 1 |  !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
                 )
         );
     }
@@ -401,6 +401,28 @@ public class MovementTests {
     // Falling movements are purely vertical (down) and require additional horizontal walking movements
     public static Stream<Arguments> fallingMovementParameters() {
         return Stream.of(
+                Arguments.of(
+                        "one time down",
+                        new String[]{
+                                "X |XX"
+                        }, new String[]{
+                                "! | ?"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "falling"}
+                ),
+                Arguments.of(
+                        "two times down",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "!  | 1 |  ?"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "falling"}
+                ),
                 Arguments.of(
                         "diagonally late down",
                         new String[]{
@@ -422,28 +444,6 @@ public class MovementTests {
                         }, new String[]{
                                 "  | ?",
                                 "! |  "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "falling"}
-                ),
-                Arguments.of(
-                        "one time down",
-                        new String[]{
-                                "X |XX"
-                        }, new String[]{
-                                "! | ?"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "falling"}
-                ),
-                Arguments.of(
-                        "two times down",
-                        new String[]{
-                                "X  |XX |XXX"
-                        }, new String[]{
-                                "!  | 1 |  ?"
                         },
                         0.9f,
                         0.3f,
@@ -475,15 +475,15 @@ public class MovementTests {
     public static Stream<Arguments> swimmingMovementParameters() {
         return Stream.of(
                 Arguments.of(
-                        "leap",
+                        "straight",
                         new String[]{
-                                "~  |~~~|~~~",
-                                "~  |~~~|~~~",
-                                "~~~|~~~|~~~",
+                                "~  ",
+                                "~  ",
+                                "~~~",
                         }, new String[]{
-                                "?  |123|~~~",
-                                "   |  !|~~~",
-                                "   |   |~~~"
+                                "?  ",
+                                "1  ",
+                                "!  "
                         },
                         0.9f,
                         0.3f,
@@ -505,21 +505,6 @@ public class MovementTests {
                         new String[]{"swimming"}
                 ),
                 Arguments.of(
-                        "straight",
-                        new String[]{
-                                "~  ",
-                                "~  ",
-                                "~~~",
-                        }, new String[]{
-                                "?  ",
-                                "1  ",
-                                "!  "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
-                ),
-                Arguments.of(
                         "corridor",
                         new String[]{
                                 "~~~~~~~~~~~~~~~",
@@ -533,6 +518,21 @@ public class MovementTests {
                                 "  qponmlkjihgf ",
                                 "  !            ",
                                 "               ",
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"swimming"}
+                ),
+                Arguments.of(
+                        "leap",
+                        new String[]{
+                                "~  |~~~|~~~",
+                                "~  |~~~|~~~",
+                                "~~~|~~~|~~~",
+                        }, new String[]{
+                                "?  |123|~~~",
+                                "   |  !|~~~",
+                                "   |   |~~~"
                         },
                         0.9f,
                         0.3f,
@@ -559,34 +559,6 @@ public class MovementTests {
     public static Stream<Arguments> combinedMovementParameters() {
         return Stream.of(
                 Arguments.of(
-                        "three dimensional moves",
-                        new String[]{
-                                "~~~|~~ |   ",
-                                "~ ~|~~~| XX",
-                                "~~~| ~ | XX"
-                        }, new String[]{
-                                "?  |   |   ",
-                                "   | 1 |   ",
-                                "   |   |  !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping", "swimming"}
-                ),
-                Arguments.of(
-                        "leap",
-                        new String[]{
-                                "~  |   ",
-                                "~  |XXX"
-                        }, new String[]{
-                                "?  |   ",
-                                "1  |23!"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping", "swimming"}
-                ),
-                Arguments.of(
                         "up and down again",
                         new String[]{
                                 "X    X|XX XX|XXXXX"
@@ -607,6 +579,34 @@ public class MovementTests {
                         0.9f,
                         0.3f,
                         new String[]{"walking", "leaping", "falling"}
+                ),
+                Arguments.of(
+                        "leap",
+                        new String[]{
+                                "~  |   ",
+                                "~  |XXX"
+                        }, new String[]{
+                                "?  |   ",
+                                "1  |23!"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping", "swimming"}
+                ),
+                Arguments.of(
+                        "three dimensional moves",
+                        new String[]{
+                                "~~~|~~ |   ",
+                                "~ ~|~~~| XX",
+                                "~~~| ~ | XX"
+                        }, new String[]{
+                                "?  |   |   ",
+                                "   | 1 |   ",
+                                "   |   |  !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping", "swimming"}
                 )
         );
     }
@@ -617,6 +617,50 @@ public class MovementTests {
      */
     public static Stream<Arguments> defaultPluginCombinationParameters() {
         return Stream.of(
+                Arguments.of(
+                        "one time up",
+                        new String[]{
+                                "X |XX"
+                        }, new String[]{
+                                "? | !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
+                Arguments.of(
+                        "one time down",
+                        new String[]{
+                                "X |XX"
+                        }, new String[]{
+                                "! | ?"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
+                Arguments.of(
+                        "two times up",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "?  | 1 |  !"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
+                Arguments.of(
+                        "two times down",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "!  | 1 |  ?"
+                        },
+                        0.9f,
+                        0.3f,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
                 Arguments.of(
                         "diagonally early up",
                         new String[]{
@@ -675,50 +719,6 @@ public class MovementTests {
                                 " X |XXX"
                         }, new String[]{
                                 "   |? !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping", "falling"}
-                ),
-                Arguments.of(
-                        "one time up",
-                        new String[]{
-                                "X |XX"
-                        }, new String[]{
-                                "? | !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping", "falling"}
-                ),
-                Arguments.of(
-                        "one time down",
-                        new String[]{
-                                "X |XX"
-                        }, new String[]{
-                                "! | ?"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping", "falling"}
-                ),
-                Arguments.of(
-                        "two times up",
-                        new String[]{
-                                "X  |XX |XXX"
-                        }, new String[]{
-                                "?  | 1 |  !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping", "falling"}
-                ),
-                Arguments.of(
-                        "two times down",
-                        new String[]{
-                                "X  |XX |XXX"
-                        }, new String[]{
-                                "!  | 1 |  ?"
                         },
                         0.9f,
                         0.3f,
