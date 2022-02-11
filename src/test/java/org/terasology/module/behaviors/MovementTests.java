@@ -896,6 +896,8 @@ public class MovementTests {
                     stop
             ));
         }
+
+        entity.destroy();
     }
 
     @MethodSource("nonFunctionalLeapingMovementParameters")
@@ -933,6 +935,8 @@ public class MovementTests {
                     stop
             ));
         }
+
+        entity.destroy();
     }
 
     @MethodSource("leapingMovementParameters")
@@ -970,6 +974,8 @@ public class MovementTests {
                     stop
             ));
         }
+
+        entity.destroy();
     }
 
     @MethodSource("nonFunctionalFallingMovementParameters")
@@ -1007,6 +1013,8 @@ public class MovementTests {
                     stop
             ));
         }
+
+        entity.destroy();
     }
 
     @MethodSource("fallingMovementParameters")
@@ -1044,6 +1052,8 @@ public class MovementTests {
                     stop
             ));
         }
+
+        entity.destroy();
     }
 
     @MethodSource("flyingMovementParameters")
@@ -1081,6 +1091,8 @@ public class MovementTests {
                     stop
             ));
         }
+
+        entity.destroy();
     }
 
     @MethodSource("swimmingMovementParameters")
@@ -1118,6 +1130,8 @@ public class MovementTests {
                     stop
             ));
         }
+
+        entity.destroy();
     }
 
     @MethodSource("combinedMovementParameters")
@@ -1155,6 +1169,8 @@ public class MovementTests {
                     stop
             ));
         }
+
+        entity.destroy();
     }
 
     @MethodSource("defaultPluginCombinationParameters")
@@ -1194,6 +1210,8 @@ public class MovementTests {
                     stop
             ));
         }
+
+        entity.destroy();
     }
 
     @AfterEach
