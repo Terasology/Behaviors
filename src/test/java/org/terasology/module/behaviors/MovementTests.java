@@ -70,6 +70,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking"}
                 ),
                 Arguments.of(
@@ -85,6 +86,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking"}
                 ),
                 Arguments.of(
@@ -104,6 +106,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking"}
                 ),
                 Arguments.of(
@@ -115,6 +118,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking"}
                 )
         );
@@ -132,6 +136,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping"}
                 ),
                 Arguments.of(
@@ -143,6 +148,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping"}
                 ),
                 Arguments.of(
@@ -156,6 +162,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping"}
                 ),
                 Arguments.of(
@@ -169,6 +176,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping"}
                 ),
                 Arguments.of(
@@ -190,6 +198,7 @@ public class MovementTests {
                         },
                         2.7f,
                         1.2f,
+                        false,
                         new String[]{"walking", "leaping"}
                 ),
                 Arguments.of(
@@ -203,6 +212,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping"}
                 ),
                 Arguments.of(
@@ -218,6 +228,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping"}
                 )
         );
@@ -235,6 +246,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "falling"}
                 ),
                 Arguments.of(
@@ -246,6 +258,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "falling"}
                 ),
                 Arguments.of(
@@ -259,6 +272,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "falling"}
                 ),
                 Arguments.of(
@@ -272,6 +286,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "falling"}
                 )
         );
@@ -292,6 +307,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"flying"}
                 )
         );
@@ -312,6 +328,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"swimming"}
                 ),
                 Arguments.of(
@@ -327,6 +344,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"swimming"}
                 ),
                 Arguments.of(
@@ -346,6 +364,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"swimming"}
                 ),
                 Arguments.of(
@@ -361,6 +380,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"swimming"}
                 ),
                 Arguments.of(
@@ -376,6 +396,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"swimming"}
                 )
         );
@@ -392,6 +413,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -403,6 +425,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -416,6 +439,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "swimming"}
                 ),
                 Arguments.of(
@@ -431,6 +455,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "swimming"}
                 )
         );
@@ -451,6 +476,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -462,6 +488,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -473,6 +500,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -484,6 +512,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -497,6 +526,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -510,6 +540,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -523,6 +554,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -536,6 +568,7 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -547,15 +580,17 @@ public class MovementTests {
                         },
                         0.9f,
                         0.3f,
+                        false,
                         new String[]{"walking", "leaping", "falling"}
                 )
         );
     }
 
     @MethodSource("walkingMovementParameters")
-    @ParameterizedTest(name = "{5}: {0}")
+    @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for walking")
-    void testWalkingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+    void testWalkingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
+                             boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -582,9 +617,10 @@ public class MovementTests {
     }
 
     @MethodSource("leapingMovementParameters")
-    @ParameterizedTest(name = "{5}: {0}")
+    @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for leaping (requires walking)")
-    void testLeapingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+    void testLeapingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
+                             boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -611,9 +647,10 @@ public class MovementTests {
     }
 
     @MethodSource("fallingMovementParameters")
-    @ParameterizedTest(name = "{5}: {0}")
+    @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for falling (requires walking)")
-    void testFallingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+    void testFallingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
+                             boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -640,9 +677,10 @@ public class MovementTests {
     }
 
     @MethodSource("flyingMovementParameters")
-    @ParameterizedTest(name = "{5}: {0}")
+    @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for flying")
-    void testFlyingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+    void testFlyingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
+                            boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -669,9 +707,10 @@ public class MovementTests {
     }
 
     @MethodSource("swimmingMovementParameters")
-    @ParameterizedTest(name = "{5}: {0}")
+    @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin for swimming")
-    void testSwimmingMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+    void testSwimmingMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
+                              boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -698,9 +737,10 @@ public class MovementTests {
     }
 
     @MethodSource("combinedMovementParameters")
-    @ParameterizedTest(name = "{5}: {0}")
+    @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test movement plugin combinations")
-    void testCombinedMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+    void testCombinedMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
+                              boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
@@ -727,9 +767,10 @@ public class MovementTests {
     }
 
     @MethodSource("defaultPluginCombinationParameters")
-    @ParameterizedTest(name = "{5}: {0}")
+    @ParameterizedTest(name = "{6}: {0}")
     @DisplayName("Test default movement plugin combinations for comparison")
-    void testDefaultMovement(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
+    void testDefaultMovement(String name, String[] world, String[] path, float charHeight, float charRadius,
+                             boolean failureExpected, String... movementTypes) {
         int airHeight = 41;
 
         setupWorld(world, airHeight);
