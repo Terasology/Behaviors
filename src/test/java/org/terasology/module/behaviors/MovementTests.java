@@ -239,6 +239,38 @@ public class MovementTests {
 
     public static Stream<Arguments> walkingMovementParameters() {
         return Stream.of(
+                Arguments.of("succeed flat north", twoBlockVerticalFlatWorld, singleFlatStepNorthPath, true),
+                Arguments.of("succeed flat south", twoBlockVerticalFlatWorld, singleFlatStepSouthPath, true),
+                Arguments.of("succeed flat west", twoBlockHorizontalFlatWorld, singleFlatStepWestPath, true),
+                Arguments.of("succeed flat east", twoBlockHorizontalFlatWorld, singleFlatStepEastPath, true),
+                Arguments.of("succeed flat northwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthWestPath, true),
+                Arguments.of("succeed flat northeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthEastPath, true),
+                Arguments.of("succeed flat southwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthWestPath, true),
+                Arguments.of("succeed flat southeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthEastPath, true),
+                Arguments.of("fail ascend north", twoBlockVerticalAscendingNorthWorld, singleAscendingStepNorthPath, false),
+                Arguments.of("fail ascend south", twoBlockVerticalDescendingNorthWorld, singleAscendingStepSouthPath, false),
+                Arguments.of("fail ascend west", twoBlockHorizontalAscendingWestWorld, singleAscendingStepWestPath, false),
+                Arguments.of("fail ascend east", twoBlockHorizontalDescendingWestWorld, singleAscendingStepEastPath, false),
+                Arguments.of("fail ascend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalAscendingStepNorthWestPath, false),
+                Arguments.of("fail ascend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalAscendingStepNorthEastPath, false),
+                Arguments.of("fail ascend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalAscendingStepSouthWestPath, false),
+                Arguments.of("fail ascend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalAscendingStepSouthEastPath, false),
+                Arguments.of("fail ascend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalAscendingStepNorthWestPath, false),
+                Arguments.of("fail ascend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalAscendingStepNorthEastPath, false),
+                Arguments.of("fail ascend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalAscendingStepSouthWestPath, false),
+                Arguments.of("fail ascend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalAscendingStepSouthEastPath, false),
+                Arguments.of("fail descend north", twoBlockVerticalAscendingNorthWorld, singleDescendingStepNorthPath, false),
+                Arguments.of("fail descend south", twoBlockVerticalDescendingNorthWorld, singleDescendingStepSouthPath, false),
+                Arguments.of("fail descend west", twoBlockHorizontalAscendingWestWorld, singleDescendingStepWestPath, false),
+                Arguments.of("fail descend east", twoBlockHorizontalDescendingWestWorld, singleDescendingStepEastPath, false),
+                Arguments.of("fail descend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("fail descend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalDescendingStepSouthEastPath, false),
                 Arguments.of(
                         "straight",
                         new String[]{
@@ -295,8 +327,80 @@ public class MovementTests {
     }
 
     // Leaping movements are purely vertical (up) and require additional horizontal walking movements
+    // The following test cases only attempt to test that the leaping plugin alone is not incorrectly allowing basic movements
+    public static Stream<Arguments> nonFunctionalLeapingMovementParameters() {
+        return Stream.of(
+                Arguments.of("fail flat north", twoBlockVerticalFlatWorld, singleFlatStepNorthPath, false),
+                Arguments.of("fail flat south", twoBlockVerticalFlatWorld, singleFlatStepSouthPath, false),
+                Arguments.of("fail flat west", twoBlockHorizontalFlatWorld, singleFlatStepWestPath, false),
+                Arguments.of("fail flat east", twoBlockHorizontalFlatWorld, singleFlatStepEastPath, false),
+                Arguments.of("fail flat northwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthWestPath, false),
+                Arguments.of("fail flat northeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthEastPath, false),
+                Arguments.of("fail flat southwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthWestPath, false),
+                Arguments.of("fail flat southeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthEastPath, false),
+                Arguments.of("fail ascend north", twoBlockVerticalAscendingNorthWorld, singleAscendingStepNorthPath, false),
+                Arguments.of("fail ascend south", twoBlockVerticalDescendingNorthWorld, singleAscendingStepSouthPath, false),
+                Arguments.of("fail ascend west", twoBlockHorizontalAscendingWestWorld, singleAscendingStepWestPath, false),
+                Arguments.of("fail ascend east", twoBlockHorizontalDescendingWestWorld, singleAscendingStepEastPath, false),
+                Arguments.of("fail ascend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalAscendingStepNorthWestPath, false),
+                Arguments.of("fail ascend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalAscendingStepNorthEastPath, false),
+                Arguments.of("fail ascend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalAscendingStepSouthWestPath, false),
+                Arguments.of("fail ascend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalAscendingStepSouthEastPath, false),
+                Arguments.of("fail ascend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalAscendingStepNorthWestPath, false),
+                Arguments.of("fail ascend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalAscendingStepNorthEastPath, false),
+                Arguments.of("fail ascend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalAscendingStepSouthWestPath, false),
+                Arguments.of("fail ascend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalAscendingStepSouthEastPath, false),
+                Arguments.of("fail descend north", twoBlockVerticalAscendingNorthWorld, singleDescendingStepNorthPath, false),
+                Arguments.of("fail descend south", twoBlockVerticalDescendingNorthWorld, singleDescendingStepSouthPath, false),
+                Arguments.of("fail descend west", twoBlockHorizontalAscendingWestWorld, singleDescendingStepWestPath, false),
+                Arguments.of("fail descend east", twoBlockHorizontalDescendingWestWorld, singleDescendingStepEastPath, false),
+                Arguments.of("fail descend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("fail descend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalDescendingStepSouthEastPath, false)
+        );
+    }
+
+    // Leaping movements are purely vertical (up) and require additional horizontal walking movements
+    // The following test cases attempt to verify that the leaping in combination with the walking plugin correctly allows expected movements
     public static Stream<Arguments> leapingMovementParameters() {
         return Stream.of(
+                Arguments.of("succeed flat north", twoBlockVerticalFlatWorld, singleFlatStepNorthPath, true),
+                Arguments.of("succeed flat south", twoBlockVerticalFlatWorld, singleFlatStepSouthPath, true),
+                Arguments.of("succeed flat west", twoBlockHorizontalFlatWorld, singleFlatStepWestPath, true),
+                Arguments.of("succeed flat east", twoBlockHorizontalFlatWorld, singleFlatStepEastPath, true),
+                Arguments.of("succeed flat northwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthWestPath, true),
+                Arguments.of("succeed flat northeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthEastPath, true),
+                Arguments.of("succeed flat southwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthWestPath, true),
+                Arguments.of("succeed flat southeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthEastPath, true),
+                Arguments.of("succeed ascend north", twoBlockVerticalAscendingNorthWorld, singleAscendingStepNorthPath, true),
+                Arguments.of("succeed ascend south", twoBlockVerticalDescendingNorthWorld, singleAscendingStepSouthPath, true),
+                Arguments.of("succeed ascend west", twoBlockHorizontalAscendingWestWorld, singleAscendingStepWestPath, true),
+                Arguments.of("succeed ascend east", twoBlockHorizontalDescendingWestWorld, singleAscendingStepEastPath, true),
+                Arguments.of("succeed ascend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalAscendingStepNorthWestPath, true),
+                Arguments.of("succeed ascend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalAscendingStepNorthEastPath, true),
+                Arguments.of("succeed ascend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalAscendingStepSouthWestPath, true),
+                Arguments.of("succeed ascend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalAscendingStepSouthEastPath, true),
+                Arguments.of("succeed ascend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalAscendingStepNorthWestPath, true),
+                Arguments.of("succeed ascend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalAscendingStepNorthEastPath, true),
+                Arguments.of("succeed ascend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalAscendingStepSouthWestPath, true),
+                Arguments.of("succeed ascend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalAscendingStepSouthEastPath, true),
+                Arguments.of("fail descend north", twoBlockVerticalAscendingNorthWorld, singleDescendingStepNorthPath, false),
+                Arguments.of("fail descend south", twoBlockVerticalDescendingNorthWorld, singleDescendingStepSouthPath, false),
+                Arguments.of("fail descend west", twoBlockHorizontalAscendingWestWorld, singleDescendingStepWestPath, false),
+                Arguments.of("fail descend east", twoBlockHorizontalDescendingWestWorld, singleDescendingStepEastPath, false),
+                Arguments.of("fail descend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("fail descend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalDescendingStepSouthEastPath, false),
                 Arguments.of(
                         "one time up",
                         new String[]{
@@ -365,8 +469,80 @@ public class MovementTests {
     }
 
     // Falling movements are purely vertical (down) and require additional horizontal walking movements
+    // The following test cases only attempt to verify that the falling plugin alone is not incorrectly allowing basic movements
+    public static Stream<Arguments> nonFunctionalFallingMovementParameters() {
+        return Stream.of(
+                Arguments.of("fail flat north", twoBlockVerticalFlatWorld, singleFlatStepNorthPath, false),
+                Arguments.of("fail flat south", twoBlockVerticalFlatWorld, singleFlatStepSouthPath, false),
+                Arguments.of("fail flat west", twoBlockHorizontalFlatWorld, singleFlatStepWestPath, false),
+                Arguments.of("fail flat east", twoBlockHorizontalFlatWorld, singleFlatStepEastPath, false),
+                Arguments.of("fail flat northwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthWestPath, false),
+                Arguments.of("fail flat northeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthEastPath, false),
+                Arguments.of("fail flat southwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthWestPath, false),
+                Arguments.of("fail flat southeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthEastPath, false),
+                Arguments.of("fail ascend north", twoBlockVerticalAscendingNorthWorld, singleAscendingStepNorthPath, false),
+                Arguments.of("fail ascend south", twoBlockVerticalDescendingNorthWorld, singleAscendingStepSouthPath, false),
+                Arguments.of("fail ascend west", twoBlockHorizontalAscendingWestWorld, singleAscendingStepWestPath, false),
+                Arguments.of("fail ascend east", twoBlockHorizontalDescendingWestWorld, singleAscendingStepEastPath, false),
+                Arguments.of("fail ascend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalAscendingStepNorthWestPath, false),
+                Arguments.of("fail ascend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalAscendingStepNorthEastPath, false),
+                Arguments.of("fail ascend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalAscendingStepSouthWestPath, false),
+                Arguments.of("fail ascend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalAscendingStepSouthEastPath, false),
+                Arguments.of("fail ascend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalAscendingStepNorthWestPath, false),
+                Arguments.of("fail ascend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalAscendingStepNorthEastPath, false),
+                Arguments.of("fail ascend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalAscendingStepSouthWestPath, false),
+                Arguments.of("fail ascend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalAscendingStepSouthEastPath, false),
+                Arguments.of("fail descend north", twoBlockVerticalAscendingNorthWorld, singleDescendingStepNorthPath, false),
+                Arguments.of("fail descend south", twoBlockVerticalDescendingNorthWorld, singleDescendingStepSouthPath, false),
+                Arguments.of("fail descend west", twoBlockHorizontalAscendingWestWorld, singleDescendingStepWestPath, false),
+                Arguments.of("fail descend east", twoBlockHorizontalDescendingWestWorld, singleDescendingStepEastPath, false),
+                Arguments.of("fail descend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("fail descend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalDescendingStepSouthEastPath, false)
+        );
+    }
+
+    // Falling movements are purely vertical (down) and require additional horizontal walking movements
+    // The following test cases attempt to verify that the falling in combination with the walking plugin correctly allows expected movements
     public static Stream<Arguments> fallingMovementParameters() {
         return Stream.of(
+                Arguments.of("succeed flat north", twoBlockVerticalFlatWorld, singleFlatStepNorthPath, true),
+                Arguments.of("succeed flat south", twoBlockVerticalFlatWorld, singleFlatStepSouthPath, true),
+                Arguments.of("succeed flat west", twoBlockHorizontalFlatWorld, singleFlatStepWestPath, true),
+                Arguments.of("succeed flat east", twoBlockHorizontalFlatWorld, singleFlatStepEastPath, true),
+                Arguments.of("succeed flat northwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthWestPath, true),
+                Arguments.of("succeed flat northeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthEastPath, true),
+                Arguments.of("succeed flat southwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthWestPath, true),
+                Arguments.of("succeed flat southeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthEastPath, true),
+                Arguments.of("fail ascend north", twoBlockVerticalAscendingNorthWorld, singleAscendingStepNorthPath, false),
+                Arguments.of("fail ascend south", twoBlockVerticalDescendingNorthWorld, singleAscendingStepSouthPath, false),
+                Arguments.of("fail ascend west", twoBlockHorizontalAscendingWestWorld, singleAscendingStepWestPath, false),
+                Arguments.of("fail ascend east", twoBlockHorizontalDescendingWestWorld, singleAscendingStepEastPath, false),
+                Arguments.of("fail ascend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalAscendingStepNorthWestPath, false),
+                Arguments.of("fail ascend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalAscendingStepNorthEastPath, false),
+                Arguments.of("fail ascend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalAscendingStepSouthWestPath, false),
+                Arguments.of("fail ascend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalAscendingStepSouthEastPath, false),
+                Arguments.of("fail ascend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalAscendingStepNorthWestPath, false),
+                Arguments.of("fail ascend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalAscendingStepNorthEastPath, false),
+                Arguments.of("fail ascend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalAscendingStepSouthWestPath, false),
+                Arguments.of("fail ascend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalAscendingStepSouthEastPath, false),
+                Arguments.of("succeed descend north", twoBlockVerticalAscendingNorthWorld, singleDescendingStepNorthPath, true),
+                Arguments.of("succeed descend south", twoBlockVerticalDescendingNorthWorld, singleDescendingStepSouthPath, true),
+                Arguments.of("succeed descend west", twoBlockHorizontalAscendingWestWorld, singleDescendingStepWestPath, true),
+                Arguments.of("succeed descend east", twoBlockHorizontalDescendingWestWorld, singleDescendingStepEastPath, true),
+                Arguments.of("succeed descend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalDescendingStepNorthWestPath, true),
+                Arguments.of("succeed descend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalDescendingStepNorthEastPath, true),
+                Arguments.of("succeed descend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalDescendingStepSouthWestPath, true),
+                Arguments.of("succeed descend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalDescendingStepSouthEastPath, true),
+                Arguments.of("succeed descend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalDescendingStepNorthWestPath, true),
+                Arguments.of("succeed descend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalDescendingStepNorthEastPath, true),
+                Arguments.of("succeed descend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalDescendingStepSouthWestPath, true),
+                Arguments.of("succeed descend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalDescendingStepSouthEastPath, true),
                 Arguments.of(
                         "one time down",
                         new String[]{
@@ -559,6 +735,38 @@ public class MovementTests {
      */
     public static Stream<Arguments> defaultPluginCombinationParameters() {
         return Stream.of(
+                Arguments.of("succeed flat north", twoBlockVerticalFlatWorld, singleFlatStepNorthPath, true),
+                Arguments.of("succeed flat south", twoBlockVerticalFlatWorld, singleFlatStepSouthPath, true),
+                Arguments.of("succeed flat west", twoBlockHorizontalFlatWorld, singleFlatStepWestPath, true),
+                Arguments.of("succeed flat east", twoBlockHorizontalFlatWorld, singleFlatStepEastPath, true),
+                Arguments.of("succeed flat northwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthWestPath, true),
+                Arguments.of("succeed flat northeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepNorthEastPath, true),
+                Arguments.of("succeed flat southwest", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthWestPath, true),
+                Arguments.of("succeed flat southeast", twoTimesTwoBlockFlatWorld, diagonalFlatStepSouthEastPath, true),
+                Arguments.of("succeed ascend north", twoBlockVerticalAscendingNorthWorld, singleAscendingStepNorthPath, true),
+                Arguments.of("succeed ascend south", twoBlockVerticalDescendingNorthWorld, singleAscendingStepSouthPath, true),
+                Arguments.of("succeed ascend west", twoBlockHorizontalAscendingWestWorld, singleAscendingStepWestPath, true),
+                Arguments.of("succeed ascend east", twoBlockHorizontalDescendingWestWorld, singleAscendingStepEastPath, true),
+                Arguments.of("succeed ascend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalAscendingStepNorthWestPath, true),
+                Arguments.of("succeed ascend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalAscendingStepNorthEastPath, true),
+                Arguments.of("succeed ascend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalAscendingStepSouthWestPath, true),
+                Arguments.of("succeed ascend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalAscendingStepSouthEastPath, true),
+                Arguments.of("succeed ascend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalAscendingStepNorthWestPath, true),
+                Arguments.of("succeed ascend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalAscendingStepNorthEastPath, true),
+                Arguments.of("succeed ascend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalAscendingStepSouthWestPath, true),
+                Arguments.of("succeed ascend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalAscendingStepSouthEastPath, true),
+                Arguments.of("succeed descend north", twoBlockVerticalAscendingNorthWorld, singleDescendingStepNorthPath, true),
+                Arguments.of("succeed descend south", twoBlockVerticalDescendingNorthWorld, singleDescendingStepSouthPath, true),
+                Arguments.of("succeed descend west", twoBlockHorizontalAscendingWestWorld, singleDescendingStepWestPath, true),
+                Arguments.of("succeed descend east", twoBlockHorizontalDescendingWestWorld, singleDescendingStepEastPath, true),
+                Arguments.of("succeed descend early northwest", twoTimesTwoBlockAscendingNorthWestWorld, diagonalDescendingStepNorthWestPath, true),
+                Arguments.of("succeed descend early northeast", twoTimesTwoBlockAscendingNorthEastWorld, diagonalDescendingStepNorthEastPath, true),
+                Arguments.of("succeed descend early southwest", twoTimesTwoBlockAscendingSouthWestWorld, diagonalDescendingStepSouthWestPath, true),
+                Arguments.of("succeed descend early southeast", twoTimesTwoBlockAscendingSouthEastWorld, diagonalDescendingStepSouthEastPath, true),
+                Arguments.of("succeed descend late northwest", twoTimesTwoBlockDescendingSouthEastWorld, diagonalDescendingStepNorthWestPath, true),
+                Arguments.of("succeed descend late northeast", twoTimesTwoBlockDescendingSouthWestWorld, diagonalDescendingStepNorthEastPath, true),
+                Arguments.of("succeed descend late southwest", twoTimesTwoBlockDescendingNorthEastWorld, diagonalDescendingStepSouthWestPath, true),
+                Arguments.of("succeed descend late southeast", twoTimesTwoBlockDescendingNorthWestWorld, diagonalDescendingStepSouthEastPath, true),
                 Arguments.of(
                         "one time up",
                         new String[]{
@@ -674,10 +882,55 @@ public class MovementTests {
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
-        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
-                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
-                stop
-        ));
+
+        if (failureExpected) {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        } else {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        }
+    }
+
+    @MethodSource("nonFunctionalLeapingMovementParameters")
+    @ParameterizedTest(name = "leaping: {0}")
+    @DisplayName("Test movement plugin for leaping (intentionally without walking)")
+    void testNonFunctionalLeapingMovement(String name, String[] world, String[] path, boolean failureExpected) {
+        int airHeight = 41;
+
+        setupWorld(world, airHeight);
+
+        // find start and goal positions from path data
+        Vector3i start = new Vector3i();
+        Vector3i stop = new Vector3i();
+        detectPath(path, airHeight, start, stop);
+
+        EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, "leaping");
+
+        helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
+                .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
+
+        boolean timedOut = helper.runWhile(() -> {
+            Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+            logger.info("pos: {}", pos);
+            return Blocks.toBlockPos(pos).distance(stop) > 0;
+        });
+
+        if (failureExpected) {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        } else {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        }
     }
 
     @MethodSource("leapingMovementParameters")
@@ -703,10 +956,55 @@ public class MovementTests {
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
-        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
-                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
-                stop
-        ));
+
+        if (failureExpected) {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        } else {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        }
+    }
+
+    @MethodSource("nonFunctionalFallingMovementParameters")
+    @ParameterizedTest(name = "falling: {0}")
+    @DisplayName("Test movement plugin for falling (intentionally without walking)")
+    void testNonFunctionalFallingMovement(String name, String[] world, String[] path, boolean failureExpected) {
+        int airHeight = 41;
+
+        setupWorld(world, airHeight);
+
+        // find start and goal positions from path data
+        Vector3i start = new Vector3i();
+        Vector3i stop = new Vector3i();
+        detectPath(path, airHeight, start, stop);
+
+        EntityRef entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, "falling");
+
+        helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
+                .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
+
+        boolean timedOut = helper.runWhile(() -> {
+            Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+            logger.info("pos: {}", pos);
+            return Blocks.toBlockPos(pos).distance(stop) > 0;
+        });
+
+        if (failureExpected) {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        } else {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        }
     }
 
     @MethodSource("fallingMovementParameters")
@@ -732,10 +1030,18 @@ public class MovementTests {
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
-        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
-                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
-                stop
-        ));
+
+        if (failureExpected) {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        } else {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        }
     }
 
     @MethodSource("flyingMovementParameters")
@@ -761,10 +1067,18 @@ public class MovementTests {
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
-        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
-                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
-                stop
-        ));
+
+        if (failureExpected) {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        } else {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        }
     }
 
     @MethodSource("swimmingMovementParameters")
@@ -790,10 +1104,18 @@ public class MovementTests {
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
-        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
-                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
-                stop
-        ));
+
+        if (failureExpected) {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        } else {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        }
     }
 
     @MethodSource("combinedMovementParameters")
@@ -819,10 +1141,18 @@ public class MovementTests {
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
-        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
-                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
-                stop
-        ));
+
+        if (failureExpected) {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        } else {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        }
     }
 
     @MethodSource("defaultPluginCombinationParameters")
@@ -850,10 +1180,18 @@ public class MovementTests {
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
-        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
-                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
-                stop
-        ));
+
+        if (failureExpected) {
+            Assertions.assertTrue(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        } else {
+            Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
+                    Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
+                    stop
+            ));
+        }
     }
 
     @AfterEach
