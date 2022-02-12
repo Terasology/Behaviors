@@ -1024,9 +1024,8 @@ public class MovementTests {
 
         Vector3i currentPos = Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
         if (successExpected) {
-            Assertions.assertEquals(stop, currentPos,
-                    () -> String.format("Test character is not at target position (start: %s, target: %s, position: %s)",
-                            start, stop, currentPos));
+            Assertions.assertEquals(stop, currentPos, () -> printTest("Test character is not at target position.", world, start, stop,
+                    entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())));
             Assertions.assertFalse(timedOut,
                     () -> String.format("Timeout during character movement (start: %s, target: %s, position: %s)",
                             start, stop, currentPos));
@@ -1038,6 +1037,15 @@ public class MovementTests {
     @AfterEach
     void cleanUp () {
         chunkProvider.purgeWorld();
+    }
+
+    private String printTest(String msg, String[] world, Vector3i start, Vector3i stop, Vector3f pos) {
+        return msg + "\n" +
+                "  start   : " + start + "\n" +
+                "  target  : " + stop + "\n" +
+                "  current : " + pos + "\n\n" +
+                Arrays.stream(world).map(s -> "  " + s).collect(Collectors.joining("\n")) +
+                "\n";
     }
 
     private EntityRef createMovingCharacter(float height, float radius, Vector3i start, Vector3i stop, String... movementTypes) {
