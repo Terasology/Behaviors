@@ -743,6 +743,16 @@ public class MovementTests {
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
+                        "down and up again",
+                        new String[]{
+                                "  X  | XXX |XXXXX"
+                        }, new String[]{
+                                "     |     |?   !"
+                        },
+                        true,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
+                Arguments.of(
                         "jump over",
                         new String[]{
                                 "X X|XXX|XXX|XXX"
