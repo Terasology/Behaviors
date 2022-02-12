@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.logic.characters.CharacterMovementComponent;
@@ -1067,24 +1068,29 @@ public class MovementTests {
     }
 
     private EntityRef createMovingCharacter(float height, float radius, Vector3i start, Vector3i stop, String... movementTypes) {
-        EntityRef entity = entityManager.create("Behaviors:testCharacter");
+        EntityBuilder builder = entityManager.newBuilder("Behaviors:testCharacter");
+        builder.updateComponent(MinionMoveComponent.class, moveComponent -> {
+            moveComponent.setPathGoal(stop);
+            moveComponent.movementTypes.clear();
+            moveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
+            return moveComponent;
+        });
+        builder.updateComponent(CharacterMovementComponent.class, characterMovement -> {
+            characterMovement.height = height;
+            characterMovement.radius = radius;
+            return characterMovement;
+        });
 
-        MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
-        minionMoveComponent.setPathGoal(stop);
-        minionMoveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
-        entity.addOrSaveComponent(minionMoveComponent);
+        EntityRef character = builder.build();
 
-        CharacterMovementComponent charMovementComponent = entity.getComponent(CharacterMovementComponent.class);
-        charMovementComponent.height = height;
-        charMovementComponent.radius = radius;
-        entity.saveComponent(charMovementComponent);
+        // recompute character collider
+        // TODO: replace with 'physicsEngine.recomputeCharacterCollider(character);' if MovingBlocks/Terasology#4996 is merged
+        physicsEngine.removeCharacterCollider(character);
+        physicsEngine.getCharacterCollider(character);
 
-        physicsEngine.removeCharacterCollider(entity);
-        physicsEngine.getCharacterCollider(entity);
+        character.send(new CharacterTeleportEvent(new Vector3f(start)));
 
-        entity.send(new CharacterTeleportEvent(new Vector3f(start)));
-
-        return entity;
+        return character;
     }
 
     /**
