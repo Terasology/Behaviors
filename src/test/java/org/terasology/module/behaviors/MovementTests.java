@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
@@ -29,7 +30,6 @@ import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.block.BlockRegionc;
 import org.terasology.engine.world.block.Blocks;
-import org.terasology.engine.world.chunks.ChunkProvider;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.moduletestingenvironment.MTEExtension;
 import org.terasology.moduletestingenvironment.ModuleTestingHelper;
@@ -219,11 +219,11 @@ public class MovementTests {
             "   |   "
     };
 
-    private static final int defaultAirHeight = 41;
-    private static final float defaultCharHeight = 0.9f;
-    private static final float defaultCharRadius = 0.3f;
-
-    private static final String[] defaultMovementModes = { "walking", "leaping", "falling" };
+    private static final long TIMEOUT = 3_000;
+    private static final int AIR_HEIGHT = 41;
+    private static final float CHAR_HEIGHT = 0.9f;
+    private static final float CHAR_RADIUS = 0.3f;
+    private static final String[] DEFAULT_MOVEMENT_MODES = {"walking", "leaping", "falling"};
     private static EntityRef entity;
 
     @In
@@ -236,8 +236,6 @@ public class MovementTests {
     protected EntityManager entityManager;
     @In
     protected PhysicsEngine physicsEngine;
-    @In
-    private ChunkProvider chunkProvider;
 
     public static Stream<Arguments> walkingMovementParameters() {
         return Stream.of(
@@ -1024,27 +1022,25 @@ public class MovementTests {
     @ParameterizedTest(name = "default: {0}")
     @DisplayName("Test default movement plugin combinations for comparison")
     void testDefaultMovement(String name, String[] world, String[] path, boolean successExpected) {
-        runTest(name, world, path, successExpected, defaultMovementModes);
+        runTest(name, world, path, successExpected, DEFAULT_MOVEMENT_MODES);
     }
 
     void runTest(String name, String[] world, String[] path, boolean successExpected, String... movementTypes) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, AIR_HEIGHT);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, AIR_HEIGHT, start, stop);
 
-        logger.info("movement plugin combination: {}", movementTypes);
+        logger.info("movement plugin combination: {}", Lists.newArrayList(movementTypes));
 
-        entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
+        entity = createMovingCharacter(CHAR_HEIGHT, CHAR_RADIUS, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5f);
 
-        boolean timedOut = helper.runWhile(3_000, () -> {
+        boolean timedOut = helper.runWhile(TIMEOUT, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
