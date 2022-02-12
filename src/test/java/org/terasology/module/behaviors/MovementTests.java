@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
@@ -16,6 +17,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.logic.characters.CharacterMovementComponent;
@@ -29,7 +31,6 @@ import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.block.BlockRegionc;
 import org.terasology.engine.world.block.Blocks;
-import org.terasology.engine.world.chunks.ChunkProvider;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.moduletestingenvironment.MTEExtension;
 import org.terasology.moduletestingenvironment.ModuleTestingHelper;
@@ -43,10 +44,11 @@ import java.util.stream.Stream;
 public class MovementTests {
     private static final Logger logger = LoggerFactory.getLogger(MovementTests.class);
 
-    private static final float defaultCharHeight = 0.9f;
-    private static final float defaultCharRadius = 0.3f;
-
-    private static final String[] defaultMovementModes = {"walking", "leaping", "falling"};
+    private static final long TIMEOUT = 3_000;
+    private static final int AIR_HEIGHT = 41;
+    private static final float CHAR_HEIGHT = 0.9f;
+    private static final float CHAR_RADIUS = 0.3f;
+    private static final String[] DEFAULT_MOVEMENT_MODES = {"walking", "leaping", "falling"};
 
     private static final String[] threeByThreeCrossFlatWorld = {
             " X ",
@@ -228,8 +230,6 @@ public class MovementTests {
     protected EntityManager entityManager;
     @In
     protected PhysicsEngine physicsEngine;
-    @In
-    private ChunkProvider chunkProvider;
 
     public static Stream<Arguments> walkingMovementParameters() {
         return Stream.of(
@@ -1016,27 +1016,25 @@ public class MovementTests {
     @ParameterizedTest(name = "default: {0}")
     @DisplayName("Test default movement plugin combinations for comparison")
     void testDefaultMovement(String name, String[] world, String[] path, boolean successExpected) {
-        runTest(name, world, path, successExpected, defaultMovementModes);
+        runTest(name, world, path, successExpected, DEFAULT_MOVEMENT_MODES);
     }
 
     void runTest(String name, String[] world, String[] path, boolean successExpected, String... movementTypes) {
-        int airHeight = 41;
-
-        setupWorld(world, airHeight);
+        setupWorld(world, AIR_HEIGHT);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, AIR_HEIGHT, start, stop);
 
-        logger.info("movement plugin combination: {}", movementTypes);
+        logger.info("movement plugin combination: {}", Lists.newArrayList(movementTypes));
 
-        entity = createMovingCharacter(defaultCharHeight, defaultCharRadius, start, stop, movementTypes);
+        entity = createMovingCharacter(CHAR_HEIGHT, CHAR_RADIUS, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
                 .getWorldPosition(new Vector3f())).distance(start) <= 0.5f);
 
-        boolean timedOut = helper.runWhile(3_000, () -> {
+        boolean timedOut = helper.runWhile(TIMEOUT, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
@@ -1052,24 +1050,29 @@ public class MovementTests {
     }
 
     private EntityRef createMovingCharacter(float height, float radius, Vector3i start, Vector3i stop, String... movementTypes) {
-        EntityRef entity = entityManager.create("Behaviors:testCharacter");
+        EntityBuilder builder = entityManager.newBuilder("Behaviors:testCharacter");
+        builder.updateComponent(MinionMoveComponent.class, moveComponent -> {
+            moveComponent.setPathGoal(stop);
+            moveComponent.movementTypes.clear();
+            moveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
+            return moveComponent;
+        });
+        builder.updateComponent(CharacterMovementComponent.class, characterMovement -> {
+            characterMovement.height = height;
+            characterMovement.radius = radius;
+            return characterMovement;
+        });
 
-        MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
-        minionMoveComponent.setPathGoal(stop);
-        minionMoveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
-        entity.addOrSaveComponent(minionMoveComponent);
+        EntityRef character = builder.build();
 
-        CharacterMovementComponent charMovementComponent = entity.getComponent(CharacterMovementComponent.class);
-        charMovementComponent.height = height;
-        charMovementComponent.radius = radius;
-        entity.saveComponent(charMovementComponent);
+        // recompute character collider
+        // TODO: replace with 'physicsEngine.recomputeCharacterCollider(character);' if MovingBlocks/Terasology#4996 is merged
+        physicsEngine.removeCharacterCollider(character);
+        physicsEngine.getCharacterCollider(character);
 
-        physicsEngine.removeCharacterCollider(entity);
-        physicsEngine.getCharacterCollider(entity);
+        character.send(new CharacterTeleportEvent(new Vector3f(start)));
 
-        entity.send(new CharacterTeleportEvent(new Vector3f(start)));
-
-        return entity;
+        return character;
     }
 
     /**
