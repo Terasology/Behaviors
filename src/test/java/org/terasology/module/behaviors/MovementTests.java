@@ -265,22 +265,14 @@ public class MovementTests {
                 Arguments.of("fail descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, false),
                 Arguments.of("fail descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, false),
                 Arguments.of("fail descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, false),
-                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath
-                        , false),
-                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath
-                        , false),
-                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath
-                        , false),
-                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath
-                        , false),
-                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath
-                        , false),
-                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath
-                        , false),
-                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath
-                        , false),
-                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath
-                        , false),
+                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath, false),
                 Arguments.of(
                         "straight",
                         new String[]{
@@ -292,7 +284,7 @@ public class MovementTests {
                                 "1",
                                 "!"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonal",
@@ -305,7 +297,7 @@ public class MovementTests {
                                 "1  |   ",
                                 "23!|   "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "corridor",
@@ -322,7 +314,7 @@ public class MovementTests {
                                 "  !            ",
                                 "               ",
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "gap",
@@ -331,7 +323,7 @@ public class MovementTests {
                         }, new String[]{
                                 "   |? !"
                         },
-                        false
+                        true
                 )
         );
     }
@@ -372,22 +364,14 @@ public class MovementTests {
                 Arguments.of("fail descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, false),
                 Arguments.of("fail descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, false),
                 Arguments.of("fail descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, false),
-                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath
-                        , false),
-                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath
-                        , false),
-                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath
-                        , false),
-                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath
-                        , false),
-                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath
-                        , false),
-                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath
-                        , false),
-                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath
-                        , false),
-                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath
-                        , false)
+                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath, false)
         );
     }
 
@@ -428,22 +412,14 @@ public class MovementTests {
                 Arguments.of("fail descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, false),
                 Arguments.of("fail descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, false),
                 Arguments.of("fail descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, false),
-                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath
-                        , false),
-                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath
-                        , false),
-                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath
-                        , false),
-                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath
-                        , false),
-                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath
-                        , false),
-                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath
-                        , false),
-                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath
-                        , false),
-                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath
-                        , false),
+                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath, false),
                 Arguments.of(
                         "one time up",
                         new String[]{
@@ -451,7 +427,7 @@ public class MovementTests {
                         }, new String[]{
                                 "? | !"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "two times up",
@@ -460,7 +436,7 @@ public class MovementTests {
                         }, new String[]{
                                 "?  | 1 |  !"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonally early up",
@@ -471,7 +447,7 @@ public class MovementTests {
                                 "  | !",
                                 "? |  "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonally late up",
@@ -482,7 +458,7 @@ public class MovementTests {
                                 "  | !",
                                 "? |  "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "leap",
@@ -493,7 +469,7 @@ public class MovementTests {
                                 "?  |123|XXX|XXX",
                                 "   |  !|XXX|XXX",
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "three dimensional moves",
@@ -506,7 +482,7 @@ public class MovementTests {
                                 "   | 1 |   ",
                                 "   |   |  !"
                         },
-                        false
+                        true
                 )
         );
     }
@@ -547,22 +523,14 @@ public class MovementTests {
                 Arguments.of("fail descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, false),
                 Arguments.of("fail descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, false),
                 Arguments.of("fail descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, false),
-                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath
-                        , false),
-                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath
-                        , false),
-                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath
-                        , false),
-                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath
-                        , false),
-                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath
-                        , false),
-                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath
-                        , false),
-                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath
-                        , false),
-                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath
-                        , false)
+                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthWestPath, false),
+                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepNorthEastPath, false),
+                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthWestPath, false),
+                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingOutWorld, diagonalDescendingStepSouthEastPath, false)
         );
     }
 
@@ -626,7 +594,7 @@ public class MovementTests {
                         }, new String[]{
                                 "! | ?"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "two times down",
@@ -635,7 +603,7 @@ public class MovementTests {
                         }, new String[]{
                                 "!  | 1 |  ?"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonally late down",
@@ -646,7 +614,7 @@ public class MovementTests {
                                 "  | ?",
                                 "! |  "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonally early down",
@@ -657,7 +625,7 @@ public class MovementTests {
                                 "  | ?",
                                 "! |  "
                         },
-                        false
+                        true
                 )
         );
     }
@@ -675,7 +643,7 @@ public class MovementTests {
                                 "   |   |   ",
                                 "  !|   |   "
                         },
-                        false
+                        true
                 )
         );
     }
@@ -693,7 +661,7 @@ public class MovementTests {
                                 "1  ",
                                 "!  "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonal",
@@ -706,7 +674,7 @@ public class MovementTests {
                                 "1  |   ",
                                 "23!|   "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "corridor",
@@ -723,7 +691,7 @@ public class MovementTests {
                                 "  !            ",
                                 "               ",
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "leap",
@@ -736,7 +704,7 @@ public class MovementTests {
                                 "   |  !|~~~",
                                 "   |   |~~~"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "three dimensional moves",
@@ -749,7 +717,7 @@ public class MovementTests {
                                 "   | 1 |   ",
                                 "   |   |  !"
                         },
-                        false
+                        true
                 )
         );
     }
@@ -763,7 +731,7 @@ public class MovementTests {
                         }, new String[]{
                                 "?    !|     |     "
                         },
-                        false,
+                        true,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -773,7 +741,7 @@ public class MovementTests {
                         }, new String[]{
                                 "? !|123|   |   "
                         },
-                        false,
+                        true,
                         new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
@@ -785,7 +753,7 @@ public class MovementTests {
                                 "?  |   ",
                                 "1  |23!"
                         },
-                        false,
+                        true,
                         new String[]{"walking", "leaping", "swimming"}
                 ),
                 Arguments.of(
@@ -799,7 +767,7 @@ public class MovementTests {
                                 "   | 1 |   ",
                                 "   |   |  !"
                         },
-                        false,
+                        true,
                         new String[]{"walking", "leaping", "swimming"}
                 )
         );
@@ -866,7 +834,7 @@ public class MovementTests {
                         }, new String[]{
                                 "? | !"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "one time down",
@@ -875,7 +843,7 @@ public class MovementTests {
                         }, new String[]{
                                 "! | ?"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "two times up",
@@ -884,7 +852,7 @@ public class MovementTests {
                         }, new String[]{
                                 "?  | 1 |  !"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "two times down",
@@ -893,7 +861,7 @@ public class MovementTests {
                         }, new String[]{
                                 "!  | 1 |  ?"
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonally early up",
@@ -904,7 +872,7 @@ public class MovementTests {
                                 "  | !",
                                 "? |  "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonally late up",
@@ -915,7 +883,7 @@ public class MovementTests {
                                 "  | !",
                                 "? |  "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonally late down",
@@ -926,7 +894,7 @@ public class MovementTests {
                                 "  | ?",
                                 "! |  "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "diagonally early down",
@@ -937,7 +905,7 @@ public class MovementTests {
                                 "  | ?",
                                 "! |  "
                         },
-                        false
+                        true
                 ),
                 Arguments.of(
                         "gap",
@@ -946,7 +914,7 @@ public class MovementTests {
                         }, new String[]{
                                 "   |? !"
                         },
-                        false
+                        true
                 )
         );
     }
