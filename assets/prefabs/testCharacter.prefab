@@ -10,7 +10,7 @@
   },
   "AliveCharacter": {},
   "CharacterMovement" : {
-    "speedMultiplier" : 0.3,
+    "speedMultiplier" : 1.0,
     "distanceBetweenFootsteps" : 0.2,
     "height" : 0.9,
     "radius" : 0.3,
