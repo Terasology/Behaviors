@@ -22,7 +22,6 @@ import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.logic.characters.CharacterMovementComponent;
-import org.terasology.engine.logic.characters.CharacterTeleportEvent;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.physics.engine.PhysicsEngine;
 import org.terasology.engine.registry.In;
@@ -37,6 +36,8 @@ import org.terasology.moduletestingenvironment.MTEExtension;
 import org.terasology.moduletestingenvironment.ModuleTestingHelper;
 import org.terasology.moduletestingenvironment.extension.Dependencies;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Dependencies({"Behaviors", "CoreAssets"})
@@ -1022,9 +1023,8 @@ public class MovementTests {
 
         Vector3i currentPos = Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
         if (successExpected) {
-            Assertions.assertEquals(stop, currentPos,
-                    () -> String.format("Test character is not at target position (start: %s, target: %s, position: %s)",
-                            start, stop, currentPos));
+            Assertions.assertEquals(stop, currentPos, () -> printTest("Test character is not at target position.", world, start, stop,
+                    entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())));
             Assertions.assertFalse(timedOut,
                     () -> String.format("Timeout during character movement (start: %s, target: %s, position: %s)",
                             start, stop, currentPos));
@@ -1033,9 +1033,20 @@ public class MovementTests {
         }
     }
 
+    private String printTest(String msg, String[] world, Vector3i start, Vector3i stop, Vector3f pos) {
+        return msg + "\n" +
+                "  start   : " + start + "\n" +
+                "  target  : " + stop + "\n" +
+                "  current : " + pos + "\n\n" +
+                Arrays.stream(world).map(s -> "  " + s).collect(Collectors.joining("\n")) +
+                "\n";
+    }
+
     private EntityRef createMovingCharacter(float height, float radius, Vector3i start, Vector3i stop, String... movementTypes) {
         EntityBuilder builder = entityManager.newBuilder("Behaviors:testCharacter");
-        builder.updateComponent(MinionMoveComponent.class, moveComponent -> {
+        builder.setSendLifecycleEvents(true);
+        builder.upsertComponent(MinionMoveComponent.class, maybeComponent -> {
+            MinionMoveComponent moveComponent = maybeComponent.orElse(new MinionMoveComponent());
             moveComponent.setPathGoal(stop);
             moveComponent.movementTypes.clear();
             moveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
@@ -1046,6 +1057,10 @@ public class MovementTests {
             characterMovement.radius = radius;
             return characterMovement;
         });
+        builder.updateComponent(LocationComponent.class, location -> {
+            location.setWorldPosition(new Vector3f(start));
+            return location;
+        });
 
         EntityRef character = builder.build();
 
@@ -1053,8 +1068,6 @@ public class MovementTests {
         // TODO: replace with 'physicsEngine.recomputeCharacterCollider(character);' if MovingBlocks/Terasology#4996 is merged
         physicsEngine.removeCharacterCollider(character);
         physicsEngine.getCharacterCollider(character);
-
-        character.send(new CharacterTeleportEvent(new Vector3f(start)));
 
         return character;
     }
