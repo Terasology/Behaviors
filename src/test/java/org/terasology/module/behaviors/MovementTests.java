@@ -9,6 +9,7 @@ import org.joml.Vector3i;
 import org.joml.Vector3ic;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +45,7 @@ import java.util.stream.Stream;
 public class MovementTests {
     private static final Logger logger = LoggerFactory.getLogger(MovementTests.class);
 
-    private static final long TIMEOUT = 3_000;
+    private static final long TIMEOUT = 10_000;
     private static final int AIR_HEIGHT = 41;
     private static final float CHAR_HEIGHT = 0.9f;
     private static final float CHAR_RADIUS = 0.3f;
@@ -224,7 +225,7 @@ public class MovementTests {
             "   |   "
     };
 
-    private static EntityRef entity;
+    private static EntityRef entity = EntityRef.NULL;
 
     @In
     protected ModuleTestingHelper helper;
@@ -994,6 +995,12 @@ public class MovementTests {
     }
 
     void runTest(String name, String[] world, String[] path, boolean successExpected, String... movementTypes) {
+        // This will skip all tests where we expect a timeout because the character should not move.
+        // Waiting for all these timeouts adds a lot to the total execution time.
+        // We keep the tests in here for now, but skip them by default to be gentle on the CI.
+        //TODO: move tests to ensure paths exist/don't exist to FlexiblePathfinding
+        Assumptions.assumeTrue(successExpected);
+
         setupWorld(world, AIR_HEIGHT);
 
         // find start and goal positions from path data
