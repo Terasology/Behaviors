@@ -275,8 +275,7 @@ public class MovementTests {
                         0.3f,
                         new String[]{"walking", "leaping"}
                 )
-                // TODO: Re-enable this test and investigate whether the test case makes sense
-                // if not: fix it, otherwise: fix the underlying movement behavior
+                // TODO: Re-enable this test and fix the underlying movement behavior
 //                Arguments.of(
 //                        "jump over",
 //                        new String[]{
