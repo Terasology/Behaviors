@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.logic.characters.CharacterMovementComponent;
@@ -325,30 +326,38 @@ public class MovementTests {
     }
 
     private EntityRef createMovingCharacter(float height, float radius, Vector3i start, Vector3i stop, String... movementTypes) {
-        EntityRef entity = entityManager.create("Behaviors:testcharacter");
-        entity.send(new CharacterTeleportEvent(new Vector3f(start)));
+        EntityBuilder builder = entityManager.newBuilder("Behaviors:testCharacter");
+        builder.setSendLifecycleEvents(true);
+        builder.upsertComponent(MinionMoveComponent.class, maybeComponent -> {
+            MinionMoveComponent moveComponent = maybeComponent.orElse(new MinionMoveComponent());
+            moveComponent.setPathGoal(stop);
+            moveComponent.movementTypes.clear();
+            moveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
+            return moveComponent;
+        });
+        builder.updateComponent(CharacterMovementComponent.class, characterMovement -> {
+            characterMovement.height = height;
+            characterMovement.radius = radius;
+            return characterMovement;
+        });
+        builder.updateComponent(LocationComponent.class, location -> {
+            location.setWorldPosition(new Vector3f(start));
+            return location;
+        });
 
-        MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
-        minionMoveComponent.setPathGoal(stop);
-        minionMoveComponent.movementTypes.addAll(Sets.newHashSet(movementTypes));
-        entity.addOrSaveComponent(minionMoveComponent);
+        EntityRef character = builder.build();
+        physicsEngine.recomputeCharacterCollider(character);
 
-        CharacterMovementComponent charMovementComponent = entity.getComponent(CharacterMovementComponent.class);
-        charMovementComponent.height = height;
-        charMovementComponent.radius = radius;
-        entity.saveComponent(charMovementComponent);
-
-        physicsEngine.removeCharacterCollider(entity);
-        physicsEngine.getCharacterCollider(entity);
-        return entity;
+        return character;
     }
 
     /**
      * Detect path for entity at map {@code path}
+     * 
      * @param path map with path
      * @param airHeight air height for world
      * @param start (?) ref parameter - set start point
-     * @param stop  (!) ref parameter - set end point
+     * @param stop (!) ref parameter - set end point
      */
     private void detectPath(String[] path, int airHeight, Vector3i start, Vector3i stop) {
         for (int z = 0; z < path.length; z++) {
