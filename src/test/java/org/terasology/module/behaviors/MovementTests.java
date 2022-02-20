@@ -20,7 +20,6 @@ import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.logic.characters.CharacterMovementComponent;
-import org.terasology.engine.logic.characters.CharacterTeleportEvent;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.physics.engine.PhysicsEngine;
 import org.terasology.engine.registry.In;
