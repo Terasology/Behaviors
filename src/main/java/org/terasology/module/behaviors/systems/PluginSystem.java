@@ -18,6 +18,7 @@ import org.terasology.engine.registry.Share;
 import org.terasology.engine.world.WorldProvider;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.module.behaviors.plugin.CompositeMovementPlugin;
+import org.terasology.module.behaviors.plugin.FallingMovementPlugin;
 import org.terasology.module.behaviors.plugin.FlyingMovementPlugin;
 import org.terasology.module.behaviors.plugin.LeapingMovementPlugin;
 import org.terasology.module.behaviors.plugin.MovementPlugin;
@@ -48,6 +49,7 @@ public class PluginSystem extends BaseComponentSystem {
         registerMovementPlugin("leaping", (entity) -> new LeapingMovementPlugin(worldProvider, time));
         registerMovementPlugin("flying", (entity) -> new FlyingMovementPlugin(worldProvider, time));
         registerMovementPlugin("swimming", (entity) -> new SwimmingMovementPlugin(worldProvider, time));
+        registerMovementPlugin("falling", (entity) -> new FallingMovementPlugin(worldProvider, time));
     }
 
     public void registerMovementPlugin(String name, Function<EntityRef, MovementPlugin> supplier) {
