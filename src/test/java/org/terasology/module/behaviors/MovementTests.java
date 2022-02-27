@@ -938,6 +938,16 @@ public class MovementTests {
                         },
                         true
                 )
+                // TODO: Re-enable this test and fix the underlying movement behavior
+//                Arguments.of(
+//                        "jump over",
+//                        new String[]{
+//                                "X X|XXX|XXX|XXX"
+//                        }, new String[]{
+//                                "? !|123|   |   "
+//                        },
+//                        true
+//                )
         );
     }
 
@@ -1077,11 +1087,7 @@ public class MovementTests {
         });
 
         EntityRef character = builder.build();
-
-        // recompute character collider
-        // TODO: replace with 'physicsEngine.recomputeCharacterCollider(character);' if MovingBlocks/Terasology#4996 is merged
-        physicsEngine.removeCharacterCollider(character);
-        physicsEngine.getCharacterCollider(character);
+        physicsEngine.recomputeCharacterCollider(character);
 
         return character;
     }
