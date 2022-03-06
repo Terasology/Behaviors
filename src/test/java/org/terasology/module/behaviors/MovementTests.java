@@ -42,6 +42,37 @@ import java.util.stream.Stream;
 @ExtendWith(MTEExtension.class)
 public class MovementTests {
     private static final Logger logger = LoggerFactory.getLogger(MovementTests.class);
+
+    private static final String[] threeByThreeCrossFlatWorld = {
+            " X ",
+            "XXX",
+            " X "
+    };
+
+    private static final String[] threeByThreeOpenFlatWorld = {
+            "XXX",
+            "XXX",
+            "XXX"
+    };
+
+    private static final String[] threeByThreeCrossAscendingOutWorld = {
+            "   | X ",
+            " X |XXX",
+            "   | X "
+    };
+
+    private static final String[] threeByThreeOpenAscendingCornerOutWorld = {
+            " X |XXX",
+            "XXX|XXX",
+            " X |XXX"
+    };
+
+    private static final String[] threeByThreeOpenAscendingFullOutWorld = {
+            "   |XXX",
+            " X |XXX",
+            "   |XXX"
+    };
+
     @In
     protected ModuleTestingHelper helper;
     @In
