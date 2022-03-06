@@ -73,6 +73,150 @@ public class MovementTests {
             "   |XXX"
     };
 
+    private static final String[] singleFlatStepNorthPath = {
+            " ! ",
+            " ? ",
+            "   "
+    };
+
+    private static final String[] singleFlatStepSouthPath = {
+            "   ",
+            " ? ",
+            " ! "
+    };
+
+    private static final String[] singleFlatStepWestPath = {
+            "   ",
+            "!? ",
+            "   "
+    };
+
+    private static final String[] singleFlatStepEastPath = {
+            "   ",
+            " ?!",
+            "   "
+    };
+
+    private static final String[] diagonalFlatStepNorthWestPath = {
+            "!  ",
+            " ? ",
+            "   "
+    };
+
+    private static final String[] diagonalFlatStepNorthEastPath = {
+            "  !",
+            " ? ",
+            "   "
+    };
+
+    private static final String[] diagonalFlatStepSouthWestPath = {
+            "   ",
+            " ? ",
+            "!  "
+    };
+
+    private static final String[] diagonalFlatStepSouthEastPath = {
+            "   ",
+            " ? ",
+            "  !"
+    };
+
+    private static final String[] singleAscendingStepNorthPath = {
+            "   | ! ",
+            " ? |   ",
+            "   |   "
+    };
+
+    private static final String[] singleAscendingStepSouthPath = {
+            "   |   ",
+            " ? |   ",
+            "   | ! "
+    };
+
+    private static final String[] singleAscendingStepWestPath = {
+            "   |   ",
+            " ? |!  ",
+            "   |   "
+    };
+
+    private static final String[] singleAscendingStepEastPath = {
+            "   |   ",
+            " ? |  !",
+            "   |   "
+    };
+
+    private static final String[] diagonalAscendingStepNorthWestPath = {
+            "   |!  ",
+            " ? |   ",
+            "   |   "
+    };
+
+    private static final String[] diagonalAscendingStepNorthEastPath = {
+            "   |  !",
+            " ? |   ",
+            "   |   "
+    };
+
+    private static final String[] diagonalAscendingStepSouthWestPath = {
+            "   |   ",
+            " ? |   ",
+            "   |!  "
+    };
+
+    private static final String[] diagonalAscendingStepSouthEastPath = {
+            "   |   ",
+            " ? |   ",
+            "   |  !"
+    };
+
+    private static final String[] singleDescendingStepNorthPath = {
+            "   |   ",
+            " ! |   ",
+            "   | ? "
+    };
+
+    private static final String[] singleDescendingStepSouthPath = {
+            "   | ? ",
+            " ! |   ",
+            "   |   "
+    };
+
+    private static final String[] singleDescendingStepWestPath = {
+            "   |   ",
+            " ! |  ?",
+            "   |   "
+    };
+
+    private static final String[] singleDescendingStepEastPath = {
+            "   |   ",
+            " ! |?  ",
+            "   |   "
+    };
+
+    private static final String[] diagonalDescendingStepNorthWestPath = {
+            "   |   ",
+            " ! |   ",
+            "   |  ?"
+    };
+
+    private static final String[] diagonalDescendingStepNorthEastPath = {
+            "   |   ",
+            " ! |   ",
+            "   |?  "
+    };
+
+    private static final String[] diagonalDescendingStepSouthWestPath = {
+            "   |  ?",
+            " ! |   ",
+            "   |   "
+    };
+
+    private static final String[] diagonalDescendingStepSouthEastPath = {
+            "   |?  ",
+            " ! |   ",
+            "   |   "
+    };
+
     @In
     protected ModuleTestingHelper helper;
     @In
