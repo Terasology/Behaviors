@@ -31,6 +31,7 @@ import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.block.BlockRegionc;
 import org.terasology.engine.world.block.Blocks;
+import org.terasology.engine.world.chunks.ChunkProvider;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.moduletestingenvironment.MTEExtension;
 import org.terasology.moduletestingenvironment.ModuleTestingHelper;
@@ -40,194 +41,11 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Dependencies({"Behaviors", "CoreAssets"})
+@Dependencies("Behaviors")
 @Tag("MteTest")
 @ExtendWith(MTEExtension.class)
 public class MovementTests {
     private static final Logger logger = LoggerFactory.getLogger(MovementTests.class);
-
-    private static final long TIMEOUT = 10_000;
-    private static final int AIR_HEIGHT = 41;
-    private static final float CHAR_HEIGHT = 0.9f;
-    private static final float CHAR_RADIUS = 0.3f;
-    private static final String[] DEFAULT_MOVEMENT_MODES = {"walking", "leaping", "falling"};
-
-    private static final String[] threeByThreeCrossFlatWorld = {
-            " X ",
-            "XXX",
-            " X "
-    };
-
-    private static final String[] threeByThreeOpenFlatWorld = {
-            "XXX",
-            "XXX",
-            "XXX"
-    };
-
-    private static final String[] threeByThreeCrossAscendingOutWorld = {
-            "   | X ",
-            " X |XXX",
-            "   | X "
-    };
-
-    private static final String[] threeByThreeOpenAscendingCornerOutWorld = {
-            " X |XXX",
-            "XXX|XXX",
-            " X |XXX"
-    };
-
-    private static final String[] threeByThreeOpenAscendingFullOutWorld = {
-            "   |XXX",
-            " X |XXX",
-            "   |XXX"
-    };
-
-    private static final String[] singleFlatStepNorthPath = {
-            " ! ",
-            " ? ",
-            "   "
-    };
-
-    private static final String[] singleFlatStepSouthPath = {
-            "   ",
-            " ? ",
-            " ! "
-    };
-
-    private static final String[] singleFlatStepWestPath = {
-            "   ",
-            "!? ",
-            "   "
-    };
-
-    private static final String[] singleFlatStepEastPath = {
-            "   ",
-            " ?!",
-            "   "
-    };
-
-    private static final String[] diagonalFlatStepNorthWestPath = {
-            "!  ",
-            " ? ",
-            "   "
-    };
-
-    private static final String[] diagonalFlatStepNorthEastPath = {
-            "  !",
-            " ? ",
-            "   "
-    };
-
-    private static final String[] diagonalFlatStepSouthWestPath = {
-            "   ",
-            " ? ",
-            "!  "
-    };
-
-    private static final String[] diagonalFlatStepSouthEastPath = {
-            "   ",
-            " ? ",
-            "  !"
-    };
-
-    private static final String[] singleAscendingStepNorthPath = {
-            "   | ! ",
-            " ? |   ",
-            "   |   "
-    };
-
-    private static final String[] singleAscendingStepSouthPath = {
-            "   |   ",
-            " ? |   ",
-            "   | ! "
-    };
-
-    private static final String[] singleAscendingStepWestPath = {
-            "   |   ",
-            " ? |!  ",
-            "   |   "
-    };
-
-    private static final String[] singleAscendingStepEastPath = {
-            "   |   ",
-            " ? |  !",
-            "   |   "
-    };
-
-    private static final String[] diagonalAscendingStepNorthWestPath = {
-            "   |!  ",
-            " ? |   ",
-            "   |   "
-    };
-
-    private static final String[] diagonalAscendingStepNorthEastPath = {
-            "   |  !",
-            " ? |   ",
-            "   |   "
-    };
-
-    private static final String[] diagonalAscendingStepSouthWestPath = {
-            "   |   ",
-            " ? |   ",
-            "   |!  "
-    };
-
-    private static final String[] diagonalAscendingStepSouthEastPath = {
-            "   |   ",
-            " ? |   ",
-            "   |  !"
-    };
-
-    private static final String[] singleDescendingStepNorthPath = {
-            "   |   ",
-            " ! |   ",
-            "   | ? "
-    };
-
-    private static final String[] singleDescendingStepSouthPath = {
-            "   | ? ",
-            " ! |   ",
-            "   |   "
-    };
-
-    private static final String[] singleDescendingStepWestPath = {
-            "   |   ",
-            " ! |  ?",
-            "   |   "
-    };
-
-    private static final String[] singleDescendingStepEastPath = {
-            "   |   ",
-            " ! |?  ",
-            "   |   "
-    };
-
-    private static final String[] diagonalDescendingStepNorthWestPath = {
-            "   |   ",
-            " ! |   ",
-            "   |  ?"
-    };
-
-    private static final String[] diagonalDescendingStepNorthEastPath = {
-            "   |   ",
-            " ! |   ",
-            "   |?  "
-    };
-
-    private static final String[] diagonalDescendingStepSouthWestPath = {
-            "   |  ?",
-            " ! |   ",
-            "   |   "
-    };
-
-    private static final String[] diagonalDescendingStepSouthEastPath = {
-            "   |?  ",
-            " ! |   ",
-            "   |   "
-    };
-
-    private static EntityRef entity = EntityRef.NULL;
-
     @In
     protected ModuleTestingHelper helper;
     @In
@@ -238,49 +56,51 @@ public class MovementTests {
     protected EntityManager entityManager;
     @In
     protected PhysicsEngine physicsEngine;
+    @In
+    private ChunkProvider chunkProvider;
 
     public static Stream<Arguments> walkingMovementParameters() {
         return Stream.of(
-                Arguments.of("succeed flat north", threeByThreeCrossFlatWorld, singleFlatStepNorthPath, true),
-                Arguments.of("succeed flat south", threeByThreeCrossFlatWorld, singleFlatStepSouthPath, true),
-                Arguments.of("succeed flat west", threeByThreeCrossFlatWorld, singleFlatStepWestPath, true),
-                Arguments.of("succeed flat east", threeByThreeCrossFlatWorld, singleFlatStepEastPath, true),
-                Arguments.of("succeed flat northwest", threeByThreeOpenFlatWorld, diagonalFlatStepNorthWestPath, true),
-                Arguments.of("succeed flat northeast", threeByThreeOpenFlatWorld, diagonalFlatStepNorthEastPath, true),
-                Arguments.of("succeed flat southwest", threeByThreeOpenFlatWorld, diagonalFlatStepSouthWestPath, true),
-                Arguments.of("succeed flat southeast", threeByThreeOpenFlatWorld, diagonalFlatStepSouthEastPath, true),
-                Arguments.of("fail ascend north", threeByThreeCrossAscendingOutWorld, singleAscendingStepNorthPath, false),
-                Arguments.of("fail ascend south", threeByThreeCrossAscendingOutWorld, singleAscendingStepSouthPath, false),
-                Arguments.of("fail ascend west", threeByThreeCrossAscendingOutWorld, singleAscendingStepWestPath, false),
-                Arguments.of("fail ascend east", threeByThreeCrossAscendingOutWorld, singleAscendingStepEastPath, false),
-                Arguments.of("fail ascend early northwest", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepNorthWestPath,
+                Arguments.of("succeed flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, true),
+                Arguments.of("succeed flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, true),
+                Arguments.of("succeed flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, true),
+                Arguments.of("succeed flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("fail ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend early northeast", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepNorthEastPath,
+                Arguments.of("fail ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend early southwest", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepSouthWestPath,
+                Arguments.of("fail ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend early southeast", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepSouthEastPath,
+                Arguments.of("fail ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend late northwest", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepNorthWestPath,
+                Arguments.of("fail ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend late northeast", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepNorthEastPath,
+                Arguments.of("fail ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend late southwest", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepSouthWestPath,
+                Arguments.of("fail ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend late southeast", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepSouthEastPath,
+                Arguments.of("fail ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
                         false),
-                Arguments.of("fail descend north", threeByThreeCrossAscendingOutWorld, singleDescendingStepNorthPath, false),
-                Arguments.of("fail descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, false),
-                Arguments.of("fail descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, false),
-                Arguments.of("fail descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, false),
-                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepNorthWestPath, false),
-                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepNorthEastPath, false),
-                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepSouthWestPath, false),
-                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepSouthEastPath, false),
-                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepNorthWestPath, false),
-                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepNorthEastPath, false),
-                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepSouthWestPath, false),
-                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("fail descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
                 Arguments.of(
                         "straight",
                         new String[]{
@@ -340,46 +160,46 @@ public class MovementTests {
     // The following test cases only attempt to test that the leaping plugin alone is not incorrectly allowing basic movements
     public static Stream<Arguments> nonFunctionalLeapingMovementParameters() {
         return Stream.of(
-                Arguments.of("fail flat north", threeByThreeCrossFlatWorld, singleFlatStepNorthPath, false),
-                Arguments.of("fail flat south", threeByThreeCrossFlatWorld, singleFlatStepSouthPath, false),
-                Arguments.of("fail flat west", threeByThreeCrossFlatWorld, singleFlatStepWestPath, false),
-                Arguments.of("fail flat east", threeByThreeCrossFlatWorld, singleFlatStepEastPath, false),
-                Arguments.of("fail flat northwest", threeByThreeOpenFlatWorld, diagonalFlatStepNorthWestPath, false),
-                Arguments.of("fail flat northeast", threeByThreeOpenFlatWorld, diagonalFlatStepNorthEastPath, false),
-                Arguments.of("fail flat southwest", threeByThreeOpenFlatWorld, diagonalFlatStepSouthWestPath, false),
-                Arguments.of("fail flat southeast", threeByThreeOpenFlatWorld, diagonalFlatStepSouthEastPath, false),
-                Arguments.of("fail ascend north", threeByThreeCrossAscendingOutWorld, singleAscendingStepNorthPath, false),
-                Arguments.of("fail ascend south", threeByThreeCrossAscendingOutWorld, singleAscendingStepSouthPath, false),
-                Arguments.of("fail ascend west", threeByThreeCrossAscendingOutWorld, singleAscendingStepWestPath, false),
-                Arguments.of("fail ascend east", threeByThreeCrossAscendingOutWorld, singleAscendingStepEastPath, false),
-                Arguments.of("fail ascend early northwest", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepNorthWestPath,
+                Arguments.of("fail flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, false),
+                Arguments.of("fail flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, false),
+                Arguments.of("fail flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, false),
+                Arguments.of("fail flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, false),
+                Arguments.of("fail flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend early northeast", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepNorthEastPath,
+                Arguments.of("fail ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend early southwest", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepSouthWestPath,
+                Arguments.of("fail ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend early southeast", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepSouthEastPath,
+                Arguments.of("fail ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend late northwest", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepNorthWestPath,
+                Arguments.of("fail ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend late northeast", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepNorthEastPath,
+                Arguments.of("fail ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend late southwest", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepSouthWestPath,
+                Arguments.of("fail ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend late southeast", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepSouthEastPath,
+                Arguments.of("fail ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
                         false),
-                Arguments.of("fail descend north", threeByThreeCrossAscendingOutWorld, singleDescendingStepNorthPath, false),
-                Arguments.of("fail descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, false),
-                Arguments.of("fail descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, false),
-                Arguments.of("fail descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, false),
-                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepNorthWestPath, false),
-                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepNorthEastPath, false),
-                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepSouthWestPath, false),
-                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepSouthEastPath, false),
-                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepNorthWestPath, false),
-                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepNorthEastPath, false),
-                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepSouthWestPath, false),
-                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepSouthEastPath, false)
+                Arguments.of("fail descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false)
         );
     }
 
@@ -388,46 +208,46 @@ public class MovementTests {
     // movements
     public static Stream<Arguments> leapingMovementParameters() {
         return Stream.of(
-                Arguments.of("succeed flat north", threeByThreeCrossFlatWorld, singleFlatStepNorthPath, true),
-                Arguments.of("succeed flat south", threeByThreeCrossFlatWorld, singleFlatStepSouthPath, true),
-                Arguments.of("succeed flat west", threeByThreeCrossFlatWorld, singleFlatStepWestPath, true),
-                Arguments.of("succeed flat east", threeByThreeCrossFlatWorld, singleFlatStepEastPath, true),
-                Arguments.of("succeed flat northwest", threeByThreeOpenFlatWorld, diagonalFlatStepNorthWestPath, true),
-                Arguments.of("succeed flat northeast", threeByThreeOpenFlatWorld, diagonalFlatStepNorthEastPath, true),
-                Arguments.of("succeed flat southwest", threeByThreeOpenFlatWorld, diagonalFlatStepSouthWestPath, true),
-                Arguments.of("succeed flat southeast", threeByThreeOpenFlatWorld, diagonalFlatStepSouthEastPath, true),
-                Arguments.of("succeed ascend north", threeByThreeCrossAscendingOutWorld, singleAscendingStepNorthPath, true),
-                Arguments.of("succeed ascend south", threeByThreeCrossAscendingOutWorld, singleAscendingStepSouthPath, true),
-                Arguments.of("succeed ascend west", threeByThreeCrossAscendingOutWorld, singleAscendingStepWestPath, true),
-                Arguments.of("succeed ascend east", threeByThreeCrossAscendingOutWorld, singleAscendingStepEastPath, true),
-                Arguments.of("succeed ascend early northwest", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalAscendingStepNorthWestPath, true),
-                Arguments.of("succeed ascend early northeast", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalAscendingStepNorthEastPath, true),
-                Arguments.of("succeed ascend early southwest", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalAscendingStepSouthWestPath, true),
-                Arguments.of("succeed ascend early southeast", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalAscendingStepSouthEastPath, true),
-                Arguments.of("succeed ascend late northwest", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalAscendingStepNorthWestPath, true),
-                Arguments.of("succeed ascend late northeast", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalAscendingStepNorthEastPath, true),
-                Arguments.of("succeed ascend late southwest", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalAscendingStepSouthWestPath, true),
-                Arguments.of("succeed ascend late southeast", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalAscendingStepSouthEastPath, true),
-                Arguments.of("fail descend north", threeByThreeCrossAscendingOutWorld, singleDescendingStepNorthPath, false),
-                Arguments.of("fail descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, false),
-                Arguments.of("fail descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, false),
-                Arguments.of("fail descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, false),
-                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepNorthWestPath, false),
-                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepNorthEastPath, false),
-                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepSouthWestPath, false),
-                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepSouthEastPath, false),
-                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepNorthWestPath, false),
-                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepNorthEastPath, false),
-                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepSouthWestPath, false),
-                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepSouthEastPath, false),
+                Arguments.of("succeed flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, true),
+                Arguments.of("succeed flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, true),
+                Arguments.of("succeed flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, true),
+                Arguments.of("succeed flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, true),
+                Arguments.of("succeed ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, true),
+                Arguments.of("succeed ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, true),
+                Arguments.of("succeed ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("fail descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
                 Arguments.of(
                         "one time up",
                         new String[]{
@@ -499,46 +319,46 @@ public class MovementTests {
     // The following test cases only attempt to verify that the falling plugin alone is not incorrectly allowing basic movements
     public static Stream<Arguments> nonFunctionalFallingMovementParameters() {
         return Stream.of(
-                Arguments.of("fail flat north", threeByThreeCrossFlatWorld, singleFlatStepNorthPath, false),
-                Arguments.of("fail flat south", threeByThreeCrossFlatWorld, singleFlatStepSouthPath, false),
-                Arguments.of("fail flat west", threeByThreeCrossFlatWorld, singleFlatStepWestPath, false),
-                Arguments.of("fail flat east", threeByThreeCrossFlatWorld, singleFlatStepEastPath, false),
-                Arguments.of("fail flat northwest", threeByThreeOpenFlatWorld, diagonalFlatStepNorthWestPath, false),
-                Arguments.of("fail flat northeast", threeByThreeOpenFlatWorld, diagonalFlatStepNorthEastPath, false),
-                Arguments.of("fail flat southwest", threeByThreeOpenFlatWorld, diagonalFlatStepSouthWestPath, false),
-                Arguments.of("fail flat southeast", threeByThreeOpenFlatWorld, diagonalFlatStepSouthEastPath, false),
-                Arguments.of("fail ascend north", threeByThreeCrossAscendingOutWorld, singleAscendingStepNorthPath, false),
-                Arguments.of("fail ascend south", threeByThreeCrossAscendingOutWorld, singleAscendingStepSouthPath, false),
-                Arguments.of("fail ascend west", threeByThreeCrossAscendingOutWorld, singleAscendingStepWestPath, false),
-                Arguments.of("fail ascend east", threeByThreeCrossAscendingOutWorld, singleAscendingStepEastPath, false),
-                Arguments.of("fail ascend early northwest", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepNorthWestPath,
+                Arguments.of("fail flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, false),
+                Arguments.of("fail flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, false),
+                Arguments.of("fail flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, false),
+                Arguments.of("fail flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, false),
+                Arguments.of("fail flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend early northeast", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepNorthEastPath,
+                Arguments.of("fail ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend early southwest", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepSouthWestPath,
+                Arguments.of("fail ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend early southeast", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepSouthEastPath,
+                Arguments.of("fail ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend late northwest", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepNorthWestPath,
+                Arguments.of("fail ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend late northeast", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepNorthEastPath,
+                Arguments.of("fail ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend late southwest", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepSouthWestPath,
+                Arguments.of("fail ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend late southeast", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepSouthEastPath,
+                Arguments.of("fail ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
                         false),
-                Arguments.of("fail descend north", threeByThreeCrossAscendingOutWorld, singleDescendingStepNorthPath, false),
-                Arguments.of("fail descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, false),
-                Arguments.of("fail descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, false),
-                Arguments.of("fail descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, false),
-                Arguments.of("fail descend early northwest", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepNorthWestPath, false),
-                Arguments.of("fail descend early northeast", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepNorthEastPath, false),
-                Arguments.of("fail descend early southwest", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepSouthWestPath, false),
-                Arguments.of("fail descend early southeast", threeByThreeOpenAscendingCornerOutWorld, diagonalDescendingStepSouthEastPath, false),
-                Arguments.of("fail descend late northwest", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepNorthWestPath, false),
-                Arguments.of("fail descend late northeast", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepNorthEastPath, false),
-                Arguments.of("fail descend late southwest", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepSouthWestPath, false),
-                Arguments.of("fail descend late southeast", threeByThreeOpenAscendingFullOutWorld, diagonalDescendingStepSouthEastPath, false)
+                Arguments.of("fail descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false)
         );
     }
 
@@ -547,54 +367,54 @@ public class MovementTests {
     // movements
     public static Stream<Arguments> fallingMovementParameters() {
         return Stream.of(
-                Arguments.of("succeed flat north", threeByThreeCrossFlatWorld, singleFlatStepNorthPath, true),
-                Arguments.of("succeed flat south", threeByThreeCrossFlatWorld, singleFlatStepSouthPath, true),
-                Arguments.of("succeed flat west", threeByThreeCrossFlatWorld, singleFlatStepWestPath, true),
-                Arguments.of("succeed flat east", threeByThreeCrossFlatWorld, singleFlatStepEastPath, true),
-                Arguments.of("succeed flat northwest", threeByThreeOpenFlatWorld, diagonalFlatStepNorthWestPath, true),
-                Arguments.of("succeed flat northeast", threeByThreeOpenFlatWorld, diagonalFlatStepNorthEastPath, true),
-                Arguments.of("succeed flat southwest", threeByThreeOpenFlatWorld, diagonalFlatStepSouthWestPath, true),
-                Arguments.of("succeed flat southeast", threeByThreeOpenFlatWorld, diagonalFlatStepSouthEastPath, true),
-                Arguments.of("fail ascend north", threeByThreeCrossAscendingOutWorld, singleAscendingStepNorthPath, false),
-                Arguments.of("fail ascend south", threeByThreeCrossAscendingOutWorld, singleAscendingStepSouthPath, false),
-                Arguments.of("fail ascend west", threeByThreeCrossAscendingOutWorld, singleAscendingStepWestPath, false),
-                Arguments.of("fail ascend east", threeByThreeCrossAscendingOutWorld, singleAscendingStepEastPath, false),
-                Arguments.of("fail ascend early northwest", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepNorthWestPath,
+                Arguments.of("succeed flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, true),
+                Arguments.of("succeed flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, true),
+                Arguments.of("succeed flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, true),
+                Arguments.of("succeed flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("fail ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend early northeast", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepNorthEastPath,
+                Arguments.of("fail ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend early southwest", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepSouthWestPath,
+                Arguments.of("fail ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend early southeast", threeByThreeOpenAscendingFullOutWorld, diagonalAscendingStepSouthEastPath,
+                Arguments.of("fail ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend late northwest", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepNorthWestPath,
+                Arguments.of("fail ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend late northeast", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepNorthEastPath,
+                Arguments.of("fail ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
                         false),
-                Arguments.of("fail ascend late southwest", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepSouthWestPath,
+                Arguments.of("fail ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
                         false),
-                Arguments.of("fail ascend late southeast", threeByThreeOpenAscendingCornerOutWorld, diagonalAscendingStepSouthEastPath,
+                Arguments.of("fail ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
                         false),
-                Arguments.of("succeed descend north", threeByThreeCrossAscendingOutWorld, singleDescendingStepNorthPath, true),
-                Arguments.of("succeed descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, true),
-                Arguments.of("succeed descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, true),
-                Arguments.of("succeed descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, true),
-                Arguments.of("succeed descend early northwest", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalDescendingStepNorthWestPath, true),
-                Arguments.of("succeed descend early northeast", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalDescendingStepNorthEastPath, true),
-                Arguments.of("succeed descend early southwest", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalDescendingStepSouthWestPath, true),
-                Arguments.of("succeed descend early southeast", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalDescendingStepSouthEastPath, true),
-                Arguments.of("succeed descend late northwest", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalDescendingStepNorthWestPath, true),
-                Arguments.of("succeed descend late northeast", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalDescendingStepNorthEastPath, true),
-                Arguments.of("succeed descend late southwest", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalDescendingStepSouthWestPath, true),
-                Arguments.of("succeed descend late southeast", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalDescendingStepSouthEastPath, true),
+                Arguments.of("succeed descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, true),
+                Arguments.of("succeed descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, true),
+                Arguments.of("succeed descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, true),
+                Arguments.of("succeed descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, true),
                 Arguments.of(
                         "one time down",
                         new String[]{
@@ -801,54 +621,54 @@ public class MovementTests {
      */
     public static Stream<Arguments> defaultPluginCombinationParameters() {
         return Stream.of(
-                Arguments.of("succeed flat north", threeByThreeCrossFlatWorld, singleFlatStepNorthPath, true),
-                Arguments.of("succeed flat south", threeByThreeCrossFlatWorld, singleFlatStepSouthPath, true),
-                Arguments.of("succeed flat west", threeByThreeCrossFlatWorld, singleFlatStepWestPath, true),
-                Arguments.of("succeed flat east", threeByThreeCrossFlatWorld, singleFlatStepEastPath, true),
-                Arguments.of("succeed flat northwest", threeByThreeOpenFlatWorld, diagonalFlatStepNorthWestPath, true),
-                Arguments.of("succeed flat northeast", threeByThreeOpenFlatWorld, diagonalFlatStepNorthEastPath, true),
-                Arguments.of("succeed flat southwest", threeByThreeOpenFlatWorld, diagonalFlatStepSouthWestPath, true),
-                Arguments.of("succeed flat southeast", threeByThreeOpenFlatWorld, diagonalFlatStepSouthEastPath, true),
-                Arguments.of("succeed ascend north", threeByThreeCrossAscendingOutWorld, singleAscendingStepNorthPath, true),
-                Arguments.of("succeed ascend south", threeByThreeCrossAscendingOutWorld, singleAscendingStepSouthPath, true),
-                Arguments.of("succeed ascend west", threeByThreeCrossAscendingOutWorld, singleAscendingStepWestPath, true),
-                Arguments.of("succeed ascend east", threeByThreeCrossAscendingOutWorld, singleAscendingStepEastPath, true),
-                Arguments.of("succeed ascend early northwest", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalAscendingStepNorthWestPath, true),
-                Arguments.of("succeed ascend early northeast", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalAscendingStepNorthEastPath, true),
-                Arguments.of("succeed ascend early southwest", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalAscendingStepSouthWestPath, true),
-                Arguments.of("succeed ascend early southeast", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalAscendingStepSouthEastPath, true),
-                Arguments.of("succeed ascend late northwest", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalAscendingStepNorthWestPath, true),
-                Arguments.of("succeed ascend late northeast", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalAscendingStepNorthEastPath, true),
-                Arguments.of("succeed ascend late southwest", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalAscendingStepSouthWestPath, true),
-                Arguments.of("succeed ascend late southeast", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalAscendingStepSouthEastPath, true),
-                Arguments.of("succeed descend north", threeByThreeCrossAscendingOutWorld, singleDescendingStepNorthPath, true),
-                Arguments.of("succeed descend south", threeByThreeCrossAscendingOutWorld, singleDescendingStepSouthPath, true),
-                Arguments.of("succeed descend west", threeByThreeCrossAscendingOutWorld, singleDescendingStepWestPath, true),
-                Arguments.of("succeed descend east", threeByThreeCrossAscendingOutWorld, singleDescendingStepEastPath, true),
-                Arguments.of("succeed descend early northwest", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalDescendingStepNorthWestPath, true),
-                Arguments.of("succeed descend early northeast", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalDescendingStepNorthEastPath, true),
-                Arguments.of("succeed descend early southwest", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalDescendingStepSouthWestPath, true),
-                Arguments.of("succeed descend early southeast", threeByThreeOpenAscendingCornerOutWorld,
-                        diagonalDescendingStepSouthEastPath, true),
-                Arguments.of("succeed descend late northwest", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalDescendingStepNorthWestPath, true),
-                Arguments.of("succeed descend late northeast", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalDescendingStepNorthEastPath, true),
-                Arguments.of("succeed descend late southwest", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalDescendingStepSouthWestPath, true),
-                Arguments.of("succeed descend late southeast", threeByThreeOpenAscendingFullOutWorld,
-                        diagonalDescendingStepSouthEastPath, true),
+                Arguments.of("succeed flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, true),
+                Arguments.of("succeed flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, true),
+                Arguments.of("succeed flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, true),
+                Arguments.of("succeed flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, true),
+                Arguments.of("succeed ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, true),
+                Arguments.of("succeed ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, true),
+                Arguments.of("succeed ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, true),
+                Arguments.of("succeed descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, true),
+                Arguments.of("succeed descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, true),
+                Arguments.of("succeed descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, true),
                 Arguments.of(
                         "one time up",
                         new String[]{
@@ -938,7 +758,7 @@ public class MovementTests {
                         },
                         true
                 )
-                // TODO: Re-enable this test and fix the underlying movement behavior
+//                TODO: Re-enable this test and fix the underlying movement behavior
 //                Arguments.of(
 //                        "jump over",
 //                        new String[]{
