@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.joml.Vector3ic;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,12 +31,13 @@ import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.block.BlockRegionc;
 import org.terasology.engine.world.block.Blocks;
-import org.terasology.engine.world.chunks.ChunkProvider;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.moduletestingenvironment.MTEExtension;
 import org.terasology.moduletestingenvironment.ModuleTestingHelper;
 import org.terasology.moduletestingenvironment.extension.Dependencies;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Dependencies("Behaviors")
@@ -42,6 +45,189 @@ import java.util.stream.Stream;
 @ExtendWith(MTEExtension.class)
 public class MovementTests {
     private static final Logger logger = LoggerFactory.getLogger(MovementTests.class);
+
+    private static final long TIMEOUT = 10_000;
+    private static final int AIR_HEIGHT = 41;
+    private static final float CHAR_HEIGHT = 0.9f;
+    private static final float CHAR_RADIUS = 0.3f;
+    private static final String[] DEFAULT_MOVEMENT_MODES = {"walking", "leaping", "falling"};
+
+    private static final String[] THREE_BY_THREE_CROSS_FLAT_WORLD = {
+            " X ",
+            "XXX",
+            " X "
+    };
+
+    private static final String[] THREE_BY_THREE_OPEN_FLAT_WORLD = {
+            "XXX",
+            "XXX",
+            "XXX"
+    };
+
+    private static final String[] THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD = {
+            "   | X ",
+            " X |XXX",
+            "   | X "
+    };
+
+    private static final String[] THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD = {
+            " X |XXX",
+            "XXX|XXX",
+            " X |XXX"
+    };
+
+    private static final String[] THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD = {
+            "   |XXX",
+            " X |XXX",
+            "   |XXX"
+    };
+
+    private static final String[] SINGLE_FLAT_STEP_NORTH_PATH = {
+            " ! ",
+            " ? ",
+            "   "
+    };
+
+    private static final String[] SINGLE_FLAT_STEP_SOUTH_PATH = {
+            "   ",
+            " ? ",
+            " ! "
+    };
+
+    private static final String[] SINGLE_FLAT_STEP_WEST_PATH = {
+            "   ",
+            "!? ",
+            "   "
+    };
+
+    private static final String[] SINGLE_FLAT_STEP_EAST_PATH = {
+            "   ",
+            " ?!",
+            "   "
+    };
+
+    private static final String[] DIAGONAL_FLAT_STEP_NORTH_WEST_PATH = {
+            "!  ",
+            " ? ",
+            "   "
+    };
+
+    private static final String[] DIAGONAL_FLAT_STEP_NORTH_EAST_PATH = {
+            "  !",
+            " ? ",
+            "   "
+    };
+
+    private static final String[] DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH = {
+            "   ",
+            " ? ",
+            "!  "
+    };
+
+    private static final String[] DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH = {
+            "   ",
+            " ? ",
+            "  !"
+    };
+
+    private static final String[] SINGLE_ASCENDING_STEP_NORTH_PATH = {
+            "   | ! ",
+            " ? |   ",
+            "   |   "
+    };
+
+    private static final String[] SINGLE_ASCENDING_STEP_SOUTH_PATH = {
+            "   |   ",
+            " ? |   ",
+            "   | ! "
+    };
+
+    private static final String[] SINGLE_ASCENDING_STEP_WEST_PATH = {
+            "   |   ",
+            " ? |!  ",
+            "   |   "
+    };
+
+    private static final String[] SINGLE_ASCENDING_STEP_EAST_PATH = {
+            "   |   ",
+            " ? |  !",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH = {
+            "   |!  ",
+            " ? |   ",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH = {
+            "   |  !",
+            " ? |   ",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH = {
+            "   |   ",
+            " ? |   ",
+            "   |!  "
+    };
+
+    private static final String[] DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH = {
+            "   |   ",
+            " ? |   ",
+            "   |  !"
+    };
+
+    private static final String[] SINGLE_DESCENDING_STEP_NORTH_PATH = {
+            "   |   ",
+            " ! |   ",
+            "   | ? "
+    };
+
+    private static final String[] SINGLE_DESCENDING_STEP_SOUTH_PATH = {
+            "   | ? ",
+            " ! |   ",
+            "   |   "
+    };
+
+    private static final String[] SINGLE_DESCENDING_STEP_WEST_PATH = {
+            "   |   ",
+            " ! |  ?",
+            "   |   "
+    };
+
+    private static final String[] SINGLE_DESCENDING_STEP_EAST_PATH = {
+            "   |   ",
+            " ! |?  ",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH = {
+            "   |   ",
+            " ! |   ",
+            "   |  ?"
+    };
+
+    private static final String[] DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH = {
+            "   |   ",
+            " ! |   ",
+            "   |?  "
+    };
+
+    private static final String[] DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH = {
+            "   |  ?",
+            " ! |   ",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH = {
+            "   |?  ",
+            " ! |   ",
+            "   |   "
+    };
+
+    private static EntityRef entity = EntityRef.NULL;
+
     @In
     protected ModuleTestingHelper helper;
     @In
@@ -52,10 +238,407 @@ public class MovementTests {
     protected EntityManager entityManager;
     @In
     protected PhysicsEngine physicsEngine;
-    @In
-    private ChunkProvider chunkProvider;
 
-    public static Stream<Arguments> parameters() {
+    public static Stream<Arguments> walkingMovementParameters() {
+        return Stream.of(
+                Arguments.of("succeed flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, true),
+                Arguments.of("succeed flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, true),
+                Arguments.of("succeed flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, true),
+                Arguments.of("succeed flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("fail ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
+                        false),
+                Arguments.of("fail descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of(
+                        "straight",
+                        new String[]{
+                                "X",
+                                "X",
+                                "X",
+                        }, new String[]{
+                                "?",
+                                "1",
+                                "!"
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "diagonal",
+                        new String[]{
+                                "X  |X  ",
+                                "X  |X  ",
+                                "XXX|XXX"
+                        }, new String[]{
+                                "?  |   ",
+                                "1  |   ",
+                                "23!|   "
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "corridor",
+                        new String[]{
+                                "XXXXXXXXXXXXXXX",
+                                "X            XX",
+                                "X XXXXXXXXXXXXX",
+                                "XXX            ",
+                                "               ",
+                        }, new String[]{
+                                "?123456789abcd ",
+                                "             e ",
+                                "  qponmlkjihgf ",
+                                "  !            ",
+                                "               ",
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "gap",
+                        new String[]{
+                                " X |XXX"
+                        }, new String[]{
+                                "   |? !"
+                        },
+                        true
+                )
+        );
+    }
+
+    // Leaping movements are purely vertical (up) and require additional horizontal walking movements
+    // The following test cases only attempt to test that the leaping plugin alone is not incorrectly allowing basic movements
+    public static Stream<Arguments> nonFunctionalLeapingMovementParameters() {
+        return Stream.of(
+                Arguments.of("fail flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, false),
+                Arguments.of("fail flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, false),
+                Arguments.of("fail flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, false),
+                Arguments.of("fail flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, false),
+                Arguments.of("fail flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
+                        false),
+                Arguments.of("fail descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false)
+        );
+    }
+
+    // Leaping movements are purely vertical (up) and require additional horizontal walking movements
+    // The following test cases attempt to verify that the leaping in combination with the walking plugin correctly allows expected
+    // movements
+    public static Stream<Arguments> leapingMovementParameters() {
+        return Stream.of(
+                Arguments.of("succeed flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, true),
+                Arguments.of("succeed flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, true),
+                Arguments.of("succeed flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, true),
+                Arguments.of("succeed flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, true),
+                Arguments.of("succeed ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, true),
+                Arguments.of("succeed ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, true),
+                Arguments.of("succeed ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("fail descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of(
+                        "one time up",
+                        new String[]{
+                                "X |XX"
+                        }, new String[]{
+                                "? | !"
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "two times up",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "?  | 1 |  !"
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "diagonally early up",
+                        new String[]{
+                                "  |XX",
+                                "X |XX"
+                        }, new String[]{
+                                "  | !",
+                                "? |  "
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "diagonally late up",
+                        new String[]{
+                                "X |XX",
+                                "XX|XX"
+                        }, new String[]{
+                                "  | !",
+                                "? |  "
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "leap",
+                        new String[]{
+                                "X  |XXX|XXX|XXX",
+                                "X  |XXX|XXX|XXX",
+                        }, new String[]{
+                                "?  |123|XXX|XXX",
+                                "   |  !|XXX|XXX",
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "three dimensional moves",
+                        new String[]{
+                                "XXX|XX |   ",
+                                "X X|XXX| XX",
+                                "XXX| X | XX"
+                        }, new String[]{
+                                "?  |   |   ",
+                                "   | 1 |   ",
+                                "   |   |  !"
+                        },
+                        true
+                )
+        );
+    }
+
+    // Falling movements are purely vertical (down) and require additional horizontal walking movements
+    // The following test cases only attempt to verify that the falling plugin alone is not incorrectly allowing basic movements
+    public static Stream<Arguments> nonFunctionalFallingMovementParameters() {
+        return Stream.of(
+                Arguments.of("fail flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, false),
+                Arguments.of("fail flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, false),
+                Arguments.of("fail flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, false),
+                Arguments.of("fail flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, false),
+                Arguments.of("fail flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
+                        false),
+                Arguments.of("fail descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false),
+                Arguments.of("fail descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, false),
+                Arguments.of("fail descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, false),
+                Arguments.of("fail descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, false),
+                Arguments.of("fail descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, false)
+        );
+    }
+
+    // Falling movements are purely vertical (down) and require additional horizontal walking movements
+    // The following test cases attempt to verify that the falling in combination with the walking plugin correctly allows expected
+    // movements
+    public static Stream<Arguments> fallingMovementParameters() {
+        return Stream.of(
+                Arguments.of("succeed flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, true),
+                Arguments.of("succeed flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, true),
+                Arguments.of("succeed flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, true),
+                Arguments.of("succeed flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("fail ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, false),
+                Arguments.of("fail ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, false),
+                Arguments.of("fail ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, false),
+                Arguments.of("fail ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, false),
+                Arguments.of("fail ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH,
+                        false),
+                Arguments.of("fail ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH,
+                        false),
+                Arguments.of("fail ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD, DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH,
+                        false),
+                Arguments.of("succeed descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, true),
+                Arguments.of("succeed descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, true),
+                Arguments.of("succeed descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, true),
+                Arguments.of("succeed descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of(
+                        "one time down",
+                        new String[]{
+                                "X |XX"
+                        }, new String[]{
+                                "! | ?"
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "two times down",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "!  | 1 |  ?"
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "diagonally late down",
+                        new String[]{
+                                "  |XX",
+                                "X |XX"
+                        }, new String[]{
+                                "  | ?",
+                                "! |  "
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "diagonally early down",
+                        new String[]{
+                                "X |XX",
+                                "XX|XX"
+                        }, new String[]{
+                                "  | ?",
+                                "! |  "
+                        },
+                        true
+                )
+        );
+    }
+
+    public static Stream<Arguments> flyingMovementParameters() {
         return Stream.of(
                 Arguments.of(
                         "simple wall",
@@ -68,45 +651,25 @@ public class MovementTests {
                                 "   |   |   ",
                                 "  !|   |   "
                         },
-                        0.9f,
-                        0.3f,
-                        new String[]{"flying"}
-                ),
+                        true
+                )
+        );
+    }
+
+    public static Stream<Arguments> swimmingMovementParameters() {
+        return Stream.of(
                 Arguments.of(
-                        "large leaping - steps",
+                        "straight",
                         new String[]{
-                                "XXX XXX|XXX XXX|XXX XXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX",
-                                "XXX XXX|XXX XXX|XXX XXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX",
-                                "XXXXXXX|XXXXXXX|XXXXXXX"
+                                "~  ",
+                                "~  ",
+                                "~~~",
                         }, new String[]{
-                                "       |       |       ",
-                                "       | ?   ! |       ",
-                                "       |       |       ",
-                                "       |       |       ",
-                                "       |       |       ",
-                                "       |       |       "
+                                "?  ",
+                                "1  ",
+                                "!  "
                         },
-                        2.7f,
-                        1.2f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "leap",
-                        new String[]{
-                                "~  |~~~|~~~",
-                                "~  |~~~|~~~",
-                                "~~~|~~~|~~~",
-                        }, new String[]{
-                                "?  |123|~~~",
-                                "   |  !|~~~",
-                                "   |   |~~~"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
+                        true
                 ),
                 Arguments.of(
                         "diagonal",
@@ -119,24 +682,7 @@ public class MovementTests {
                                 "1  |   ",
                                 "23!|   "
                         },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
-                ),
-                Arguments.of(
-                        "straight",
-                        new String[]{
-                                "~  ",
-                                "~  ",
-                                "~~~",
-                        }, new String[]{
-                                "?  ",
-                                "1  ",
-                                "!  "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
+                        true
                 ),
                 Arguments.of(
                         "corridor",
@@ -153,9 +699,20 @@ public class MovementTests {
                                 "  !            ",
                                 "               ",
                         },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
+                        true
+                ),
+                Arguments.of(
+                        "leap",
+                        new String[]{
+                                "~  |~~~|~~~",
+                                "~  |~~~|~~~",
+                                "~~~|~~~|~~~",
+                        }, new String[]{
+                                "?  |123|~~~",
+                                "   |  !|~~~",
+                                "   |   |~~~"
+                        },
+                        true
                 ),
                 Arguments.of(
                         "three dimensional moves",
@@ -168,9 +725,46 @@ public class MovementTests {
                                 "   | 1 |   ",
                                 "   |   |  !"
                         },
-                        0.9f,
-                        0.3f,
-                        new String[]{"swimming"}
+                        true
+                )
+        );
+    }
+
+    public static Stream<Arguments> combinedMovementParameters() {
+        return Stream.of(
+                // TODO: Re-enable this test once the related FlexiblePathFinding test is re-enabled
+                // (see org.terasology.flexiblepathfinding.WalkingLeapingFallingJPSTest)
+//                Arguments.of(
+//                        "up and down again",
+//                        new String[]{
+//                                "X    X|XX XX|XXXXX"
+//                        }, new String[]{
+//                                "?    !|     |     "
+//                        },
+//                        true,
+//                        new String[]{"walking", "leaping", "falling"}
+//                ),
+                // TODO: Re-enable this test once the related FlexiblePathFinding test is re-enabled
+                // (see org.terasology.flexiblepathfinding.WalkingLeapingFallingJPSTest)
+//                Arguments.of(
+//                        "down and up again",
+//                        new String[]{
+//                                "  X  | XXX |XXXXX"
+//                        }, new String[]{
+//                                "     |     |?   !"
+//                        },
+//                        true,
+//                        new String[]{"walking", "leaping", "falling"}
+//                ),
+                Arguments.of(
+                        "jump over",
+                        new String[]{
+                                "X X|XXX|XXX|XXX"
+                        }, new String[]{
+                                "? !|123|   |   "
+                        },
+                        true,
+                        new String[]{"walking", "leaping", "falling"}
                 ),
                 Arguments.of(
                         "leap",
@@ -181,8 +775,7 @@ public class MovementTests {
                                 "?  |   ",
                                 "1  |23!"
                         },
-                        0.9f,
-                        0.3f,
+                        true,
                         new String[]{"walking", "leaping", "swimming"}
                 ),
                 Arguments.of(
@@ -196,86 +789,156 @@ public class MovementTests {
                                 "   | 1 |   ",
                                 "   |   |  !"
                         },
-                        0.9f,
-                        0.3f,
+                        true,
                         new String[]{"walking", "leaping", "swimming"}
-                ),
-                Arguments.of(
-                        "straight",
-                        new String[]{
-                                "X",
-                                "X",
-                                "X",
-                        }, new String[]{
-                                "?",
-                                "1",
-                                "!"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "leap",
-                        new String[]{
-                                "X  |XXX|XXX|XXX",
-                                "X  |XXX|XXX|XXX",
-                        }, new String[]{
-                                "?  |123|XXX|XXX",
-                                "   |  !|XXX|XXX",
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ), Arguments.of(
-                        "diagonal",
-                        new String[]{
-                                "X  |X  ",
-                                "X  |X  ",
-                                "XXX|XXX"
-                        }, new String[]{
-                                "?  |   ",
-                                "1  |   ",
-                                "23!|   "
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ), Arguments.of(
-                        "corridor",
-                        new String[]{
-                                "XXXXXXXXXXXXXXX",
-                                "X            XX",
-                                "X XXXXXXXXXXXXX",
-                                "XXX            ",
-                                "               ",
-                        }, new String[]{
-                                "?123456789abcd ",
-                                "             e ",
-                                "  qponmlkjihgf ",
-                                "  !            ",
-                                "               ",
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
-                ),
-                Arguments.of(
-                        "three dimensional moves",
-                        new String[]{
-                                "XXX|XX |   ",
-                                "X X|XXX| XX",
-                                "XXX| X | XX"
-                        }, new String[]{
-                                "?  |   |   ",
-                                "   | 1 |   ",
-                                "   |   |  !"
-                        },
-                        0.9f,
-                        0.3f,
-                        new String[]{"walking", "leaping"}
                 )
-                // TODO: Re-enable this test and fix the underlying movement behavior
+        );
+    }
+
+    /*
+     * Run test cases of specific movement plugins with all default plugins enabled.
+     * This should help catch some inconsistencies.
+     */
+    public static Stream<Arguments> defaultPluginCombinationParameters() {
+        return Stream.of(
+                Arguments.of("succeed flat north", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_NORTH_PATH, true),
+                Arguments.of("succeed flat south", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed flat west", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_WEST_PATH, true),
+                Arguments.of("succeed flat east", THREE_BY_THREE_CROSS_FLAT_WORLD, SINGLE_FLAT_STEP_EAST_PATH, true),
+                Arguments.of("succeed flat northwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed flat northeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed flat southwest", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed flat southeast", THREE_BY_THREE_OPEN_FLAT_WORLD, DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed ascend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_NORTH_PATH, true),
+                Arguments.of("succeed ascend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed ascend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_WEST_PATH, true),
+                Arguments.of("succeed ascend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_ASCENDING_STEP_EAST_PATH, true),
+                Arguments.of("succeed ascend early northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed ascend early northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed ascend early southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed ascend early southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed ascend late northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed ascend late northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed ascend late southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed ascend late southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed descend north", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_NORTH_PATH, true),
+                Arguments.of("succeed descend south", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_SOUTH_PATH, true),
+                Arguments.of("succeed descend west", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_WEST_PATH, true),
+                Arguments.of("succeed descend east", THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD, SINGLE_DESCENDING_STEP_EAST_PATH, true),
+                Arguments.of("succeed descend early northwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed descend early northeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed descend early southwest", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed descend early southeast", THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of("succeed descend late northwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH, true),
+                Arguments.of("succeed descend late northeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH, true),
+                Arguments.of("succeed descend late southwest", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH, true),
+                Arguments.of("succeed descend late southeast", THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD,
+                        DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH, true),
+                Arguments.of(
+                        "one time up",
+                        new String[]{
+                                "X |XX"
+                        }, new String[]{
+                                "? | !"
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "one time down",
+                        new String[]{
+                                "X |XX"
+                        }, new String[]{
+                                "! | ?"
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "two times up",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "?  | 1 |  !"
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "two times down",
+                        new String[]{
+                                "X  |XX |XXX"
+                        }, new String[]{
+                                "!  | 1 |  ?"
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "diagonally early up",
+                        new String[]{
+                                "  |XX",
+                                "X |XX"
+                        }, new String[]{
+                                "  | !",
+                                "? |  "
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "diagonally late up",
+                        new String[]{
+                                "X |XX",
+                                "XX|XX"
+                        }, new String[]{
+                                "  | !",
+                                "? |  "
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "diagonally late down",
+                        new String[]{
+                                "  |XX",
+                                "X |XX"
+                        }, new String[]{
+                                "  | ?",
+                                "! |  "
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "diagonally early down",
+                        new String[]{
+                                "X |XX",
+                                "XX|XX"
+                        }, new String[]{
+                                "  | ?",
+                                "! |  "
+                        },
+                        true
+                ),
+                Arguments.of(
+                        "gap",
+                        new String[]{
+                                " X |XXX"
+                        }, new String[]{
+                                "   |? !"
+                        },
+                        true
+                )
+//                TODO: Re-enable this test and fix the underlying movement behavior
 //                Arguments.of(
 //                        "jump over",
 //                        new String[]{
@@ -283,45 +946,124 @@ public class MovementTests {
 //                        }, new String[]{
 //                                "? !|123|   |   "
 //                        },
-//                        0.9f,
-//                        0.3f,
-//                        new String[]{"walking", "leaping"}
+//                        true
 //                )
         );
     }
 
-    @MethodSource("parameters")
-    @ParameterizedTest(name = "{5}: {0}")
-    @DisplayName("Check Movement plugins")
-    void test(String name, String[] world, String[] path, float charHeight, float charRadius, String... movementTypes) {
-        int airHeight = 41;
+    @AfterEach
+    void clean() {
+        entity.destroy();
+    }
 
-        setupWorld(world, airHeight);
+    @MethodSource("walkingMovementParameters")
+    @ParameterizedTest(name = "walking: {0}")
+    @DisplayName("Test movement plugin for walking")
+    void testWalkingMovement(String name, String[] world, String[] path, boolean successExpected) {
+        runTest(name, world, path, successExpected, "walking");
+    }
+
+    @MethodSource("nonFunctionalLeapingMovementParameters")
+    @ParameterizedTest(name = "leaping: {0}")
+    @DisplayName("Test movement plugin for leaping (intentionally without walking)")
+    void testNonFunctionalLeapingMovement(String name, String[] world, String[] path, boolean successExpected) {
+        runTest(name, world, path, successExpected, "leaping");
+    }
+
+    @MethodSource("leapingMovementParameters")
+    @ParameterizedTest(name = "walking, leaping: {0}")
+    @DisplayName("Test movement plugin for leaping (requires walking)")
+    void testLeapingMovement(String name, String[] world, String[] path, boolean successExpected) {
+        runTest(name, world, path, successExpected, "walking", "leaping");
+    }
+
+    @MethodSource("nonFunctionalFallingMovementParameters")
+    @ParameterizedTest(name = "falling: {0}")
+    @DisplayName("Test movement plugin for falling (intentionally without walking)")
+    void testNonFunctionalFallingMovement(String name, String[] world, String[] path, boolean successExpected) {
+        runTest(name, world, path, successExpected, "falling");
+    }
+
+    @MethodSource("fallingMovementParameters")
+    @ParameterizedTest(name = "walking, falling: {0}")
+    @DisplayName("Test movement plugin for falling (requires walking)")
+    void testFallingMovement(String name, String[] world, String[] path, boolean successExpected) {
+        runTest(name, world, path, successExpected, "walking", "falling");
+    }
+
+    @MethodSource("flyingMovementParameters")
+    @ParameterizedTest(name = "flying: {0}")
+    @DisplayName("Test movement plugin for flying")
+    void testFlyingMovement(String name, String[] world, String[] path, boolean successExpected) {
+        runTest(name, world, path, successExpected, "flying");
+    }
+
+    @MethodSource("swimmingMovementParameters")
+    @ParameterizedTest(name = "swimming: {0}")
+    @DisplayName("Test movement plugin for swimming")
+    void testSwimmingMovement(String name, String[] world, String[] path, boolean successExpected) {
+        runTest(name, world, path, successExpected, "swimming");
+    }
+
+    @MethodSource("combinedMovementParameters")
+    @ParameterizedTest(name = "{4}: {0}")
+    @DisplayName("Test movement plugin combinations")
+    void testCombinedMovement(String name, String[] world, String[] path, boolean successExpected, String... movementTypes) {
+        runTest(name, world, path, successExpected, movementTypes);
+    }
+
+    @MethodSource("defaultPluginCombinationParameters")
+    @ParameterizedTest(name = "default: {0}")
+    @DisplayName("Test default movement plugin combinations for comparison")
+    void testDefaultMovement(String name, String[] world, String[] path, boolean successExpected) {
+        runTest(name, world, path, successExpected, DEFAULT_MOVEMENT_MODES);
+    }
+
+    void runTest(String name, String[] world, String[] path, boolean successExpected, String... movementTypes) {
+        // This will skip all tests where we expect a timeout because the character should not move.
+        // Waiting for all these timeouts adds a lot to the total execution time.
+        // We keep the tests in here for now, but skip them by default to be gentle on the CI.
+        //TODO: move tests to ensure paths exist/don't exist to FlexiblePathfinding
+        Assumptions.assumeTrue(successExpected);
+
+        setupWorld(world, AIR_HEIGHT);
 
         // find start and goal positions from path data
         Vector3i start = new Vector3i();
         Vector3i stop = new Vector3i();
-        detectPath(path, airHeight, start, stop);
+        detectPath(path, AIR_HEIGHT, start, stop);
 
-        EntityRef entity = createMovingCharacter(charHeight, charRadius, start, stop, movementTypes);
+        logger.info("movement plugin combination: {}", Lists.newArrayList(movementTypes));
+
+        entity = createMovingCharacter(CHAR_HEIGHT, CHAR_RADIUS, start, stop, movementTypes);
 
         helper.runUntil(() -> Blocks.toBlockPos(entity.getComponent(LocationComponent.class)
-                .getWorldPosition(new Vector3f())).distance(start) <= 0.5F);
+                .getWorldPosition(new Vector3f())).distance(start) <= 0.5f);
 
-        boolean timedOut = helper.runWhile(() -> {
+        boolean timedOut = helper.runWhile(TIMEOUT, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
-        Assertions.assertFalse(timedOut, () -> String.format("Test character (at %s) cannot reach destination point (at %s)",
-                Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())),
-                stop
-                ));
+
+        Vector3i currentPos = Blocks.toBlockPos(entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
+        if (successExpected) {
+            Assertions.assertEquals(stop, currentPos, () -> printTest("Test character is not at target position.", world, start, stop,
+                    entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f())));
+            Assertions.assertFalse(timedOut,
+                    () -> String.format("Timeout during character movement (start: %s, target: %s, position: %s)",
+                            start, stop, currentPos));
+        } else {
+            Assertions.assertEquals(start, currentPos, "Test character should be at start position but has moved.");
+        }
     }
 
-    @AfterEach
-    void cleanUp() {
-        chunkProvider.purgeWorld();
+    private String printTest(String msg, String[] world, Vector3i start, Vector3i stop, Vector3f pos) {
+        return msg + "\n" +
+                "  start   : " + start + "\n" +
+                "  target  : " + stop + "\n" +
+                "  current : " + pos + "\n\n" +
+                Arrays.stream(world).map(s -> "  " + s).collect(Collectors.joining("\n")) +
+                "\n";
     }
 
     private EntityRef createMovingCharacter(float height, float radius, Vector3i start, Vector3i stop, String... movementTypes) {
@@ -352,7 +1094,7 @@ public class MovementTests {
 
     /**
      * Detect path for entity at map {@code path}
-     * 
+     *
      * @param path map with path
      * @param airHeight air height for world
      * @param start (?) ref parameter - set start point
