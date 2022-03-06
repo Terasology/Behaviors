@@ -970,7 +970,7 @@ public class MovementTests {
     @MethodSource("nonFunctionalFallingMovementParameters")
     @ParameterizedTest(name = "falling: {0}")
     @DisplayName("Test movement plugin for falling (intentionally without walking)")
-    void testNonFunctionalFallingMovement(String name, String[]world, String[]path, boolean successExpected) {
+    void testNonFunctionalFallingMovement(String name, String[] world, String[]path, boolean successExpected) {
         runTest(name, world, path, successExpected, "falling");
     }
 
