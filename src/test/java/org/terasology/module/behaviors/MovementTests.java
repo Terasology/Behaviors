@@ -1032,7 +1032,6 @@ public class MovementTests {
 
         boolean timedOut = helper.runWhile(TIMEOUT, () -> {
             Vector3f pos = entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-            logger.info("pos: {}", pos);
             return Blocks.toBlockPos(pos).distance(stop) > 0;
         });
 
