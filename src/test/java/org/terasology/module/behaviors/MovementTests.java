@@ -1048,11 +1048,6 @@ public class MovementTests {
         }
     }
 
-    @AfterEach
-    void cleanUp () {
-        chunkProvider.purgeWorld();
-    }
-
     private String printTest(String msg, String[] world, Vector3i start, Vector3i stop, Vector3f pos) {
         return msg + "\n" +
                 "  start   : " + start + "\n" +
