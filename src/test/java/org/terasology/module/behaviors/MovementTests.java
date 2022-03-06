@@ -31,7 +31,6 @@ import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.block.BlockRegionc;
 import org.terasology.engine.world.block.Blocks;
-import org.terasology.engine.world.chunks.ChunkProvider;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.moduletestingenvironment.MTEExtension;
 import org.terasology.moduletestingenvironment.ModuleTestingHelper;
@@ -46,6 +45,189 @@ import java.util.stream.Stream;
 @ExtendWith(MTEExtension.class)
 public class MovementTests {
     private static final Logger logger = LoggerFactory.getLogger(MovementTests.class);
+
+    private static final long TIMEOUT = 10_000;
+    private static final int AIR_HEIGHT = 41;
+    private static final float CHAR_HEIGHT = 0.9f;
+    private static final float CHAR_RADIUS = 0.3f;
+    private static final String[] DEFAULT_MOVEMENT_MODES = {"walking", "leaping", "falling"};
+
+    private static final String[] THREE_BY_THREE_CROSS_FLAT_WORLD = {
+            " X ",
+            "XXX",
+            " X "
+    };
+
+    private static final String[] THREE_BY_THREE_OPEN_FLAT_WORLD = {
+            "XXX",
+            "XXX",
+            "XXX"
+    };
+
+    private static final String[] THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD = {
+            "   | X ",
+            " X |XXX",
+            "   | X "
+    };
+
+    private static final String[] THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD = {
+            " X |XXX",
+            "XXX|XXX",
+            " X |XXX"
+    };
+
+    private static final String[] THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD = {
+            "   |XXX",
+            " X |XXX",
+            "   |XXX"
+    };
+
+    private static final String[] SINGLE_FLAT_STEP_NORTH_PATH = {
+            " ! ",
+            " ? ",
+            "   "
+    };
+
+    private static final String[] SINGLE_FLAT_STEP_SOUTH_PATH = {
+            "   ",
+            " ? ",
+            " ! "
+    };
+
+    private static final String[] SINGLE_FLAT_STEP_WEST_PATH = {
+            "   ",
+            "!? ",
+            "   "
+    };
+
+    private static final String[] SINGLE_FLAT_STEP_EAST_PATH = {
+            "   ",
+            " ?!",
+            "   "
+    };
+
+    private static final String[] DIAGONAL_FLAT_STEP_NORTH_WEST_PATH = {
+            "!  ",
+            " ? ",
+            "   "
+    };
+
+    private static final String[] DIAGONAL_FLAT_STEP_NORTH_EAST_PATH = {
+            "  !",
+            " ? ",
+            "   "
+    };
+
+    private static final String[] DIAGONAL_FLAT_STEP_SOUTH_WEST_PATH = {
+            "   ",
+            " ? ",
+            "!  "
+    };
+
+    private static final String[] DIAGONAL_FLAT_STEP_SOUTH_EAST_PATH = {
+            "   ",
+            " ? ",
+            "  !"
+    };
+
+    private static final String[] SINGLE_ASCENDING_STEP_NORTH_PATH = {
+            "   | ! ",
+            " ? |   ",
+            "   |   "
+    };
+
+    private static final String[] SINGLE_ASCENDING_STEP_SOUTH_PATH = {
+            "   |   ",
+            " ? |   ",
+            "   | ! "
+    };
+
+    private static final String[] SINGLE_ASCENDING_STEP_WEST_PATH = {
+            "   |   ",
+            " ? |!  ",
+            "   |   "
+    };
+
+    private static final String[] SINGLE_ASCENDING_STEP_EAST_PATH = {
+            "   |   ",
+            " ? |  !",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_ASCENDING_STEP_NORTH_WEST_PATH = {
+            "   |!  ",
+            " ? |   ",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_ASCENDING_STEP_NORTH_EAST_PATH = {
+            "   |  !",
+            " ? |   ",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_ASCENDING_STEP_SOUTH_WEST_PATH = {
+            "   |   ",
+            " ? |   ",
+            "   |!  "
+    };
+
+    private static final String[] DIAGONAL_ASCENDING_STEP_SOUTH_EAST_PATH = {
+            "   |   ",
+            " ? |   ",
+            "   |  !"
+    };
+
+    private static final String[] SINGLE_DESCENDING_STEP_NORTH_PATH = {
+            "   |   ",
+            " ! |   ",
+            "   | ? "
+    };
+
+    private static final String[] SINGLE_DESCENDING_STEP_SOUTH_PATH = {
+            "   | ? ",
+            " ! |   ",
+            "   |   "
+    };
+
+    private static final String[] SINGLE_DESCENDING_STEP_WEST_PATH = {
+            "   |   ",
+            " ! |  ?",
+            "   |   "
+    };
+
+    private static final String[] SINGLE_DESCENDING_STEP_EAST_PATH = {
+            "   |   ",
+            " ! |?  ",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_DESCENDING_STEP_NORTH_WEST_PATH = {
+            "   |   ",
+            " ! |   ",
+            "   |  ?"
+    };
+
+    private static final String[] DIAGONAL_DESCENDING_STEP_NORTH_EAST_PATH = {
+            "   |   ",
+            " ! |   ",
+            "   |?  "
+    };
+
+    private static final String[] DIAGONAL_DESCENDING_STEP_SOUTH_WEST_PATH = {
+            "   |  ?",
+            " ! |   ",
+            "   |   "
+    };
+
+    private static final String[] DIAGONAL_DESCENDING_STEP_SOUTH_EAST_PATH = {
+            "   |?  ",
+            " ! |   ",
+            "   |   "
+    };
+
+    private static EntityRef entity = EntityRef.NULL;
+
     @In
     protected ModuleTestingHelper helper;
     @In
@@ -56,8 +238,6 @@ public class MovementTests {
     protected EntityManager entityManager;
     @In
     protected PhysicsEngine physicsEngine;
-    @In
-    private ChunkProvider chunkProvider;
 
     public static Stream<Arguments> walkingMovementParameters() {
         return Stream.of(
