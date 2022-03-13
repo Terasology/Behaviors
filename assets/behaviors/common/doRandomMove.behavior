@@ -1,6 +1,5 @@
 {
   sequence : [
-    { log: { message: "in doRandomMove Behavior"} },
     { set_target_nearby_block : { moveProbability: 65 } },
     { lookup: { tree: "Behaviors:naiveMoveTo" } }
   ]

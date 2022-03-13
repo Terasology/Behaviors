@@ -1,9 +1,6 @@
 {
   sequence : [
     {
-      log: { message: "in stray Behavior"}
-    },
-    {
       set_speed : { speedMultiplier: 0.3 }
     },
     {

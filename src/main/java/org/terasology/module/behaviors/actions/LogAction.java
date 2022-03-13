@@ -12,7 +12,13 @@ import org.terasology.gestalt.module.sandbox.API;
 import org.terasology.nui.properties.TextField;
 
 /**
- * Logs a message into the console when called and returns SUCCESS
+ * Logs a debug message when called. Always returns SUCCESS.
+ * <p>
+ * For example, you can add such a log action at the beginning of a sequence and observe whether/when it is printend.
+ * <pre>
+ *     { log: { message: "starting 'myBehavior' sequence"} }
+ * </pre>
+ * You may need to adjust the logging configuration to make logs on 'DEBUG' level from the {@link LogAction} class visible.
  */
 @API
 @BehaviorAction(name = "log")
