@@ -65,12 +65,8 @@ public class MoveToAction extends BaseAction {
         // in practice we just need to adjust the Y so that it's resting on top of the block at the right height
         Vector3f adjustedMoveTarget = new Vector3f(minionMoveComponent.target);
 
-        // this is the result of experimentation and some penwork
-        //    float adjustedY = (float) Math.ceil(adjustedMoveTarget.y - halfHeight) + halfHeight - 0.5f;
-        //      adjustedMoveTarget.setY(adjustedY);
-
         Vector3f position = location.getWorldPosition(new Vector3f());
-        //if (Blocks.toBlockPos(position).equals(minionMoveComponent.target)) {
+
         // Make the target area a bit smaller than the actual block to ensure that the entity
         // is well within the block boundaries before moving on.
         float tolerance = minionMoveComponent.targetTolerance;
@@ -86,6 +82,8 @@ public class MoveToAction extends BaseAction {
         // sequence number might be a bad measure for long-running/slow movements.
         // With about 200fps this would allow for just 1 second of consecutive movement with an
         // upper bound of 200 cycles. Therefore, increasing this number to have a bit more margin.
+        //
+        //TODO: find a better measure for "time outs" and identifying long-running actions
         if (minionMoveComponent.sequenceNumber > 1000) {
             minionMoveComponent.resetPath();
             actor.save(minionMoveComponent);

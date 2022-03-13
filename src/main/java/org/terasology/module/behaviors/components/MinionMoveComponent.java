@@ -131,7 +131,7 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
     }
 
     /**
-     * Increment the {@link #pathIndex} by one set the next {@link #target}, if it exists.
+     * Increment the {@link #pathIndex} by one and set the next {@link #target}, if it exists.
      *
      * TODO: should this just include whether the path is finished check?
      */

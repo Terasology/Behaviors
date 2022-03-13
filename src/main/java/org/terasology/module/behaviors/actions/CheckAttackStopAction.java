@@ -13,8 +13,8 @@ import org.terasology.module.behaviors.components.AttackOnHitComponent;
 import org.terasology.module.behaviors.components.FollowComponent;
 import org.terasology.nui.properties.Range;
 
-// a complex action replacing a behavior tree - is that a good idea or not?
-// should this rather be:
+//TODO: Should this rather be a dedicated behavior instead?
+//      This is a complex action replacing a behavior tree - is that a good idea or not?
 //
 // StopAttackIfOutOfFollowDistance.behavior
 // selector [ // condition && clear
@@ -36,8 +36,6 @@ import org.terasology.nui.properties.Range;
 //    // if failed
 //    set_attack_target_clear
 // ]
-//
-// or should this rather be handled by pure ECS logic?
 @BehaviorAction(name = "check_attack_stop")
 public class CheckAttackStopAction extends BaseAction {
 
