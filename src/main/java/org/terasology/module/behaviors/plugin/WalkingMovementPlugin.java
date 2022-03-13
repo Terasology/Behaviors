@@ -1,4 +1,4 @@
-// Copyright 2021 The Terasology Foundation
+// Copyright 2022 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.plugin;
 
@@ -18,7 +18,8 @@ import org.terasology.flexiblepathfinding.plugins.JPSPlugin;
 import org.terasology.flexiblepathfinding.plugins.basic.WalkingPlugin;
 
 public class WalkingMovementPlugin extends MovementPlugin {
-    private static final Logger logger = LoggerFactory.getLogger(LeapingMovementPlugin.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(WalkingMovementPlugin.class);
 
     public WalkingMovementPlugin(WorldProvider world, Time time) {
         super(world, time);
@@ -45,10 +46,6 @@ public class WalkingMovementPlugin extends MovementPlugin {
                     dest);
         }
 
-        Vector3f delta = getDelta(entity, dest);
-        float yaw = getYaw(delta);
-        long dt = getTime().getGameDeltaInMs();
-
         CharacterMovementComponent movement = entity.getComponent(CharacterMovementComponent.class);
         // The underlying WalkingPlugin assumes that entities are not affected by gravity.
         // To simulate this, we'll use the FLYING movement mode for all entities when moving them with this plugin.
@@ -56,6 +53,10 @@ public class WalkingMovementPlugin extends MovementPlugin {
             entity.send(new SetMovementModeEvent(MovementMode.FLYING));
         }
 
-        return new CharacterMoveInputEvent(sequence, 0, yaw, delta, false, false, dt);
+        Vector3f delta = getDelta(entity, dest);
+        float yaw = getYaw(delta);
+        long dt = getTime().getGameDeltaInMs();
+
+        return new CharacterMoveInputEvent(sequence, 0, yaw, delta, false, false, false, dt);
     }
 }

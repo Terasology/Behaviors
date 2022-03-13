@@ -23,7 +23,8 @@ public class FindDummyPathTo extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
         MinionMoveComponent movement = actor.getComponent(MinionMoveComponent.class);
-        Vector3i goal = actor.getComponent(MinionMoveComponent.class).getPathGoal();
+
+        Vector3i goal = movement.getPathGoal();
 
         if (goal == null) {
             return BehaviorState.FAILURE;

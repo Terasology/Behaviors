@@ -5,11 +5,10 @@
           componentPresent: "Behaviors:FindNearbyPlayers",
           values: ["N charactersWithinRange nonEmpty"],
           child: {
-          sequence: [
-            { sleep: {time: 0.1f }},
-            followCharacter,
-            { lookup: {tree: "Behaviors:hostile" }}
-
+            sequence: [
+              { sleep: {time: 0.1f }},
+              followCharacter,
+              { lookup: {tree: "Behaviors:hostile" }}
             ]
           }
         }

@@ -1,4 +1,4 @@
-// Copyright 2021 The Terasology Foundation
+// Copyright 2022 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.plugin;
 
@@ -45,16 +45,17 @@ public class LeapingMovementPlugin extends MovementPlugin {
                     dest);
         }
 
-        Vector3f delta = getDelta(entity, dest);
-        float yaw = getYaw(delta);
-        long dt = getTime().getGameDeltaInMs();
-
         CharacterMovementComponent movement = entity.getComponent(CharacterMovementComponent.class);
         // The underlying WalkingPlugin assumes that entities are not affected by gravity.
         // To simulate this, we'll use the FLYING movement mode for all entities when moving them with this plugin.
         if (movement.mode != MovementMode.FLYING) {
             entity.send(new SetMovementModeEvent(MovementMode.FLYING));
         }
+
+        Vector3f delta = getDelta(entity, dest);
+        float yaw = getYaw(delta);
+        long dt = getTime().getGameDeltaInMs();
+
         return new CharacterMoveInputEvent(sequence, 0, yaw, delta, false, false, true, dt);
     }
 }

@@ -16,7 +16,8 @@ import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.WorldProvider;
-import org.terasology.engine.world.block.Blocks;
+import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.joml.geom.AABBf;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.module.behaviors.plugin.MovementPlugin;
 import org.terasology.module.behaviors.plugin.WalkingMovementPlugin;
@@ -55,6 +56,7 @@ public class MoveToAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState prevResult) {
+        logger.debug("Actor {}: in move_to Action", actor.getEntity().getId());
         LocationComponent location = actor.getComponent(LocationComponent.class);
         MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
         CharacterMovementComponent characterMovementComponent = actor.getComponent(CharacterMovementComponent.class);
@@ -63,16 +65,26 @@ public class MoveToAction extends BaseAction {
         // in practice we just need to adjust the Y so that it's resting on top of the block at the right height
         Vector3f adjustedMoveTarget = new Vector3f(minionMoveComponent.target);
 
-        // this is the result of experimentation and some penwork
-        //    float adjustedY = (float) Math.ceil(adjustedMoveTarget.y - halfHeight) + halfHeight - 0.5f;
-        //      adjustedMoveTarget.setY(adjustedY);
-
         Vector3f position = location.getWorldPosition(new Vector3f());
-        if (Blocks.toBlockPos(position).equals(minionMoveComponent.target)) {
+
+        // Make the target area a bit smaller than the actual block to ensure that the entity
+        // is well within the block boundaries before moving on.
+        float tolerance = minionMoveComponent.targetTolerance;
+        AABBf targetArea = new BlockRegion(minionMoveComponent.target)
+                .getBounds(new AABBf())
+                .expand(-tolerance, -tolerance, -tolerance);
+        if (targetArea.containsPoint(position)) {
             return BehaviorState.SUCCESS;
         }
-        // Cannot find path too long;
-        if (minionMoveComponent.sequenceNumber > 200) {
+        // Could not reach target with _n_ movements - abort action;
+        //
+        // As we scale the movement with the tick rate (the game time delta) just counting the
+        // sequence number might be a bad measure for long-running/slow movements.
+        // With about 200fps this would allow for just 1 second of consecutive movement with an
+        // upper bound of 200 cycles. Therefore, increasing this number to have a bit more margin.
+        //
+        //TODO: find a better measure for "time outs" and identifying long-running actions
+        if (minionMoveComponent.sequenceNumber > 1000) {
             minionMoveComponent.resetPath();
             actor.save(minionMoveComponent);
             return BehaviorState.FAILURE;
@@ -93,7 +105,7 @@ public class MoveToAction extends BaseAction {
             // path is no longer valid. However, we instead fall back to a default movement plugin in the hopes
             // that a gentle nudge in a probably-correct direction will at least make the physics reconcile the
             // intersection, and hopefully return to properly penetrable blocks.
-            logger.debug("Movement plugin returned null");
+            logger.debug("... [{}]: Movement plugin returned null - falling back to WalkingMovementPlugin", actor.getEntity().getId());
             MovementPlugin fallbackPlugin = new WalkingMovementPlugin(world, time);
             result = fallbackPlugin.move(
                     actor.getEntity(),

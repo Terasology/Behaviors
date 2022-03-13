@@ -12,13 +12,18 @@ import org.terasology.gestalt.module.sandbox.API;
 import org.terasology.nui.properties.TextField;
 
 /**
- * Logs a message into the console when called and returns SUCCESS
+ * Logs a debug message when called. Always returns SUCCESS.
+ * <p>
+ * For example, you can add such a log action at the beginning of a sequence and observe whether/when it is printend.
+ * <pre>
+ *     { log: { message: "starting 'myBehavior' sequence"} }
+ * </pre>
+ * You may need to adjust the logging configuration to make logs on 'DEBUG' level from the {@link LogAction} class visible.
  */
 @API
 @BehaviorAction(name = "log")
 public class LogAction extends BaseAction {
-    public static final Logger logger = LoggerFactory.getLogger(LogAction.class
-    );
+    public static final Logger logger = LoggerFactory.getLogger(LogAction.class);
 
     @TextField
     public String message;
@@ -30,7 +35,7 @@ public class LogAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        logger.debug(String.format("Actor %s logs message: %s ", actor.getEntity().toString(), actor.getValue(getId())));
+        logger.debug("Actor {}: {}", actor.getEntity().getId(), actor.getValue(getId()));
         return BehaviorState.SUCCESS;
     }
 }

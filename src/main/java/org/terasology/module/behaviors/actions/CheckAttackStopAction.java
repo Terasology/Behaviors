@@ -3,17 +3,39 @@
 package org.terasology.module.behaviors.actions;
 
 import org.joml.Vector3f;
-import org.terasology.module.behaviors.components.AttackInProximityComponent;
-import org.terasology.module.behaviors.components.AttackOnHitComponent;
-import org.terasology.module.behaviors.components.FollowComponent;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.module.behaviors.components.AttackInProximityComponent;
+import org.terasology.module.behaviors.components.AttackOnHitComponent;
+import org.terasology.module.behaviors.components.FollowComponent;
 import org.terasology.nui.properties.Range;
 
-
+//TODO: Should this rather be a dedicated behavior instead?
+//      This is a complex action replacing a behavior tree - is that a good idea or not?
+//
+// StopAttackIfOutOfFollowDistance.behavior
+// selector [ // condition && clear
+//    sequence: [ // AND
+//        guard:
+//            componentPresent: "LocationComponent"
+//        guard:
+//            componentPresent: "FollowComponent"
+//            values: [ "N entityToFollow exists" ]
+//        selector: [ // OR
+//            guard:
+//                componentPresent: "AttackOnHitComponent"
+//            guard:
+//                componentPresent: "AttackInProximityComponent"
+//        ]
+//        check_attack_target_in_reach
+//    ]
+//
+//    // if failed
+//    set_attack_target_clear
+// ]
 @BehaviorAction(name = "check_attack_stop")
 public class CheckAttackStopAction extends BaseAction {
 
@@ -26,26 +48,30 @@ public class CheckAttackStopAction extends BaseAction {
      */
     @Override
     public BehaviorState modify(Actor actor, BehaviorState state) {
-        BehaviorState status = getBehaviorStateWithoutReturn(actor);
-        if (status == BehaviorState.FAILURE) {
-            if (actor.hasComponent(AttackOnHitComponent.class)) {
-                AttackOnHitComponent attackOnHitComponent = actor.getComponent(AttackOnHitComponent.class);
-                attackOnHitComponent.instigator = null;
-                actor.getEntity().saveComponent(attackOnHitComponent);
-            } else if (actor.hasComponent(AttackInProximityComponent.class)) {
-                AttackInProximityComponent attackInProximityComponent = actor.getComponent(AttackInProximityComponent.class);
-                attackInProximityComponent.instigator = null;
-                actor.getEntity().saveComponent(attackInProximityComponent);
-            }
-            actor.getEntity().removeComponent(FollowComponent.class);
+        if (isTargetEntityOutOfFollowDistance(actor)) {
+            clearAttackTarget(actor);
+            return BehaviorState.FAILURE;
         }
-        return status;
+        return BehaviorState.SUCCESS;
     }
 
-    private BehaviorState getBehaviorStateWithoutReturn(Actor actor) {
+    private void clearAttackTarget(Actor actor) {
+        if (actor.hasComponent(AttackOnHitComponent.class)) {
+            AttackOnHitComponent attackOnHitComponent = actor.getComponent(AttackOnHitComponent.class);
+            attackOnHitComponent.instigator = null;
+            actor.getEntity().saveComponent(attackOnHitComponent);
+        } else if (actor.hasComponent(AttackInProximityComponent.class)) {
+            AttackInProximityComponent attackInProximityComponent = actor.getComponent(AttackInProximityComponent.class);
+            attackInProximityComponent.instigator = null;
+            actor.getEntity().saveComponent(attackInProximityComponent);
+        }
+        actor.getEntity().removeComponent(FollowComponent.class);
+    }
+
+    private boolean isTargetEntityOutOfFollowDistance(Actor actor) {
         LocationComponent actorLocationComponent = actor.getComponent(LocationComponent.class);
         if (actorLocationComponent == null) {
-            return BehaviorState.FAILURE;
+            return true;
         }
         Vector3f actorPosition = actorLocationComponent.getWorldPosition(new Vector3f());
         float distance = this.maxDistance;
@@ -58,17 +84,17 @@ public class CheckAttackStopAction extends BaseAction {
         float maxDistanceSquared = distance * distance;
         FollowComponent followWish = actor.getComponent(FollowComponent.class);
         if (followWish == null || followWish.entityToFollow == null) {
-            return BehaviorState.FAILURE;
+            return true;
         }
 
         LocationComponent locationComponent = followWish.entityToFollow.getComponent(LocationComponent.class);
         if (locationComponent == null) {
-            return BehaviorState.FAILURE;
+            return true;
         }
         if (locationComponent.getWorldPosition(new Vector3f()).distanceSquared(actorPosition) <= maxDistanceSquared) {
-            return BehaviorState.SUCCESS;
+            return false;
         }
-        return BehaviorState.FAILURE;
+        return true;
     }
 
 }

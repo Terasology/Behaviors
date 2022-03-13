@@ -1,9 +1,7 @@
 {
   sequence : [
-  {
-    set_target_nearby_block : { moveProbability: 65 }
-  },
-   move_to
+    { set_target_nearby_block : { moveProbability: 65 } },
+    { lookup: { tree: "Behaviors:naiveMoveTo" } }
   ]
 }
 
