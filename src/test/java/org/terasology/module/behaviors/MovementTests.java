@@ -53,33 +53,33 @@ public class MovementTests {
     private static final String[] DEFAULT_MOVEMENT_MODES = {"walking", "leaping", "falling"};
 
     private static final String[] THREE_BY_THREE_CROSS_FLAT_WORLD = {
-            " X ",
-            "XXX",
-            " X "
+            "X X",
+            "   ",
+            "X X"
     };
 
     private static final String[] THREE_BY_THREE_OPEN_FLAT_WORLD = {
-            "XXX",
-            "XXX",
-            "XXX"
+            "   ",
+            "   ",
+            "   "
     };
 
     private static final String[] THREE_BY_THREE_CROSS_ASCENDING_OUT_WORLD = {
-            "   | X ",
-            " X |XXX",
-            "   | X "
+            "XXX|X X",
+            "X X|   ",
+            "XXX|X X"
     };
 
     private static final String[] THREE_BY_THREE_OPEN_ASCENDING_CORNER_OUT_WORLD = {
-            " X |XXX",
-            "XXX|XXX",
-            " X |XXX"
+            "X X|   ",
+            "   |   ",
+            "X X|   "
     };
 
     private static final String[] THREE_BY_THREE_OPEN_ASCENDING_FULL_OUT_WORLD = {
-            "   |XXX",
-            " X |XXX",
-            "   |XXX"
+            "XXX|   ",
+            "X X|   ",
+            "XXX|   "
     };
 
     private static final String[] SINGLE_FLAT_STEP_NORTH_PATH = {
@@ -284,9 +284,9 @@ public class MovementTests {
                 Arguments.of(
                         "straight",
                         new String[]{
-                                "X",
-                                "X",
-                                "X",
+                                " ",
+                                " ",
+                                " ",
                         }, new String[]{
                                 "?",
                                 "1",
@@ -297,9 +297,9 @@ public class MovementTests {
                 Arguments.of(
                         "diagonal",
                         new String[]{
-                                "X  |X  ",
-                                "X  |X  ",
-                                "XXX|XXX"
+                                " XX| XX",
+                                " XX| XX",
+                                "   |   "
                         }, new String[]{
                                 "?  |   ",
                                 "1  |   ",
@@ -310,11 +310,11 @@ public class MovementTests {
                 Arguments.of(
                         "corridor",
                         new String[]{
-                                "XXXXXXXXXXXXXXX",
-                                "X            XX",
-                                "X XXXXXXXXXXXXX",
-                                "XXX            ",
                                 "               ",
+                                " XXXXXXXXXXXX  ",
+                                " X             ",
+                                "   XXXXXXXXXXXX",
+                                "XXXXXXXXXXXXXXX",
                         }, new String[]{
                                 "?123456789abcd ",
                                 "             e ",
@@ -327,7 +327,7 @@ public class MovementTests {
                 Arguments.of(
                         "gap",
                         new String[]{
-                                " X |XXX"
+                                "X X|   "
                         }, new String[]{
                                 "   |? !"
                         },
@@ -431,7 +431,7 @@ public class MovementTests {
                 Arguments.of(
                         "one time up",
                         new String[]{
-                                "X |XX"
+                                " X|  "
                         }, new String[]{
                                 "? | !"
                         },
@@ -440,7 +440,7 @@ public class MovementTests {
                 Arguments.of(
                         "two times up",
                         new String[]{
-                                "X  |XX |XXX"
+                                " XX|  X|   "
                         }, new String[]{
                                 "?  | 1 |  !"
                         },
@@ -449,8 +449,8 @@ public class MovementTests {
                 Arguments.of(
                         "diagonally early up",
                         new String[]{
-                                "  |XX",
-                                "X |XX"
+                                "XX|  ",
+                                " X|  "
                         }, new String[]{
                                 "  | !",
                                 "? |  "
@@ -460,8 +460,8 @@ public class MovementTests {
                 Arguments.of(
                         "diagonally late up",
                         new String[]{
-                                "X |XX",
-                                "XX|XX"
+                                " X|  ",
+                                "  |  "
                         }, new String[]{
                                 "  | !",
                                 "? |  "
@@ -471,20 +471,20 @@ public class MovementTests {
                 Arguments.of(
                         "leap",
                         new String[]{
-                                "X  |XXX|XXX|XXX",
-                                "X  |XXX|XXX|XXX",
+                                " XX|   |   |   ",
+                                " XX|   |   |   ",
                         }, new String[]{
-                                "?  |123|XXX|XXX",
-                                "   |  !|XXX|XXX",
+                                "?  |123|   |   ",
+                                "   |  !|   |   ",
                         },
                         true
                 ),
                 Arguments.of(
                         "three dimensional moves",
                         new String[]{
-                                "XXX|XX |   ",
-                                "X X|XXX| XX",
-                                "XXX| X | XX"
+                                "   |  X|XXX",
+                                " X |   |X  ",
+                                "   |X X|X  "
                         }, new String[]{
                                 "?  |   |   ",
                                 "   | 1 |   ",
@@ -598,7 +598,7 @@ public class MovementTests {
                 Arguments.of(
                         "one time down",
                         new String[]{
-                                "X |XX"
+                                " X|  "
                         }, new String[]{
                                 "! | ?"
                         },
@@ -607,7 +607,7 @@ public class MovementTests {
                 Arguments.of(
                         "two times down",
                         new String[]{
-                                "X  |XX |XXX"
+                                " XX|  X|   "
                         }, new String[]{
                                 "!  | 1 |  ?"
                         },
@@ -616,8 +616,8 @@ public class MovementTests {
                 Arguments.of(
                         "diagonally late down",
                         new String[]{
-                                "  |XX",
-                                "X |XX"
+                                "XX|  ",
+                                " X|  "
                         }, new String[]{
                                 "  | ?",
                                 "! |  "
@@ -627,8 +627,8 @@ public class MovementTests {
                 Arguments.of(
                         "diagonally early down",
                         new String[]{
-                                "X |XX",
-                                "XX|XX"
+                                " X|  ",
+                                "  |  "
                         }, new String[]{
                                 "  | ?",
                                 "! |  "
@@ -643,9 +643,9 @@ public class MovementTests {
                 Arguments.of(
                         "simple wall",
                         new String[]{
-                                "XXX|XXX|XXX",
-                                "   |   |XXX",
-                                "XXX|XXX|XXX",
+                                "   |   |   ",
+                                "XXX|XXX|   ",
+                                "   |   |   ",
                         }, new String[]{
                                 "?  |   |   ",
                                 "   |   |   ",
@@ -661,8 +661,8 @@ public class MovementTests {
                 Arguments.of(
                         "straight",
                         new String[]{
-                                "~  ",
-                                "~  ",
+                                "~XX",
+                                "~XX",
                                 "~~~",
                         }, new String[]{
                                 "?  ",
@@ -674,8 +674,8 @@ public class MovementTests {
                 Arguments.of(
                         "diagonal",
                         new String[]{
-                                "~  |~  ",
-                                "~  |~  ",
+                                "~XX|~XX",
+                                "~XX|~XX",
                                 "~~~|~~~"
                         }, new String[]{
                                 "?  |   ",
@@ -688,10 +688,10 @@ public class MovementTests {
                         "corridor",
                         new String[]{
                                 "~~~~~~~~~~~~~~~",
-                                "~            ~~",
-                                "~ ~~~~~~~~~~~~~",
-                                "~~~            ",
-                                "               ",
+                                "~XXXXXXXXXXXX~~",
+                                "~X~~~~~~~~~~~~~",
+                                "~~~XXXXXXXXXXXX",
+                                "XXXXXXXXXXXXXXX",
                         }, new String[]{
                                 "?123456789abcd ",
                                 "             e ",
@@ -704,22 +704,22 @@ public class MovementTests {
                 Arguments.of(
                         "leap",
                         new String[]{
-                                "~  |~~~|~~~",
-                                "~  |~~~|~~~",
+                                "~XX|~~~|~~~",
+                                "~XX|~~~|~~~",
                                 "~~~|~~~|~~~",
                         }, new String[]{
-                                "?  |123|~~~",
-                                "   |  !|~~~",
-                                "   |   |~~~"
+                                "?  |123|   ",
+                                "   |  !|   ",
+                                "   |   |   "
                         },
                         true
                 ),
                 Arguments.of(
                         "three dimensional moves",
                         new String[]{
-                                "~~~|~~ |   ",
-                                "~ ~|~~~| ~~",
-                                "~~~| ~ | ~~"
+                                "~~~|~~X|XXX",
+                                "~X~|~~~|X~~",
+                                "~~~|X~X|X~~"
                         }, new String[]{
                                 "?  |   |   ",
                                 "   | 1 |   ",
@@ -737,9 +737,9 @@ public class MovementTests {
 //                Arguments.of(
 //                        "up and down again",
 //                        new String[]{
-//                                "X    X|XX XX|XXXXX"
+//                                " XXX |  X  |     "
 //                        }, new String[]{
-//                                "?    !|     |     "
+//                                "?   !|     |     "
 //                        },
 //                        true,
 //                        new String[]{"walking", "leaping", "falling"}
@@ -749,7 +749,7 @@ public class MovementTests {
 //                Arguments.of(
 //                        "down and up again",
 //                        new String[]{
-//                                "  X  | XXX |XXXXX"
+//                                "XX XX|X   X|     "
 //                        }, new String[]{
 //                                "     |     |?   !"
 //                        },
@@ -759,7 +759,7 @@ public class MovementTests {
                 Arguments.of(
                         "jump over",
                         new String[]{
-                                "X X|XXX|XXX|XXX"
+                                " X |   |   |   "
                         }, new String[]{
                                 "? !|123|   |   "
                         },
@@ -769,8 +769,8 @@ public class MovementTests {
                 Arguments.of(
                         "leap",
                         new String[]{
-                                "~  |   ",
-                                "~  |XXX"
+                                "~XX|XXX",
+                                "~XX|   "
                         }, new String[]{
                                 "?  |   ",
                                 "1  |23!"
@@ -781,9 +781,9 @@ public class MovementTests {
                 Arguments.of(
                         "three dimensional moves",
                         new String[]{
-                                "~~~|~~ |   ",
-                                "~ ~|~~~| XX",
-                                "~~~| ~ | XX"
+                                "~~~|~~X|XXX",
+                                "~X~|~~~|X  ",
+                                "~~~|X~X|X  "
                         }, new String[]{
                                 "?  |   |   ",
                                 "   | 1 |   ",
@@ -852,7 +852,7 @@ public class MovementTests {
                 Arguments.of(
                         "one time up",
                         new String[]{
-                                "X |XX"
+                                " X|  "
                         }, new String[]{
                                 "? | !"
                         },
@@ -861,7 +861,7 @@ public class MovementTests {
                 Arguments.of(
                         "one time down",
                         new String[]{
-                                "X |XX"
+                                " X|  "
                         }, new String[]{
                                 "! | ?"
                         },
@@ -870,7 +870,7 @@ public class MovementTests {
                 Arguments.of(
                         "two times up",
                         new String[]{
-                                "X  |XX |XXX"
+                                " XX|  X|   "
                         }, new String[]{
                                 "?  | 1 |  !"
                         },
@@ -879,7 +879,7 @@ public class MovementTests {
                 Arguments.of(
                         "two times down",
                         new String[]{
-                                "X  |XX |XXX"
+                                " XX|  X|   "
                         }, new String[]{
                                 "!  | 1 |  ?"
                         },
@@ -888,8 +888,8 @@ public class MovementTests {
                 Arguments.of(
                         "diagonally early up",
                         new String[]{
-                                "  |XX",
-                                "X |XX"
+                                "XX|  ",
+                                " X|  "
                         }, new String[]{
                                 "  | !",
                                 "? |  "
@@ -899,8 +899,8 @@ public class MovementTests {
                 Arguments.of(
                         "diagonally late up",
                         new String[]{
-                                "X |XX",
-                                "XX|XX"
+                                " X|  ",
+                                "  |  "
                         }, new String[]{
                                 "  | !",
                                 "? |  "
@@ -910,8 +910,8 @@ public class MovementTests {
                 Arguments.of(
                         "diagonally late down",
                         new String[]{
-                                "  |XX",
-                                "X |XX"
+                                "XX|  ",
+                                " X|  "
                         }, new String[]{
                                 "  | ?",
                                 "! |  "
@@ -921,8 +921,8 @@ public class MovementTests {
                 Arguments.of(
                         "diagonally early down",
                         new String[]{
-                                "X |XX",
-                                "XX|XX"
+                                " X|  ",
+                                "  |  "
                         }, new String[]{
                                 "  | ?",
                                 "! |  "
@@ -932,7 +932,7 @@ public class MovementTests {
                 Arguments.of(
                         "gap",
                         new String[]{
-                                " X |XXX"
+                                "X X|   "
                         }, new String[]{
                                 "   |? !"
                         },
@@ -942,7 +942,7 @@ public class MovementTests {
 //                Arguments.of(
 //                        "jump over",
 //                        new String[]{
-//                                "X X|XXX|XXX|XXX"
+//                                " X |   |   |   "
 //                        }, new String[]{
 //                                "? !|123|   |   "
 //                        },
@@ -1147,11 +1147,11 @@ public class MovementTests {
             int x = 0;
             for (char c : row.toCharArray()) {
                 switch (c) {
-                    case 'X':
+                    case ' ':
                         worldProvider.setBlock(new Vector3i(x, y, z), air);
                         x += 1;
                         break;
-                    case ' ':
+                    case 'X':
                         worldProvider.setBlock(new Vector3i(x, y, z), dirt);
                         x += 1;
                         break;
