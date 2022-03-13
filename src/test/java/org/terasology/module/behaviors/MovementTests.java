@@ -474,8 +474,8 @@ public class MovementTests {
                                 " XX|   |   |   ",
                                 " XX|   |   |   ",
                         }, new String[]{
-                                "?  |123|XXX|XXX",
-                                "   |  !|XXX|XXX",
+                                "?  |123|   |   ",
+                                "   |  !|   |   ",
                         },
                         true
                 ),
@@ -708,9 +708,9 @@ public class MovementTests {
                                 "~XX|~~~|~~~",
                                 "~~~|~~~|~~~",
                         }, new String[]{
-                                "?  |123|~~~",
-                                "   |  !|~~~",
-                                "   |   |~~~"
+                                "?  |123|   ",
+                                "   |  !|   ",
+                                "   |   |   "
                         },
                         true
                 ),
