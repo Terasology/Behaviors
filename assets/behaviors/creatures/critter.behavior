@@ -1,20 +1,16 @@
 {
-  sequence: [
+  dynamic: [
     {
-      dynamic: [
-        {
-          guard: {
-            componentPresent: "Behaviors:Fleeing",
-            child: {
-              sequence: [
-                check_flee_stop,
-                { lookup: { tree: "Behaviors:flee" } }
-              ]
-            }
-          }
-        },
-        { lookup: { tree: "Behaviors:stray" } }
-      ]
-    }
+      guard: {
+        componentPresent: "Behaviors:Fleeing",
+        child: {
+          sequence: [
+            check_flee_stop,
+            { lookup: { tree: "Behaviors:flee" } }
+          ]
+        }
+      }
+    },
+    { lookup: { tree: "Behaviors:stray" } }
   ]
 }
