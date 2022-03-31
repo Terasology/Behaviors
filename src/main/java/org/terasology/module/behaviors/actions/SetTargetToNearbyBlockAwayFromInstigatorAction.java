@@ -42,6 +42,7 @@ public class SetTargetToNearbyBlockAwayFromInstigatorAction extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
+        // TODO: Temporary fix for injection malfunction in actions, remove as soon as injection malfunction in actions is fixed.
         if (movementPluginSystem == null) {
             movementPluginSystem = CoreRegistry.get(PluginSystem.class);
         }

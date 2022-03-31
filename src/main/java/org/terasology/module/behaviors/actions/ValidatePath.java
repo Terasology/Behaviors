@@ -7,6 +7,7 @@ import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
 import org.terasology.flexiblepathfinding.PathfinderSystem;
 import org.terasology.flexiblepathfinding.plugins.JPSPlugin;
@@ -17,7 +18,7 @@ import org.terasology.module.behaviors.systems.PluginSystem;
 import java.util.List;
 
 /**
- * Validates the entity's current path for walkability (according to the pathfinding plugin its using)
+ * Validates the entity's current path for walkability (according to the pathfinding plugin it's using)
  * <p>
  * SUCCESS: when there are no unwalkable waypoints
  * <p>
@@ -34,6 +35,14 @@ public class ValidatePath extends BaseAction {
     private PluginSystem pluginSystem;
     @In
     private MinionMoveSystem minionMoveSystem;
+
+    @Override
+    public void construct(Actor actor) {
+        // TODO: Temporary fix for injection malfunction in actions, remove as soon as injection malfunction in actions is fixed.
+        if (pluginSystem == null) {
+            pluginSystem = CoreRegistry.get(PluginSystem.class);
+        }
+    }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
