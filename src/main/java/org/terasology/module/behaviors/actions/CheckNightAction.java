@@ -21,7 +21,7 @@ public class CheckNightAction extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
-        // TODO: Temporary fix for injection malfunction in actions, remove as soon as injection malfunction in actions is fixed.
+        // TODO: Temporary fix for injection malfunction, remove once https://github.com/MovingBlocks/Terasology/issues/5004 is fixed.
         if (nightTrackerSystem == null) {
             nightTrackerSystem = CoreRegistry.get(NightTrackerSystem.class);
         }

@@ -37,7 +37,7 @@ public class SetTargetToNearbyBlockNode extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
-        // TODO: Temporary fix for injection malfunction in actions, remove as soon as injection malfunction in actions is fixed.
+        // TODO: Temporary fix for injection malfunction, remove once https://github.com/MovingBlocks/Terasology/issues/5004 is fixed.
         if (movementPluginSystem == null) {
             movementPluginSystem = CoreRegistry.get(PluginSystem.class);
         }
