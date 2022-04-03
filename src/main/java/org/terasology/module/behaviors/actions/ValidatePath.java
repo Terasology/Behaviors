@@ -8,13 +8,9 @@ import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.registry.In;
-import org.terasology.flexiblepathfinding.PathfinderSystem;
 import org.terasology.flexiblepathfinding.plugins.JPSPlugin;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
-import org.terasology.module.behaviors.systems.MinionMoveSystem;
 import org.terasology.module.behaviors.systems.PluginSystem;
-
-import java.util.List;
 
 /**
  * Validates the entity's current path for walkability (according to the pathfinding plugin its using)
@@ -25,15 +21,8 @@ import java.util.List;
  */
 @BehaviorAction(name = "validate_path")
 public class ValidatePath extends BaseAction {
-
-    BehaviorState pathStatus = null;
-    List<Vector3i> pathResult = null;
-    @In
-    private PathfinderSystem system;
     @In
     private PluginSystem pluginSystem;
-    @In
-    private MinionMoveSystem minionMoveSystem;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
@@ -43,11 +32,11 @@ public class ValidatePath extends BaseAction {
         if (minionMoveComponent == null || pathfindingPlugin == null) {
             return BehaviorState.FAILURE;
         }
-//            for(Vector3i pos : actor().getComponent(MinionMoveComponent.class).getPath()) {
-//                if(!pathfindingPlugin.isWalkable(pos)) {
-//                    return Status.FAILURE;
-//                }
-//            }
+        for(Vector3i pos : minionMoveComponent.getPath()) {
+            if(!pathfindingPlugin.isWalkable(pos)) {
+                return BehaviorState.FAILURE;
+            }
+        }
         return BehaviorState.SUCCESS;
     }
 }
