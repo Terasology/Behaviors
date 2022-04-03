@@ -3,6 +3,7 @@
 package org.terasology.module.behaviors.actions;
 
 import org.joml.Vector3f;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.audio.AudioEndListener;
@@ -36,10 +37,16 @@ public class PlaySoundAction extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
+        // TODO: Temporary fix for injection malfunction, remove once https://github.com/MovingBlocks/Terasology/issues/5004 is fixed.
+        if (audioManager == null) {
+            audioManager = CoreRegistry.get(AudioManager.class);
+        }
+        if (assetManager == null) {
+            assetManager = CoreRegistry.get(AssetManager.class);
+        }
+
         if (soundUrn != null) {
-
             StaticSound snd = assetManager.getAsset(soundUrn, StaticSound.class).orElse(null);
-
 
             if (snd != null) {
                 if (actor.hasComponent(LocationComponent.class)) {

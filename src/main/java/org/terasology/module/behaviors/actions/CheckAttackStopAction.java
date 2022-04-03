@@ -91,10 +91,7 @@ public class CheckAttackStopAction extends BaseAction {
         if (locationComponent == null) {
             return true;
         }
-        if (locationComponent.getWorldPosition(new Vector3f()).distanceSquared(actorPosition) <= maxDistanceSquared) {
-            return false;
-        }
-        return true;
+        return !(locationComponent.getWorldPosition(new Vector3f()).distanceSquared(actorPosition) <= maxDistanceSquared);
     }
 
 }

@@ -14,6 +14,7 @@ import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.BlockArea;
 import org.terasology.engine.world.block.BlockRegion;
@@ -52,6 +53,11 @@ public class NearbyBlockRestricted extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
+        // TODO: Temporary fix for injection malfunction, remove once https://github.com/MovingBlocks/Terasology/issues/5004 is fixed.
+        if (movementPluginSystem == null) {
+            movementPluginSystem = CoreRegistry.get(PluginSystem.class);
+        }
+
         if (!actor.hasComponent(StrayRestrictionComponent.class)) {
             logger.warn("Actor used behavior node set_target_nearby_block_restricted, but doesn't have a StrayRestrictionComponent!");
             return;

@@ -4,6 +4,7 @@ package org.terasology.module.behaviors.actions;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector3f;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.module.behaviors.components.FollowComponent;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
@@ -15,6 +16,7 @@ import org.terasology.engine.logic.characters.AliveCharacterComponent;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.network.ClientComponent;
 import org.terasology.engine.registry.In;
+import org.terasology.module.behaviors.systems.PluginSystem;
 import org.terasology.nui.properties.Range;
 
 import java.util.List;
@@ -27,6 +29,14 @@ public class FollowPlayerWithinRangeAction extends BaseAction {
 
     @In
     private EntityManager entityManager;
+
+    @Override
+    public void construct(Actor actor) {
+        // TODO: Temporary fix for injection malfunction, remove once https://github.com/MovingBlocks/Terasology/issues/5004 is fixed.
+        if (entityManager == null) {
+            entityManager = CoreRegistry.get(EntityManager.class);
+        }
+    }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
