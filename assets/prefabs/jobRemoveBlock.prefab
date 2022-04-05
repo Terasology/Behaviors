@@ -1,20 +1,20 @@
 {
-    "parent" : "engine:iconItem",
+  "parent": "engine:iconItem",
   "DisplayName": {
     "name": "Remove Block"
   },
-    "Item" : {
-        "icon" : "engine:items#removeBlockJob",
-		"usage" : "ON_BLOCK"
-    },
-  	"PlaySoundAction" : {
-    	"sounds" : "engine:click"
-  	},
-    "Work" : {
-        "workType" : "Behaviors:removeBlock"
-    },
-    "BlockSelection" : {
-        "shouldRender" : true
-    },
-    "OnItemActivateSelection" : {}
+  "Item": {
+    "icon": "engine:items#removeBlockJob",
+    "usage": "ON_BLOCK"
+  },
+  "PlaySoundAction": {
+    "sounds": "engine:click"
+  },
+  "Work": {
+    "workType": "Behaviors:removeBlock"
+  },
+  "BlockSelection": {
+    "shouldRender": true
+  },
+  "OnItemActivateSelection": {}
 }
