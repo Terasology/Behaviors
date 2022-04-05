@@ -14,10 +14,10 @@ import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.location.LocationComponent;
 
 
-@BehaviorAction(name = "check_flee_stop")
-public class CheckFleeStopAction extends BaseAction {
+@BehaviorAction(name = "check_flee_continue")
+public class CheckFleeContinueAction extends BaseAction {
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckFleeStopAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(CheckFleeContinueAction.class);
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
