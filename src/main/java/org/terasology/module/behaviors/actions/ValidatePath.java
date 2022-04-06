@@ -7,13 +7,14 @@ import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
 import org.terasology.flexiblepathfinding.plugins.JPSPlugin;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 import org.terasology.module.behaviors.systems.PluginSystem;
 
 /**
- * Validates the entity's current path for walkability (according to the pathfinding plugin its using)
+ * Validates the entity's current path for walkability (according to the pathfinding plugin it's using)
  * <p>
  * SUCCESS: when there are no unwalkable waypoints
  * <p>
@@ -23,6 +24,14 @@ import org.terasology.module.behaviors.systems.PluginSystem;
 public class ValidatePath extends BaseAction {
     @In
     private PluginSystem pluginSystem;
+
+    @Override
+    public void construct(Actor actor) {
+        // TODO: Temporary fix for injection malfunction, remove once https://github.com/MovingBlocks/Terasology/issues/5004 is fixed.
+        if (pluginSystem == null) {
+            pluginSystem = CoreRegistry.get(PluginSystem.class);
+        }
+    }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {

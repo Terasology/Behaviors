@@ -42,12 +42,17 @@ public class MoveToAction extends BaseAction {
 
     @Override
     public void construct(Actor actor) {
+        // TODO: Temporary fix for injection malfunction, remove once https://github.com/MovingBlocks/Terasology/issues/5004 is fixed.
+        if (time == null) {
+            time = CoreRegistry.get(Time.class);
+        }
         if (world == null) {
             world = CoreRegistry.get(WorldProvider.class);
         }
         if (pluginSystem == null) {
             pluginSystem = CoreRegistry.get(PluginSystem.class);
         }
+
         MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
         minionMoveComponent.sequenceNumber = 0;
         actor.save(minionMoveComponent);
