@@ -3,6 +3,7 @@
 package org.terasology.module.behaviors.debug;
 
 import org.joml.Vector3ic;
+import org.terasology.engine.config.Config;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
@@ -16,9 +17,12 @@ import org.terasology.engine.utilities.Assets;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
 
 @RegisterSystem(RegisterMode.CLIENT)
-@Share(FlexibleMovementDebugRenderSystem.class)
-public class FlexibleMovementDebugRenderSystem extends BaseComponentSystem implements RenderSystem {
+@Share(DebugRenderSystem.class)
+public class DebugRenderSystem extends BaseComponentSystem implements RenderSystem {
     private BlockSelectionRenderer selectionRenderer;
+
+    @In
+    private Config config;
 
     @In
     private EntityManager entityManager;
@@ -30,17 +34,19 @@ public class FlexibleMovementDebugRenderSystem extends BaseComponentSystem imple
 
     @Override
     public void renderOverlay() {
-        //TODO: Only render the path debug overlay if the debug mode is enabled.
+        //TODO: Extend the RenderingDebugConfig with a specific flag for rendering the movement path.
         //      The RenderingDebugConfig holds more specific flags which debug modes are enabled, but that config is not extensible.
         //      How would we register new debug modes like this one for pathfinding? Should this be tied to debug mode in general, or
         //      should it be possible to toggle the debug rendering via console command, similar to RenderingDebugCommands?
-        selectionRenderer.beginRenderOverlay();
-        for (EntityRef entity : entityManager.getEntitiesWith(MinionMoveComponent.class)) {
-            MinionMoveComponent minionMoveComponent = entity.getComponent(MinionMoveComponent.class);
-            for (Vector3ic pos : minionMoveComponent.getPath()) {
-                selectionRenderer.renderMark2(pos);
+        if (config.getRendering().getDebug().isEnabled()) {
+            selectionRenderer.beginRenderOverlay();
+            for (EntityRef entity : entityManager.getEntitiesWith(MinionMoveComponent.class)) {
+                MinionMoveComponent minionMoveComponent = entity.getComponent(MinionMoveComponent.class);
+                for (Vector3ic pos : minionMoveComponent.getPath()) {
+                    selectionRenderer.renderMark2(pos);
+                }
             }
+            selectionRenderer.endRenderOverlay();
         }
-        selectionRenderer.endRenderOverlay();
     }
 }
