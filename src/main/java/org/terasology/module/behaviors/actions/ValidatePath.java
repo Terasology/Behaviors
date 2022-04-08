@@ -41,8 +41,8 @@ public class ValidatePath extends BaseAction {
         if (minionMoveComponent == null || pathfindingPlugin == null) {
             return BehaviorState.FAILURE;
         }
-        for(Vector3i pos : minionMoveComponent.getPath()) {
-            if(!pathfindingPlugin.isWalkable(pos)) {
+        for (Vector3i pos : minionMoveComponent.getPath()) {
+            if (!pathfindingPlugin.isWalkable(pos)) {
                 return BehaviorState.FAILURE;
             }
         }
