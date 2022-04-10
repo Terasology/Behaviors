@@ -732,30 +732,26 @@ public class MovementTests {
 
     public static Stream<Arguments> combinedMovementParameters() {
         return Stream.of(
-                // TODO: Re-enable this test once the related FlexiblePathFinding test is re-enabled
-                // (see org.terasology.flexiblepathfinding.WalkingLeapingFallingJPSTest)
-//                Arguments.of(
-//                        "up and down again",
-//                        new String[]{
-//                                " XXX |  X  |     "
-//                        }, new String[]{
-//                                "?   !|     |     "
-//                        },
-//                        true,
-//                        new String[]{"walking", "leaping", "falling"}
-//                ),
-                // TODO: Re-enable this test once the related FlexiblePathFinding test is re-enabled
-                // (see org.terasology.flexiblepathfinding.WalkingLeapingFallingJPSTest)
-//                Arguments.of(
-//                        "down and up again",
-//                        new String[]{
-//                                "XX XX|X   X|     "
-//                        }, new String[]{
-//                                "     |     |?   !"
-//                        },
-//                        true,
-//                        new String[]{"walking", "leaping", "falling"}
-//                ),
+                Arguments.of(
+                        "up and down again",
+                        new String[]{
+                                " XXX |  X  |     "
+                        }, new String[]{
+                                "?   !|     |     "
+                        },
+                        true,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
+                Arguments.of(
+                        "down and up again",
+                        new String[]{
+                                "XX  XX|X    X|      "
+                        }, new String[]{
+                                "      |      |?    !"
+                        },
+                        true,
+                        new String[]{"walking", "leaping", "falling"}
+                ),
                 Arguments.of(
                         "jump over",
                         new String[]{
