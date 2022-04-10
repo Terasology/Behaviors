@@ -6,13 +6,13 @@ import org.joml.Math;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.module.behaviors.components.TargetComponent;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.characters.CharacterMoveInputEvent;
 import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.module.behaviors.components.TargetComponent;
 import org.terasology.nui.properties.Range;
 
 /**
@@ -53,7 +53,7 @@ public class LookAtAction extends BaseAction {
         Vector3f targetDirection = targetPosition.sub(locationPosition, new Vector3f());
         Vector3f drive = new Vector3f(); // Leave blank for no movement
 
-        float yaw = (float) Math.atan2(targetDirection.x, targetDirection.z);
+        float yaw = Math.atan2(targetDirection.x, targetDirection.z);
         float requestedYaw = (float) (180f + Math.toDegrees(yaw));
         Vector3f eulerAngles = locationComponent.getLocalRotation().getEulerAnglesXYZ(new Vector3f());
         float currentYaw = (float) Math.toDegrees(eulerAngles.y());
@@ -80,7 +80,7 @@ public class LookAtAction extends BaseAction {
             (long) (actor.getDelta() * 1000));
         actor.getEntity().send(wantedInput);
 
-        // TODO Some kind of ray cast to see if there are any obstacles
+        // TODO: Some kind of ray cast to see if there are any obstacles
         return BehaviorState.SUCCESS;
     }
 }
