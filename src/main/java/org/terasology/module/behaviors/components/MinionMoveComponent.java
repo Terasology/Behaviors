@@ -105,7 +105,7 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
      * @param pos the final movement goal position
      */
     public void setPathGoal(Vector3i pos) {
-        goalPosition.set(pos);
+        setGoalPosition(pos);
         pathGoalEntity = null;
         resetPath();
     }
