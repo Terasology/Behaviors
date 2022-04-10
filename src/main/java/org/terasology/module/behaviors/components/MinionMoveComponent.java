@@ -42,8 +42,14 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
      */
     public float targetTolerance = 0.1f;
 
-    // last known goal position
-    private Vector3i goalPosition = new Vector3i();
+    /**
+     * The last known goal position.
+     * <p>
+     * Initialized with 'null' to avoid entities trying to reach the origin block (0,0,0) right after spawning.
+     * <p>
+     * To ensure only a single vector instance is used, all writing access should go through {@link #setGoalPosition(Vector3i)}.
+     */
+    private Vector3i goalPosition = null;
 
     // an entity to take the goal position from
     //TODO(skaldarnar): What's the difference between MinionMoveComponent#pathGoalEntity and FollowComponent#entityToFollow?
@@ -53,8 +59,9 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
 
     /**
      * The path of reachable waypoints to the {@link #goalPosition}.
-     *
+     * <p>
      * If empty no path to the target exists, or it was not computed yet.
+     * <p>
      * If the {@link #goalPosition} is reachable, the path will contain at least that position as last element.
      */
     private List<Vector3i> path = Lists.newArrayList();
@@ -104,12 +111,26 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
     }
 
     /**
+     * Set the last known goal position to the given position {@code pos}.
+     * <p>
+     * Ensures lazy initialization of {@link #goalPosition} on first write.
+     *
+     * @param pos the new goal position this actor is moving towards
+     */
+    private void setGoalPosition(Vector3i pos) {
+        if (goalPosition == null) {
+            goalPosition = new Vector3i();
+        }
+        goalPosition.set(pos);
+    }
+
+    /**
      * Retrieve the final movement goal position.
+     * <p>
+     * If the {@link #pathGoalEntity} is set, the goal position is derived from the entity's location. Otherwise, the goal position is
+     * {@link #goalPosition}.
      *
-     * If the {@link #pathGoalEntity} is set, the goal position is derived from the entity's location.
-     * Otherwise, the goal position is {@link #goalPosition}.
-     *
-     * @return the current goal position
+     * @return the current goal position, or 'null' if no goal position is known.
      */
     public Vector3i getPathGoal() {
         //TODO: this is logic on component, doing a lookup on a different entity.
@@ -117,7 +138,7 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
         if (pathGoalEntity != null && pathGoalEntity.getComponent(LocationComponent.class) != null) {
             Vector3f worldPosition = pathGoalEntity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             Vector3i pos = Blocks.toBlockPos(worldPosition);
-            goalPosition.set(pos);
+            setGoalPosition(pos);
         }
         return goalPosition;
     }
@@ -181,7 +202,9 @@ public final class MinionMoveComponent implements Component<MinionMoveComponent>
         target.set(other.target);
         targetTolerance = other.targetTolerance;
         pathGoalEntity = other.pathGoalEntity;
-        goalPosition.set(other.goalPosition);
+        if (other.goalPosition != null) {
+            setGoalPosition(other.goalPosition);
+        }
         goalTolerance = other.goalTolerance;
         path = other.path;
         pathIndex = other.pathIndex; //TODO change me when migrate JOML
