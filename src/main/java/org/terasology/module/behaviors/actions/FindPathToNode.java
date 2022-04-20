@@ -59,7 +59,15 @@ public class FindPathToNode extends BaseAction {
 
         MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
         Vector3ic start = Blocks.toBlockPos(actor.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
-        Vector3ic goal = actor.getComponent(MinionMoveComponent.class).getPathGoal();
+        Vector3ic goal = minionMoveComponent.getPathGoal();
+
+        if (goal == null) {
+            // Special case to prevent pathfinding computation to (0,0,0) when the entity was just spawned.
+            // Returning early causes this action to terminate with BehaviorState.FAILURE on first execution
+            // of '#modify(Actor, BehaviorState)' as no pathfinding is running and the 'path' should still
+            // be empty.
+            return;
+        }
 
         JPSConfig config = new JPSConfig(start, goal);
         config.useLineOfSight = false;

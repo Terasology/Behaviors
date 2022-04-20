@@ -11,7 +11,6 @@ import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.characters.CharacterMoveInputEvent;
-import org.terasology.engine.logic.characters.CharacterMovementComponent;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
@@ -64,7 +63,6 @@ public class MoveToAction extends BaseAction {
         logger.debug("Actor {}: in move_to Action", actor.getEntity().getId());
         LocationComponent location = actor.getComponent(LocationComponent.class);
         MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
-        CharacterMovementComponent characterMovementComponent = actor.getComponent(CharacterMovementComponent.class);
 
         // we need to translate the movement target to an expected real world position
         // in practice we just need to adjust the Y so that it's resting on top of the block at the right height

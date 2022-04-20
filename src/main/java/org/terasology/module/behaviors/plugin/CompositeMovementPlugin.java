@@ -22,11 +22,6 @@ public class CompositeMovementPlugin extends MovementPlugin {
 
     private final List<MovementPlugin> plugins;
 
-    public CompositeMovementPlugin(WorldProvider world, Time time, MovementPlugin... plugins) {
-        super(world, time);
-        this.plugins = Lists.newArrayList(plugins);
-    }
-
     public CompositeMovementPlugin(WorldProvider worldProvider, Time time, Collection<MovementPlugin> plugins) {
         super(worldProvider, time);
         this.plugins = Lists.newArrayList(plugins);
