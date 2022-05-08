@@ -1,1 +1,43 @@
-docs/README.md
+<div align="center">
+<img src="./docs/_media/banner.png">
+</div>
+
+_This is a module for [Terasology].
+It provides a set of behavior traits that can be applied to creatures and NPCs._
+
+<h2 align="center"><a href="https://terasology.github.io/Behaviors">👉 Documentation 👈</a></h2>
+
+## Contributing
+
+We welcome contributions to our modules, be it bug fixes or feature contributions. 
+Check out the [Contributor Guide][contributor-guide] on the main project wiki to learn more.
+
+To check out this module (and all its dependencies) to your Terasology workspace run (in the workspace root):
+
+```
+groovyw module recurse Behaviors
+```
+
+To build a module JAR for just this module run (in the workspace root):
+
+```
+gradlew :module:Behaviors:jar
+```
+
+To run all tests and static code checks for this module run (in the workspace root):
+
+```
+gradlew :module:Behaviors:check
+```
+
+### Documentation via gh-pages
+
+The documentation of this module is build with [docsify]. 
+It is served via [gh-pages].
+To preview the site you can either use the `docsify` [CLI tool](https://github.com/docsifyjs/docsify-cli) or just run a static server on the `docs` folder.
+
+<!-- References -->
+[Terasology]: https://github.com/MovingBlocks/Terasology
+[gh-pages]: https://pages.github.com/
+[docsify]: https://docsify.js.org/#/
+[contributor-guide]: https://github.com/MovingBlocks/Terasology/wiki/Contributor-Quick-Start
