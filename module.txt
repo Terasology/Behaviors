@@ -23,11 +23,6 @@
         {
             "id": "Inventory",
             "minVersion": "1.1.0"
-        },
-        {
-            "id": "ModuleTestingEnvironment",
-            "minVersion": "0.3.0",
-            "optional": true
         }
     ],
     "isServerSideOnly": true,

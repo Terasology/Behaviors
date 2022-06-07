@@ -14,13 +14,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.integrationenvironment.jupiter.Dependencies;
+import org.terasology.engine.integrationenvironment.jupiter.MTEExtension;
 import org.terasology.engine.logic.behavior.BehaviorComponent;
 import org.terasology.engine.logic.behavior.asset.BehaviorTree;
 import org.terasology.engine.registry.In;
 import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.gestalt.assets.management.AssetManager;
-import org.terasology.moduletestingenvironment.MTEExtension;
-import org.terasology.moduletestingenvironment.extension.Dependencies;
 
 import java.util.Optional;
 import java.util.stream.Stream;
