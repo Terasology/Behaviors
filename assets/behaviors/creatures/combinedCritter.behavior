@@ -25,15 +25,15 @@ selector: [
                     {
                       // Checks for an Player in Range
                       guard: {
-                        componentPresent: "Behaviours:Find Nearby Players", // Only for Players or for Nemesis aswell?
+                        componentPresent: "Behaviours:FindNearbyPlayers", // Only for Players or for Nemesis aswell?
                         values: [
                           "N charactersWithinRange nonEmpty"
                         ],
 
                         // If there is a Player in Range we get hostile -> Has to be changed for Nemesis?
                         child: {
-                          squence: [
-                            "set_target_nearby_player",     // Could be for Nemesis aswell?
+                          sequence: [
+                            set_target_nearby_player,     // Could be for Nemesis aswell?
                             {
                               "lookup": {
                                 tree: "Behaviors:hostile"
@@ -51,14 +51,17 @@ selector: [
             //
             { // Back up sequence for when out of territory
               sequence: [
-                "set_target_territory",
-                "move_to"
+                set_target_territory,
+                move_to
               ]
             }
           ]
         }
-      } // First Guard fo Selector for Territory End.
-      guard: { // Implementation of scared Critter
+      }
+    },
+      // First Guard fo Selector for Territory End.
+    {
+    guard: { // Implementation of scared Critter
 
         componentPresent: "Behaviors:FindNearbyNemesis",
         values: ["N nemesisWithinRange nonEmpty"],
@@ -73,6 +76,7 @@ selector: [
           ]
         }
       }
+    },
 
       /**
       Here would be Implementation for Base Needs
@@ -84,7 +88,8 @@ selector: [
       */
 
       //Implementation Start for Aggressive Critter
-      guard: {
+      {
+        guard: {
 
         //Checking if Critter is Hungry and Prey is around
         componentPresent: "Behaviors:FindNearbyEntity", // Implementation ??? // Could Be Nemesis aswell? Else another Component?
@@ -93,10 +98,12 @@ selector: [
         child: {
           lookup: {tree:  "Behaviours: aggressiveCritter"}
         }
+      }
       },
 
       // Implementation for Friendly Critter
-      guard: {
+    {
+    guard: {
 
         //Checks if Nearby Player has Item in Hand
         componentPresent: "Behaviours:FindNearbyPlayers",
@@ -114,14 +121,14 @@ selector: [
         }
       }
     }, // Furthest Outside Selector
-    { // Implementation for Hostile Critter
 
-    },
+  // Implementation for Hostile Critter
+
     {
       lookup: {
         tree: "Behaviors:stray"
       }
-    }
+    },
 
   ]
 }

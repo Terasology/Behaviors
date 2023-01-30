@@ -5,6 +5,7 @@ package org.terasology.module.behaviors.components;
 
 import com.google.common.collect.Lists;
 import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * around for nearby Nemesis that enter a given radius.
  */
 
-public class FindNearbyNemesisComponent implements Component <FindNearbyNemesisComponent>{
+public class FindNearbyNemesisComponent implements Component<FindNearbyNemesisComponent> {
     /* Search radius for finding nearby Nemesis */
     public float searchRadius = 10f;
     /* List of Nemesis entities nearby */
