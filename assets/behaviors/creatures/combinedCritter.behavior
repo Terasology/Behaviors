@@ -1,102 +1,122 @@
 {
 selector: [
-  {
-    guard: {
+    {
+      guard: { // Implementation of territorial Critter
 
-      // Territory would to be implemented as Component
-      // Implementation of territorial Critter
-      componentPresent: "Behaviours:Territory",
-      values: ["F Territory != null"],
-      "child": {
-        "sequence": [
-          {
-            "lookup": {
-              "tree": "territorialCritter.behavior"
+        // Looks for a Territory Existing
+        componentPresent: "Behaviours:Territory", // Needs Component
+        values: [
+          "N Territory exists"
+        ],
+
+        child: {
+          selector: [
+            {
+
+              //Is the Territory still in Range?
+              guard: {
+                componentPresent: "Behaviors:TerritoryDistance",
+                values: [
+                  "V distanceSquared < 25"
+                ],
+
+                child: {
+                  selector: [
+                    {
+                      // Checks for an Player in Range
+                      guard: {
+                        componentPresent: "Behaviours:Find Nearby Players", // Only for Players or for Nemesis aswell?
+                        values: [
+                          "N charactersWithinRange nonEmpty"
+                        ],
+
+                        // If there is a Player in Range we get hostile -> Has to be changed for Nemesis?
+                        child: {
+                          squence: [
+                            "set_target_nearby_player",     // Could be for Nemesis aswell?
+                            {
+                              "lookup": {
+                                tree: "Behaviors:hostile"
+                              }
+                            }
+                          ]
+                        }
+                      }
+
+                    },
+                  ]
+                }
+              }
+            },
+            //
+            { // Back up sequence for when out of territory
+              sequence: [
+                "set_target_territory",
+                "move_to"
+              ]
             }
-          }
-        ]
-      }
-    }
+          ]
+        }
+      } // First Guard fo Selector for Territory End.
+      guard: { // Implementation of scared Critter
 
-  // First Guard fo Selector for Territory End.
-    guard: { // Implementation of scared Critter
-        componentPresent: "Behaviors:FindNearbyPlayers",
-        values: ["N charactersWithinRange != null"], // Adjust for Nemesis / Scary Creatures
+        componentPresent: "Behaviors:FindNearbyNemesis",
+        values: ["N nemesisWithinRange nonEmpty"],
 
         child: {
           sequence: [
-              {
-              "lookup": {
-                "tree": "scaredCritter.behavior"
-                }
-              }
+
+            { sleep: {time: 0.1f }},
+            "flee_from_nemesis",
+               { lookup: {tree: "Behaviors:flee" }}
+
           ]
         }
-    }
-
-    // Here would be Implementation for Base Needs
-    guard: {
-      componentPresent: "CitizenNeed:Water",
-      value: ["F CitizenNeed:Water.value < CitizenNeed:goal"],
-      lookup:{
-        "tree": "findWater.behavior"
       }
-    } ,
-    // Implementation for Water Need
-    guard: {
-        componentPresent: "CitizenNeed:Water",
-        value: ["F CitizenNeed:Water.value < CitizenNeed:goal"],
-        lookup:{
-          "tree": "findWater.behavior"
-        }
-    },
 
-    // Implementation for Food Need
-    guard: {
-      componentPresent: "CitizenNeed:Food",
-      value: ["F CitizenNeed:Food.value < CitizenNeed:goal"],
-      needfood == true,
-    }
+      /**
+      Here would be Implementation for Base Needs
 
-    // Implementation for Sleep Need
-    guard: {
-      componentPresent: "CitizenNeed:Sleep",
-      value: ["F CitizenNeed:Sleep.value < CitizenNeed:goal"],
-      lookup:{
-        "tree": "findRest.behavior"
-      }
-    }
+      ToDO
+      For now not implemented
+      Hungry, Thirsty, Sleep -> Metal Renagade (Citizens)
+      Got Hurt -> Deer behaviour
+      */
 
-    guard:{ // From Deer Behavior
-      componentPresent: "fleeingComponent",
-      value:["N distance"],
-      child:{
-        sequence:[
-          check_flee_continue,
-          {lookup: {tree: "Behaviors:flee"}}
-        ]
-      }
-    },
+      //Implementation Start for Aggressive Critter
+      guard: {
 
-    guard: {
-      componentPresent: "Behaviors:FindNearbyEntity", // Implementation ???
-        values: ["F hungerEntity < 25"],
-
-      child: {
-        "lookup": {"tree": "aggressiveCritter.behavior"}
-      }
-    },
-
-      guard: { // Implementation for Friendly Critter
-        componentPresent: "Behaviours:FindNearbyPlayers",
-        values: ["F itemInHand == nonEmpty"],
+        //Checking if Critter is Hungry and Prey is around
+        componentPresent: "Behaviors:FindNearbyEntity", // Implementation ??? // Could Be Nemesis aswell? Else another Component?
+        values: ["H hungerEntity < 25"],
 
         child: {
-          "lookup": {"tree": "friendlyCritter.behavior"}
+          lookup: {tree:  "Behaviours: aggressiveCritter"}
+        }
+      },
+
+      // Implementation for Friendly Critter
+      guard: {
+
+        //Checks if Nearby Player has Item in Hand
+        componentPresent: "Behaviours:FindNearbyPlayers",
+        values: [
+          "N characterWithinRange nonEmpty"
+        ],
+
+        child: {
+          sequence: [
+            check_luring_item_in_use,
+            { sleep: {time:  0.1f}},
+            followCharacter,
+            {lookup:  {tree: "Behaviors:follow"}}
+          ]
         }
       }
-    },
+    }, // Furthest Outside Selector
+    { // Implementation for Hostile Critter
 
+    },
     {
       lookup: {
         tree: "Behaviors:stray"
