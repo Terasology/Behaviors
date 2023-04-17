@@ -43,7 +43,7 @@ selector: [
                         }
                       }
 
-                    },
+                    }
                   ]
                 }
               }
@@ -128,7 +128,6 @@ selector: [
       lookup: {
         tree: "Behaviors:stray"
       }
-    },
-
+    }
   ]
 }
