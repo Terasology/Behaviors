@@ -3,6 +3,9 @@ selector: [
     {
       guard: { // Implementation of territorial Critter
 
+        // For DistanceSquared is A System Needed
+        // Orientation in "LocationChangedSystem"
+
         // Looks for a Territory Existing
         componentPresent: "Behaviours:Territory", // Needs Component
         values: [
@@ -15,9 +18,9 @@ selector: [
 
               //Is the Territory still in Range?
               guard: {
-                componentPresent: "Behaviors:TerritoryDistance",
+                componentPresent: "Behaviors:Territory", // Needs Component! (Include in Territory)
                 values: [
-                  "V distanceSquared < 25"
+                  "V distanceSquared < maxDistance"
                 ],
 
                 child: {
@@ -95,10 +98,10 @@ selector: [
         componentPresent: "Behaviors:FindNearbyEntity", // Implementation ??? // Could Be Nemesis aswell? Else another Component?
         values: ["H hungerEntity < 25"],
 
-        child: {
-          lookup: {tree:  "Behaviours: aggressiveCritter"}
+          child: {
+            lookup: {tree:  "Behaviours: aggressiveCritter"}
+          }
         }
-      }
       },
 
       // Implementation for Friendly Critter
@@ -121,8 +124,6 @@ selector: [
         }
       }
     }, // Furthest Outside Selector
-
-  // Implementation for Hostile Critter
 
     {
       lookup: {
