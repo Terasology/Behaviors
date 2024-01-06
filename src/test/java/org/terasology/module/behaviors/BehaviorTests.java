@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 
-@IntegrationEnvironment(dependencies = {"Behaviors"})
+@IntegrationEnvironment(dependencies = "Behaviors")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BehaviorTests {
 

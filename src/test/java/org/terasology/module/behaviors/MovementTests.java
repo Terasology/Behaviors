@@ -37,7 +37,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@IntegrationEnvironment(dependencies = {"Behaviors"})
+@IntegrationEnvironment(dependencies = "Behaviors")
 public class MovementTests {
     private static final Logger logger = LoggerFactory.getLogger(MovementTests.class);
 
