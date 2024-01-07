@@ -4,8 +4,6 @@ package org.terasology.module.behaviors.actions;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector3f;
-import org.terasology.engine.registry.CoreRegistry;
-import org.terasology.module.behaviors.components.FollowComponent;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.logic.behavior.BehaviorAction;
@@ -15,8 +13,9 @@ import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.characters.AliveCharacterComponent;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.network.ClientComponent;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
-import org.terasology.module.behaviors.systems.PluginSystem;
+import org.terasology.module.behaviors.components.FollowComponent;
 import org.terasology.nui.properties.Range;
 
 import java.util.List;
