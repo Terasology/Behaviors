@@ -5,7 +5,8 @@ package org.terasology.module.behaviors.systems;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.module.behaviors.components.TerritoryDistance;
+import org.terasology.engine.core.Time;
+import org.terasology.module.behaviors.components.TerritoryComponent;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
@@ -30,7 +31,11 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
     public EntityManager entityManager;
     private List<Vector3f> territories = new ArrayList<Vector3f>();
     private Random random = new Random();
-    
+
+    // Unnecessary if delta is enough for the intervall.
+    private const float CHECK_INTERVALL = 200;
+    private Time timer;
+    private float lastCheckTime = 0;
 
     @Override
     public void initialise() {
@@ -45,18 +50,40 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
      */
     @Override
     public void update(float delta) {
-        for (EntityRef entity : entityManager.getEntitiesWith(TerritoryDistance.class, LocationComponent.class)) {
-            TerritoryDistance territoryDistance = entity.getComponent(TerritoryDistance.class);
-            territoryDistance.distanceSquared = territoryDistance.location.distanceSquared(
-                entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
-            entity.saveComponent(territoryDistance);
+        for (EntityRef entity : entityManager.getEntitiesWith(TerritoryComponent.class, LocationComponent.class)) {
+
+            TerritoryComponent territoryComponent = entity.getComponent(TerritoryComponent.class);
+            // This is basically distance squared? And continuously updated
+            territoryComponent.distanceSquared = territoryComponent.location.distanceSquared(
+                    entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
+
+            entity.saveComponent(territoryComponent);
         }
     }
 
-    @ReceiveEvent(components = TerritoryDistance.class)
+    @ReceiveEvent(components = TerritoryComponent.class)
     public void onCreatureSpawned(OnActivatedComponent event, EntityRef creature) {
-        TerritoryDistance territoryDistance = creature.getComponent(TerritoryDistance.class);
-        territoryDistance.location = creature.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-        creature.saveComponent(territoryDistance);
+
+        TerritoryComponent territoryComponent = creature.getComponent(TerritoryComponent.class);
+        territoryComponent.location = creature.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+        creature.saveComponent(territoryComponent);
+    }
+
+    /*
+    // So ist this unnecessary?
+    public void updateSquaredDistance (TerritoryComponent entityTerritory, LocationComponent entity){
+
+        long gameTimeInMS = timer.getGameTimeInMs();
+
+        if(lastCheckTime + CHECK_INTERVALL < gameTimeInMS){
+
+            // Vector3f vec1 = entityTerritory.location();
+            // Vector3f vec2 = entity.getWorldPosition();
+
+            // other.distanceSquared = // Distance_Vektor
+
+            lastCheckTime = gameTimeInMS;
+        }
+     */
     }
 }
