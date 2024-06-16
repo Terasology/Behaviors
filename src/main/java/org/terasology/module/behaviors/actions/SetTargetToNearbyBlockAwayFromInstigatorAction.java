@@ -35,7 +35,7 @@ public class SetTargetToNearbyBlockAwayFromInstigatorAction extends BaseAction {
 
     private static final int RANDOM_BLOCK_ITERATIONS = 10;
 
-    private final Random random = new Random();
+    private final transient Random random = new Random();
 
     @In
     private PluginSystem movementPluginSystem;
