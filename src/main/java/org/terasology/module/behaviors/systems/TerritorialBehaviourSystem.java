@@ -33,12 +33,14 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
     private Random random = new Random();
 
     // Unnecessary if delta is enough for the intervall.
-    private const float CHECK_INTERVALL = 200;
-    private Time timer;
+    private static float CHECK_INTERVALL = 200;
     private float lastCheckTime = 0;
 
+    @In
+    private Time timer;
     @Override
     public void initialise() {
+
         territories.clear();
     }
 
@@ -50,16 +52,24 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
      */
     @Override
     public void update(float delta) {
-        for (EntityRef entity : entityManager.getEntitiesWith(TerritoryComponent.class, LocationComponent.class)) {
 
-            TerritoryComponent territoryComponent = entity.getComponent(TerritoryComponent.class);
-            // This is basically distance squared? And continuously updated
-            territoryComponent.distanceSquared = territoryComponent.location.distanceSquared(
-                    entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
+        long gameTimeInMS = timer.getGameTimeInMs();
 
-            entity.saveComponent(territoryComponent);
+
+        if(lastCheckTime + CHECK_INTERVALL < gameTimeInMS) {
+
+            for (EntityRef entity : entityManager.getEntitiesWith(TerritoryComponent.class, LocationComponent.class)) {
+
+                    TerritoryComponent territoryComponent = entity.getComponent(TerritoryComponent.class);
+                    // This is basically distance squared? And continuously updated
+                    territoryComponent.distanceSquared = territoryComponent.location.distanceSquared(
+                            entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
+
+                    lastCheckTime = gameTimeInMS;
+                    entity.saveComponent(territoryComponent);
+                }
+            }
         }
-    }
 
     @ReceiveEvent(components = TerritoryComponent.class)
     public void onCreatureSpawned(OnActivatedComponent event, EntityRef creature) {
@@ -67,23 +77,5 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
         TerritoryComponent territoryComponent = creature.getComponent(TerritoryComponent.class);
         territoryComponent.location = creature.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
         creature.saveComponent(territoryComponent);
-    }
-
-    /*
-    // So ist this unnecessary?
-    public void updateSquaredDistance (TerritoryComponent entityTerritory, LocationComponent entity){
-
-        long gameTimeInMS = timer.getGameTimeInMs();
-
-        if(lastCheckTime + CHECK_INTERVALL < gameTimeInMS){
-
-            // Vector3f vec1 = entityTerritory.location();
-            // Vector3f vec2 = entity.getWorldPosition();
-
-            // other.distanceSquared = // Distance_Vektor
-
-            lastCheckTime = gameTimeInMS;
-        }
-     */
     }
 }
