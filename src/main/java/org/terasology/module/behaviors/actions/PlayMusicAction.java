@@ -2,9 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.module.behaviors.actions;
 
-import org.terasology.engine.registry.CoreRegistry;
-import org.terasology.gestalt.assets.ResourceUrn;
-import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.audio.AudioEndListener;
 import org.terasology.engine.audio.AudioManager;
 import org.terasology.engine.audio.StreamingSound;
@@ -12,9 +9,11 @@ import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.gestalt.module.sandbox.API;
-import org.terasology.module.behaviors.systems.PluginSystem;
 import org.terasology.nui.properties.OneOf;
 import org.terasology.nui.properties.Range;
 
