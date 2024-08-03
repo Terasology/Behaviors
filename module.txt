@@ -23,7 +23,7 @@
         {
             "id": "Inventory",
             "minVersion": "1.1.0",
-            "maxVersion": "1.5.0"
+            "maxVersion": "1.5.1"
         }
     ],
     "isServerSideOnly": true,
