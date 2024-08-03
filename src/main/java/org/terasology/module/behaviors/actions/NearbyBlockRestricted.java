@@ -39,7 +39,7 @@ public class NearbyBlockRestricted extends BaseAction {
     /**
      * The random number provider for choosing the nearby block.
      */
-    private final Random random = new Random();
+    private final transient Random random = new Random();
     /**
      * The world region that this character is allowed to stray in. Defines an x&z area in world space.
      */
