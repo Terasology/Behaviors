@@ -1,6 +1,6 @@
 {
     "id": "Behaviors",
-    "version": "1.2.0",
+    "version": "1.3.0-SNAPSHOT",
     "author": "synopia, dkambersky",
     "displayName": "Behaviors",
     "description": "A set of behavior traits which could be applied to creatures and NPCs",
