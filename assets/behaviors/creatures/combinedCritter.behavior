@@ -7,7 +7,7 @@ selector: [
         // Orientation in "LocationChangedSystem"
 
         // Looks for a Territory Existing
-        componentPresent: "Behaviours:Territory", // Needs Component
+        componentPresent: "Behaviour:Territory", // Needs Component
         values: [
           "N Territory exists"
         ],
@@ -18,7 +18,7 @@ selector: [
 
               //Is the Territory still in Range?
               guard: {
-                componentPresent: "Behaviors:Territory", // Needs Component! (Include in Territory)
+                componentPresent: "Behaviour:Territory",
                 values: [
                   "V distanceSquared < maxDistance"
                 ],
@@ -86,8 +86,8 @@ selector: [
 
       ToDO
       For now not implemented
-      Hungry, Thirsty, Sleep -> Metal Renagade (Citizens)
-      Got Hurt -> Deer behaviour
+      Hungry, Thirsty, Sleep -> Metal Renegade (Citizens)
+      Got hurt -> Deer behaviour
       */
 
       //Implementation Start for Aggressive Critter
