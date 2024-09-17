@@ -57,9 +57,9 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
 
         if(lastCheckTime + CHECK_INTERVALL < gameTimeInMS) {
 
-            for (EntityRef entity : entityManager.getEntitiesWith(Behaviours.territoryComponent.class, LocationComponent.class)) {
+            for (EntityRef entity : entityManager.getEntitiesWith(TerritoryComponent.class, LocationComponent.class)) {
 
-                    Behaviours.territoryComponent territoryComponent = entity.getComponent(territoryComponent.class);
+                    TerritoryComponent territoryComponent = entity.getComponent(TerritoryComponent.class);
                     // This is basically distance squared? And continuously updated
                     territoryComponent.distanceSquared = territoryComponent.location.distanceSquared(
                             entity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f()));
@@ -71,7 +71,6 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
         }
 
     @ReceiveEvent(components = TerritoryComponent.class)
-
     public void onCreatureSpawned(OnActivatedComponent event, EntityRef creature) {
 
         TerritoryComponent territoryComponent = creature.getComponent(TerritoryComponent.class);

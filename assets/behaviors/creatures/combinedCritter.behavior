@@ -7,7 +7,7 @@ selector: [
         // Orientation in "LocationChangedSystem"
 
         // Looks for a Territory Existing
-        componentPresent: "Behaviour:Territory", // Needs Component
+        componentPresent: "Behaviors:Territory", // Needs Component
         values: [
           "N Territory exists"
         ],
@@ -18,7 +18,7 @@ selector: [
 
               //Is the Territory still in Range?
               guard: {
-                componentPresent: "Behaviour:Territory",
+                componentPresent: "Behaviors:Territory",
                 values: [
                   "V distanceSquared < maxDistance"
                 ],
@@ -28,7 +28,7 @@ selector: [
                     {
                       // Checks for an Player in Range
                       guard: {
-                        componentPresent: "Behaviours:FindNearbyPlayers", // Only for Players or for Nemesis aswell?
+                        componentPresent: "Behaviors:FindNearbyPlayers", // Only for Players or for Nemesis aswell?
                         values: [
                           "N charactersWithinRange nonEmpty"
                         ],
@@ -99,7 +99,7 @@ selector: [
         values: ["H hungerEntity < 25"],
 
           child: {
-            lookup: {tree:  "Behaviours: aggressiveCritter"}
+            lookup: {tree:  "Behaviors: aggressiveCritter"}
           }
         }
       },
@@ -109,7 +109,7 @@ selector: [
     guard: {
 
         //Checks if Nearby Player has Item in Hand
-        componentPresent: "Behaviours:FindNearbyPlayers",
+        componentPresent: "Behaviors:FindNearbyPlayers",
         values: [
           "N characterWithinRange nonEmpty"
         ],
