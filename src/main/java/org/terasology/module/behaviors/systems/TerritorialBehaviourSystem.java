@@ -75,6 +75,7 @@ public class TerritorialBehaviourSystem extends BaseComponentSystem implements U
 
         TerritoryComponent territoryComponent = creature.getComponent(TerritoryComponent.class);
         territoryComponent.location = creature.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
+        territoryComponent.distanceSquared = 0;
         creature.saveComponent(territoryComponent);
     }
 }
