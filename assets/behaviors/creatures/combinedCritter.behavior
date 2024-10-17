@@ -9,7 +9,7 @@ selector: [
         // Looks for a Territory Existing
         componentPresent: "Behaviors:Territory", // Needs Component
         values: [
-          "N Territory exists"
+          "N location exists"
         ],
 
         child: {
@@ -20,7 +20,7 @@ selector: [
               guard: {
                 componentPresent: "Behaviors:Territory",
                 values: [
-                  "V distanceSquared < maxDistance"
+                  "F distanceSquared < maxDistance"
                 ],
 
                 child: {
