@@ -23,7 +23,7 @@
                     }
                   }
                 },
-               move_to
+                {lookup: { tree: "Behaviors:naiveMoveTo" }}
               ]
             }
           ]
