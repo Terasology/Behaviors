@@ -59,8 +59,19 @@ public abstract class MovementPlugin {
         LocationComponent location = entity.getComponent(LocationComponent.class);
         CharacterMovementComponent movement = entity.getComponent(CharacterMovementComponent.class);
 
+        float gameDelta = getTime().getGameDelta();
+        if (gameDelta <= 0) {
+            // The engine keeps ticking systems once per frame with a zero delta while the game is
+            // paused (e.g. the in-game menu is open in single player) rather than skipping them
+            // outright - see TimeBase#tick. Dividing by zero here turned a paused character's
+            // position into Infinity/NaN, teleporting it to (0, 0, 0) once that value round-tripped
+            // through later movement/physics code (MovingBlocks/Terasology#4995). No game time has
+            // passed, so there's nothing to move towards yet.
+            return new Vector3f();
+        }
+
         Vector3f delta = dest.sub(location.getWorldPosition(new Vector3f()), new Vector3f());
-        delta.div(movement.speedMultiplier).div(getTime().getGameDelta());
+        delta.div(movement.speedMultiplier).div(gameDelta);
         return delta;
     }
 }
