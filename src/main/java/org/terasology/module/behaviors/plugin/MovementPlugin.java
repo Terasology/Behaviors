@@ -59,12 +59,7 @@ public abstract class MovementPlugin {
         LocationComponent location = entity.getComponent(LocationComponent.class);
         CharacterMovementComponent movement = entity.getComponent(CharacterMovementComponent.class);
 
-        // getGameDelta() is exactly 0 while the game is paused (TimeBase#tick), but nothing gates
-        // behavior tree ticking on pause - so this runs every frame the pause menu is open too.
-        // Dividing by it then produced +/-Infinity, which propagated into the entity's actual
-        // position over subsequent frames and went NaN, at which point unrelated fallback logic
-        // (e.g. SetTargetToNearbyBlockNode) reset it to (0, 0, 0) - see #4995. No time having passed
-        // means no distance should be covered this call; a zero delta says exactly that.
+        // getGameDelta() is exactly 0 while the game is paused and dividing by 0 would produce +/-Infinity, where no movement has occurred.
         float gameDelta = getTime().getGameDelta();
         if (gameDelta <= 0 || movement.speedMultiplier <= 0) {
             return new Vector3f();
