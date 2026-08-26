@@ -59,8 +59,14 @@ public abstract class MovementPlugin {
         LocationComponent location = entity.getComponent(LocationComponent.class);
         CharacterMovementComponent movement = entity.getComponent(CharacterMovementComponent.class);
 
+        // getGameDelta() is exactly 0 while the game is paused and dividing by 0 would produce +/-Infinity, where no movement has occurred.
+        float gameDelta = getTime().getGameDelta();
+        if (gameDelta <= 0 || movement.speedMultiplier <= 0) {
+            return new Vector3f();
+        }
+
         Vector3f delta = dest.sub(location.getWorldPosition(new Vector3f()), new Vector3f());
-        delta.div(movement.speedMultiplier).div(getTime().getGameDelta());
+        delta.div(movement.speedMultiplier).div(gameDelta);
         return delta;
     }
 }
