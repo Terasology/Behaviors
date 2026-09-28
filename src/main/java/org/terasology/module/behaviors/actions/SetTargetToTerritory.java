@@ -9,18 +9,18 @@ import org.terasology.engine.logic.behavior.core.BaseAction;
 import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.world.block.Blocks;
 import org.terasology.module.behaviors.components.MinionMoveComponent;
-import org.terasology.module.behaviors.components.TerritoryDistance;
+import org.terasology.module.behaviors.components.TerritoryComponent;
 
 
 @BehaviorAction(name = "set_target_territory")
 public class SetTargetToTerritory extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        if (!actor.hasComponent(TerritoryDistance.class) || !actor.hasComponent(MinionMoveComponent.class)) {
+        if (!actor.hasComponent(TerritoryComponent.class) || !actor.hasComponent(MinionMoveComponent.class)) {
             return BehaviorState.FAILURE;
         }
 
-        Vector3f territory = actor.getComponent(TerritoryDistance.class).location;
+        Vector3f territory = actor.getComponent(TerritoryComponent.class).location;
 
         MinionMoveComponent moveComponent = actor.getComponent(MinionMoveComponent.class);
         if (moveComponent.target.equals(territory)) {
